@@ -21,7 +21,6 @@ Imports:
   xaringan (>= 0.7)
 Remotes:
   rstudio/rmarkdown,
-  tidymodels/broom,
   tidymodels/infer,
   tidyverse/ggplot2,
   tidyverse/tidyverse,
