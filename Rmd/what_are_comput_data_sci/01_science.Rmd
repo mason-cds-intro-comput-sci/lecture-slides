@@ -13,7 +13,7 @@ knitr::include_graphics("../../img/cds-101-online-logo.png")
 
 .lower-right[
 ```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
-knitr::include_graphics("../../img/cc-by-sa.png")
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
 ```
 
 These slides are licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/).
@@ -250,7 +250,7 @@ Acknowledgments
 ]
 
 .right-column[
-[Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
 
 Content adapted from the [Lecture 1: The Computational and Data Sciences slides](http://bobweigel.net/cds101/index.php?title=lecture1) by John Wallin.
 ]

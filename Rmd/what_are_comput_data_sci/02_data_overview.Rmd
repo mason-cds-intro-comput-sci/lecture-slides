@@ -13,7 +13,7 @@ knitr::include_graphics("../../img/cds-101-online-logo.png")
 
 .lower-right[
 ```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
-knitr::include_graphics("../../img/cc-by-sa.png")
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
 ```
 
 These slides are licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/).
@@ -74,8 +74,6 @@ Labeling variables as explanatory and response does not guarantee the relationsh
 </div>
 
 ---
-
-count: false
 
 # Definitions
 
@@ -228,7 +226,7 @@ Acknowledgments
 ]
 
 .right-column[
-[Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
 
 Content adapted from:
 * The chapter 1 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/)

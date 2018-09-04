@@ -13,7 +13,7 @@ knitr::include_graphics("../../img/cds-101-online-logo.png")
 
 .lower-right[
 ```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
-knitr::include_graphics("../../img/cc-by-sa.png")
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
 ```
 
 These slides are licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/).
@@ -96,25 +96,25 @@ knitr::include_graphics("../../img/science_theory_experiment_compsci_data_sci_di
 
 --
 
-* Data cleaning is a prerequisite to analyzing data in most contexts and disciplines
+* Automated workflows with error-checking are very important when working with large datasets
 
 --
 
-* A large chunk of work in the computational and data sciences involves applying a series of data transformations in a certain order
+* Researchers in the computational and data sciences often need to communicate results to non-experts, which requires effective visualizations and developing the ability to write and present a clear and compelling story
 
 ---
 
 <h1 style="margin-bottom:15%">Why are new skills and training needed?</h1>
 
-* Automated workflows with error-checking are very important when working with large datasets
+* Data cleaning is a prerequisite to analyzing data in most contexts and disciplines
 
 --
 
-* Data science methods applied to other fields: medicine, humanities, political science, law, and the list goes on
+* Many computational tasks map onto workflows where you apply a series of data transformations in a certain order
 
 --
 
-* Researchers in the computational and data sciences often need to communicate results to non-experts, which requires effective visualizations and developing the ability to write and present a clear and compelling story
+* Data science methods applied to other fields: medicine, the humanities, political science, law, and the list goes on
 
 ---
 
@@ -175,7 +175,7 @@ Acknowledgments
 ]
 
 .right-column[
-[Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
 
 Content adapted from the [Lecture 1: The Computational and Data Sciences slides](http://bobweigel.net/cds101/index.php?title=lecture1) by John Wallin.
 ]

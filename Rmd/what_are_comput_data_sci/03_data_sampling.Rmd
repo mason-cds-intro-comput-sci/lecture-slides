@@ -13,7 +13,7 @@ knitr::include_graphics("../../img/cds-101-online-logo.png")
 
 .lower-right[
 ```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
-knitr::include_graphics("../../img/cc-by-sa.png")
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
 ```
 
 These slides are licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/).
@@ -28,6 +28,36 @@ These slides are licensed under a [Creative Commons Attribution-ShareAlike 4.0 I
 # DO NOT ALTER THIS CHUNK
 source("../../R/xaringan_setup.R")
 ```
+
+---
+
+# Exploratory analysis to inference
+
+*   Sampling is natural
+
+--
+
+*   Think about sampling something you are cooking - you taste (examine) a small part of what you're cooking to get an idea about the dish as a whole.
+
+--
+
+*   When you taste a spoonful of soup and decide the spoonful you tasted isn't salty enough, that's **exploratory analysis**.
+
+--
+
+*   If you generalize and conclude that your entire soup needs salt, that's an **inference**.
+
+--
+
+*   For your inference to be valid, the spoonful you tasted (the sample) needs to be **representative** of the entire pot (the population).
+
+--
+
+*   If your spoonful comes only from the surface and the salt is collected at the bottom of the pot, what you tasted is probably not representative of the whole pot.
+
+--
+
+*   If you first stir the soup thoroughly before you taste, your spoonful will more likely be representative of the whole pot.
 
 ---
 
@@ -83,7 +113,7 @@ knitr::include_graphics("../../img/running.png")
 
 --
 
-*   It was concluded that "smoking is a complex human behavior, by its nature difficult to study, confounded by human variability."
+*   "Smoking is a complex human behavior [...] confounded by human variability."
 
 --
 
@@ -116,36 +146,6 @@ knitr::include_graphics("../../img/running.png")
 --
 
 *   Taking a census may be more complex than sampling.
-
----
-
-# Exploratory analysis to inference
-
-*   Sampling is natural
-
---
-
-*   Think about sampling something you are cooking - you taste (examine) a small part of what you're cooking to get an idea about the dish as a whole.
-
---
-
-*   When you taste a spoonful of soup and decide the spoonful you tasted isn't salty enough, that's **exploratory analysis**.
-
---
-
-*   If you generalize and conclude that your entire soup needs salt, that's an **inference**.
-
---
-
-*   For your inference to be valid, the spoonful you tasted (the sample) needs to be **representative** of the entire pot (the population).
-
---
-
-*   If your spoonful comes only from the surface and the salt is collected at the bottom of the pot, what you tasted is probably not representative of the whole pot.
-
---
-
-*   If you first stir the soup thoroughly before you taste, your spoonful will more likely be representative of the whole pot.
 
 ---
 
@@ -278,7 +278,7 @@ Acknowledgments
 ]
 
 .right-column[
-[Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
 
 Content adapted from the chapter 1 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/)
 ]
