@@ -1,0 +1,360 @@
+---
+title: CDS 101 Online <br> Data visualization <br> Data visualization with ggplot2
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data visualization]
+.title-hline[
+## Data visualization with ggplot2
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(ggplot2)
+library(dplyr)
+library(gridExtra)
+```
+
+---
+
+# Star Wars data
+
+Loading `tidyverse` also loads a dataset called `starwars` into your RStudio environment:
+
+.code70[
+```r
+library(tidyverse)
+starwars
+```
+]
+
+.code70[
+```{r star-wars-table, message = FALSE, echo = FALSE}
+starwars
+```
+]
+
+---
+
+# Dataset terminology
+
+.qa[
+What does each row represent? What does each column represent?
+]
+
+.code70[
+```{r star-wars-table, message = FALSE}
+```
+]
+
+---
+
+# Luke Skywalker
+
+.valign-slide[
+```{r luke-skywalker-data, height = "100%", echo = FALSE}
+knitr::include_graphics("../../img/luke-skywalker.png")
+```
+]
+
+---
+
+class: code80
+
+# What's in the Star Wars data?
+
+Take a `glimpse` at the data:
+
+```{r glimpse-star-wars}
+glimpse(starwars)
+```
+
+---
+
+# What's in the Star Wars data?
+
+.pull-left[
+Run the following **in the Console** to view the help
+
+```r
+?starwars
+```
+]
+
+.pull-right[
+```{r starwars-helpdata, out.width = "100%", echo = FALSE}
+knitr::include_graphics("../../img/starwars-help.png")
+```
+]
+
+--
+
+.qa[
+How many rows and columns does this dataset have? 
+
+What does each row represent? What does each column represent?
+]
+
+--
+
+.qa[
+Make a prediction: What relationship do you expect to see between height and mass?
+]
+
+---
+
+# Mass vs. height (`geom_point()`)
+
+Not all characters have height and mass information (hence 28 of them not plotted)
+
+```{r starwars-height-mass-1}
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass))
+```
+
+---
+
+# Mass vs. height
+
+.qa[
+How would you describe this relationship? What other variables would help us understand data points that don't follow the overall trend?
+]
+
+```{r starwars-height-mass-2, echo = FALSE}
+ggplot(data = starwars) +
+  geom_point(mapping=aes(x = height, y = mass))
+```
+
+---
+
+# Mass vs. height
+
+.qa[
+Who is the not so tall but really massive character?
+]
+
+```r
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass))
+```
+
+.pull-left[
+```{r starwars-height-mass-3, out.width = "100%", echo = FALSE}
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass))
+```
+]
+
+--
+
+.pull-right[
+```{r jabba-the-hut, out.width = "70%", echo = FALSE}
+knitr::include_graphics("../../img/jabba.png")
+```
+]
+
+---
+
+# Additional variables
+
+.valign-slide[
+Can display additional variables with
+
+*   aesthetics (like shape, colour, size), or
+
+*   faceting (small multiples displaying different subsets)
+]
+
+---
+
+# Aesthetics
+
+.valign-slide[
+Visual characteristics of plotting characters that can be **mapped to data** are
+
+* `color`
+
+* `size`
+
+* `shape`
+
+* `alpha` (transparency)
+]
+
+---
+
+# Mass vs. height + gender
+
+```{r starwars-mass-height-gender, out.width = "80%"}
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass, color = gender))
+```
+
+---
+
+# Aesthetics summary
+
+* Continuous variable are measured on a continuous scale
+
+* Discrete variables are measured (or often counted) on a discrete scale
+
+| aesthetics    | discrete                 | continuous                              |
+| ------------- | ------------------------ | --------------------------------------- |
+| color         | rainbow of colors        | gradient                                |
+| size          | discrete steps           | linear mapping between radius and value |
+| shape         | different shape for each | shouldn't (and doesn't) work            |
+
+---
+
+# Faceting
+
+.valign-slide[
+* Smaller plots that display different subsets of the data
+
+* Useful for exploring conditional relationships and large data
+]
+
+---
+
+# Mass vs. height by gender
+
+```{r starwars-mass-height-gender-facet-1, out.width = "80%"}
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass)) +
+  facet_grid(. ~ gender)
+```
+
+---
+
+# Many ways to facet
+
+.valign-slide[
+In the next few examples, think about what each plot displays.
+Think about how the code relates to the output.
+]
+
+---
+
+# Many ways to facet
+
+```{r starwars-mass-height-gender-facet-2, out.width = "80%"}
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass)) +
+  facet_grid(gender ~ .)
+```
+
+---
+
+# Many ways to facet
+
+```{r starwars-mass-height-gender-facet-3, out.width = "80%"}
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass)) +
+  facet_grid(. ~ gender)
+```
+
+---
+
+# Many ways to facet
+
+```{r starwars-mass-height-gender-facet-4, out.width = "80%"}
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass)) +
+  facet_wrap(~ eye_color)
+```
+
+---
+
+# Facet summary
+
+.valign-slide[
+*   `facet_grid()`: 2d grid, rows ~ cols, . for no split
+
+*   `facet_wrap()`: 1d ribbon wrapped into 2d
+]
+
+---
+
+# Other geoms
+
+.qa[
+How are these plots similar? How are they different?
+]
+
+--
+
+```{r starwars-point-vs-smooth, echo = FALSE, out.width = "90%"}
+p1 <- ggplot(starwars) +
+  geom_point(aes(x = height, y = mass))
+
+p2 <- ggplot(starwars) +
+  geom_smooth(aes(x = height, y = mass))
+
+grid.arrange(p1, p2, ncol = 2)
+```
+
+---
+
+# `geom_smooth`
+
+To plot a smooth curve, use `geom_smooth()`
+
+```{r starwars-height-mass-smooth, out.width = "80%"}
+ggplot(data = starwars) +
+  geom_smooth(mapping = aes(x = height, y = mass))
+```
+
+---
+
+# Histograms
+
+For numerical variables
+
+```{r starwars-histogram, out.width = "80%"}
+ggplot(starwars) +
+  geom_histogram(mapping = aes(x = height), binwidth = 10)
+```
+
+---
+
+# Bar plots
+
+For categorical variables
+
+```{r starwars-bar-plot, out.width = "80%"}
+ggplot(starwars) +
+  geom_bar(mapping = aes(x = gender))
+```
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the [Fundamentals of data & data visualization](http://www2.stat.duke.edu/courses/Fall17/sta112.01/slides/03-deck.html) slides developed by Mine Çetinkaya-Rundel and made available under the [CC BY license](http://creativecommons.org/licenses/by-sa/4.0/us/).
+]

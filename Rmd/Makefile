@@ -2,7 +2,8 @@ include ../make.inc
 
 DIRS	=	orientation															\
 			what_are_comput_data_sci											\
-			reproducible_toolbox
+			reproducible_toolbox													\
+			data_visualization
 
 .PHONY : all clean $(DIRS)
 

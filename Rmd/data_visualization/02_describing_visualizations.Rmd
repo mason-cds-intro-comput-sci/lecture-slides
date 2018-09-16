@@ -1,0 +1,157 @@
+---
+title: CDS 101 Online <br> Data visualization <br> Describing visualizations
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data visualization]
+.title-hline[
+## Describing visualizations
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(ggplot2)
+```
+
+---
+
+# A taxonomy for data graphics
+
+.valign-slide[
+* We can break visualizations down into four basic elements:
+
+  * Visual cues
+  
+  * Coordinate system
+  
+  * Scale
+  
+  * Context
+]
+
+---
+
+# Visual cues
+
+.valign-slide[
+*   These are the building blocks of any given visualization.
+
+*   Identify 9 separate visual cues.
+]
+
+---
+
+# Cues 1&ndash;9
+
+.valign-slide[
+1. **Position** (numerical) where in relation to other things?
+
+2. **Length** (numerical) how big (in one dimension)?
+
+3. **Angle** (numerical) how wide? parallel to something else?
+
+4. **Direction** (numerical) at what slope? In a time series, going up or down?
+
+5. **Shape** (categorical) belonging to which group?
+
+6. **Area** (numerical) how big (in two dimensions)?
+
+7. **Volume** (numerical) how big (in three dimensions)?
+
+8. **Shade** (either) to what extent? how severly?
+
+9. **Color** (either) to what extent? how severly? Beware of red/green color blindness.
+]
+
+---
+
+# Coordinate systems
+
+.valign-slide[
+1. **Cartesian** This is the familiar (*x*, *y*)-rectangular coordinate system with two perpendicular axes
+
+2. **Polar**: The radial analog of the Cartesian system with points identified by their radius *ρ* and angle *θ*
+
+3. **Geographic**: Locations on the curved surface of the Earth, but represented in a flat two-dimensional plane
+]
+
+---
+
+# Scale
+
+.valign-slide[
+1. **Numeric**: A numeric quantity is most commonly set on a *linear*, *logarithmic*, or *percentage* scale.
+
+2. **Categorical**: A categorical variable may have no ordering or it may be *ordinal* (position in a series).
+
+3. **Time**: A numeric quantity with special properties.
+    Because of the calendar, it can be specified using a series of units (year, month, day).
+    It can also be considered cyclically (years reset back to January, a spring oscillating around a central position).
+]
+
+---
+
+# Context
+
+.valign-slide[
+* Annotations and labels that draw attention to specific parts of a visualization.
+
+  * Titles, subtitles
+  
+  * Axes labels that depict scale (tick mark labels) and indiciate the variable
+  
+  * Reference points or lines
+  
+  * Other markups such as arrows, textboxes, and so on (it's possible to overdo these)
+]
+
+---
+
+# Example plot
+
+.center[How many of the previous elements can you identify in this plot?]
+
+```{r mpg-example-identify, echo = FALSE, out.width = "90%"}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, color = class)) +
+  labs(title = "Engine size and gas mileage on the highway",
+       x = "Engine size",
+       y = "Mileage on highway") +
+  theme(plot.title = element_text(size = rel(1.5)),
+        axis.title = element_text(size = rel(1.1)),
+        axis.text = element_text(size = rel(0.9)),
+        strip.text = element_text(size = rel(0.9)))
+```
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from *Modern Data Science with R* by Benjamin Baumer, Daniel Kaplan, and Nicholas Horton, chapter 2.
+]
