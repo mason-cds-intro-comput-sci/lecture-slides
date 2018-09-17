@@ -40,9 +40,9 @@ source("../../R/xaringan_setup.R")
 
   * modality: unimodal, bimodal, multimodal, uniform
 
-* center: mean (`mean`), median (`median`), mode (not always useful)
+* center: mean, median, mode (not always useful)
 
-* spead: range (`range`), standard deviation (`sd`), inter-quartile range (`IQR`)
+* spead: range, standard deviation, inter-quartile range
 
 * unusual observations
 ]
