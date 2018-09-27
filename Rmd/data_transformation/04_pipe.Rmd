@@ -1,0 +1,125 @@
+---
+title: "CDS 101 Online <br> Data transformation <br> The pipe %>% operator"
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data transformation]
+.title-hline[
+## The pipe .mono[%>%] operator
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+```
+
+---
+
+# Structure of the `select` function
+
+<div style="margin-bottom: 25%;"></div>
+
+```r
+select(name_of_dataset, column1, column2, ...)
+```
+
+Replace .mono[name_of_dataset] with the variable storing your dataset and .mono[column1], .mono[column2], and so on with actual names of the columns you want to keep.
+
+---
+
+layout: true
+
+# Using the pipe `%>%` operator
+
+<div style="margin-bottom: 20%;"></div>
+
+---
+
+* We will need a convenient way to write out a sequence of data transformations
+
+--
+
+* The symbol .mono[%>%] is called the pipe operator, and it is available for you to use after running .mono[library(tidyverse)]
+
+--
+
+```r
+select(presidential, name, party)
+```
+
+---
+
+* We will need a convenient way to write out a sequence of data transformations
+
+* The symbol .mono[%>%] is called the pipe operator, and it is available for you to use after running .mono[library(tidyverse)]
+
+```r
+presidential %>%  
+  select(name, party)
+```
+
+---
+
+layout: false
+
+# Chaining transformations with `%>%`
+
+<div style="margin-bottom: 10%;"></div>
+
+Apply the sequence of functions .mono[transform1], .mono[transform2], .mono[transform3], and .mono[transform4] to the data frame stored in a variable named .mono[data].
+
+--
+
+```r
+data %>%
+  transform1() %>%
+  transform2(input1, input2) %>%
+  transform3(input3) %>%
+  transform4()
+```
+
+--
+
+Using .mono[%>%] shows the order of transformations in a clear and readable format.
+
+--
+
+If we didn't use the pipe operator, then our code would look this way instead:
+
+.code80[
+```r
+transform4(transform3(transform2(transform1(data), input1, input2), input3))
+```
+]
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Ideas and examples for the dplyr demos adapted from *Modern Data Science with R* by Benjamin Baumer, Daniel Kaplan, and Nicholas Horton, chapter 4.
+]

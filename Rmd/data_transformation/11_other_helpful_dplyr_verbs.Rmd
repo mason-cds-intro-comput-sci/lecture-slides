@@ -1,0 +1,165 @@
+---
+title: CDS 101 Online <br> Data transformation <br> Other helpful dplyr verbs
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data transformation]
+.title-hline[
+## Other helpful dplyr verbs
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+```
+
+---
+
+# Other helpful `dplyr` verbs
+
+.valign-slide[
+* .mono[transmute]: Like .mono[mutate], except the transformed output is placed in a new data frame
+
+* .mono[pull]: Extract column into the base R vector data type
+
+* .mono[rename]: Convenient way to change the name of a variable (column)
+
+* .mono[distinct]: Determines unique values across one or more columns in the dataset
+
+* .mono[count]: Group by category and count the number of group members
+]
+
+---
+
+# `transmute` example
+
+Example from mutate lectures for computing term lengths: 
+
+```{r transmute-demo-mutate}
+presidential %>%
+  mutate(term_length = interval(start, end) / dyears(1))
+```
+
+---
+
+count: false
+
+# `transmute` example
+
+Example from mutate lectures for computing term lengths: 
+
+```{r transmute-demo-transmute}
+presidential %>%
+  transmute(term_length = interval(start, end) / dyears(1))
+```
+
+---
+
+# `pull` example
+
+<div style="margin-bottom: 20%;"></div>
+
+.mono[pull] extracts a column and converts it into the base R vector data type:
+
+```{r pull-demo}
+presidential %>%
+  pull(name)
+```
+
+---
+
+# `rename` example
+
+.mono[rename] lets us rename the columns in the dataset:
+
+```{r rename-demo-old-names}
+presidential
+```
+
+---
+
+count: false
+
+# `rename` example
+
+.mono[rename] lets us rename the columns in the dataset:
+
+```{r rename-demo-new-names}
+presidential %>%
+  rename(term_begin = start, term_end = end)
+```
+
+---
+
+# `distinct` example
+
+<div style="margin-bottom: 18%;"></div>
+
+.mono[distinct] can find all the unique political parties in the party column:
+
+```{r distinct-demo}
+presidential %>%
+  distinct(party)
+```
+
+---
+
+# `count` example
+
+.font80[
+.mono[count] finds the number of presidents in the two political parties in this dataset:
+]
+
+.code70[
+```{r count-demo}
+presidential %>%
+  count(party)
+```
+]
+
+.font80[
+Note that .mono[count] is identical to the following .mono[group\_by] and .mono[summarize] command:
+]
+
+.code70[
+```{r count-demo-summarize-equivalent}
+presidential %>%
+  group_by(party) %>%
+  summarize(n = n())
+```
+]
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Ideas and examples for the dplyr demos adapted from *Modern Data Science with R* by Benjamin Baumer, Daniel Kaplan, and Nicholas Horton, chapter 4.
+]

@@ -1,0 +1,79 @@
+---
+title: CDS 101 Online <br> Data transformation <br> The arrange function
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data transformation]
+.title-hline[
+## The .mono[arrange] function
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(ggplot2)
+library(dplyr)
+```
+
+---
+
+# `arrange` schematic
+
+.vhalign-slide[
+```{r arrange-schematic, out.width = "100%", echo = FALSE}
+knitr::include_graphics("../../img/arrange_schematic.png")
+```
+]
+
+---
+
+# Structure of the `arrange` function
+
+<div style="margin-bottom: 25%;"></div>
+
+```r
+name_of_dataset %>%
+  arrange(column1, [column2, ...])
+```
+
+Replace .mono[name_of_dataset] with the variable storing your dataset and the column names .mono[column1], .mono[column2], and so on with actual names of the columns you want to sort. The order of the column names matters!
+
+---
+
+# `arrange` demo
+
+.vhalign-slide[
+Follow along in RStudio
+]
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Ideas and examples for the dplyr demos adapted from *Modern Data Science with R* by Benjamin Baumer, Daniel Kaplan, and Nicholas Horton, chapter 4.
+]
