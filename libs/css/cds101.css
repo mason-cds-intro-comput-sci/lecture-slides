@@ -1,3 +1,7 @@
+pre {
+  margin: 0px;
+}
+
 .remark-slide-content {
   background-color: #FAFAFA;
   border-top: 80px solid #006633;

@@ -1,0 +1,177 @@
+---
+title: CDS 101 Online <br> Data transformation <br> Boolean logic (or, how to make a rule)
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data transformation]
+.title-hline[
+## Boolean logic (or, how to make a rule)
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+```
+
+---
+
+# Building rules
+
+<div style="margin-bottom: 22%;"></div>
+
+--
+
+* The .mono[filter] function takes logical rules as input
+
+--
+
+* Logical rules must evaluate to one of two outputs, either .mono[TRUE] or .mono[FALSE]
+
+--
+
+* Chaining rules together is allowed, so long as the final result is simply .mono[TRUE] or .mono[FALSE]
+
+--
+
+* Working with .mono[TRUE] and .mono[FALSE] values in this way is a form of **Boolean logic**
+
+---
+
+# Comparisons
+
+<div style="margin-bottom: 15%;"></div>
+
+--
+
+Simple comparisons can be made using the following symbols
+
+--
+
+* .mono[\>]: greater than
+
+--
+
+* .mono[\>=]: greater than or equal to
+
+--
+
+* .mono[<]: less than
+
+--
+
+* .mono[<=]: less than or equal to
+
+--
+
+* .mono[!=]: not equal
+
+--
+
+* .mono[==]: equal
+
+---
+
+# Logical operators
+
+<div style="margin-bottom: 23%;"></div>
+
+--
+
+* .mono[&]: *and* Boolean operator
+
+--
+
+* .mono[|]: *or* Boolean operator
+
+--
+
+* .mono[!]: *not* Boolean operator
+
+--
+
+* .mono[xor]: *exclusive or* Boolean operator
+
+---
+
+# Using the *and* operator
+
+```{r and-op-examples}
+TRUE & TRUE
+TRUE & FALSE
+FALSE & TRUE
+FALSE & FALSE
+```
+
+---
+
+# Using the *or* operator
+
+```{r or-op-examples}
+TRUE | TRUE
+TRUE | FALSE
+FALSE | TRUE
+FALSE | FALSE
+```
+
+---
+
+# Using the *exclusive or* operator
+
+```{r xor-op-examples}
+xor(TRUE, TRUE)
+xor(TRUE, FALSE)
+xor(FALSE, TRUE)
+xor(FALSE, FALSE)
+```
+
+---
+
+# Using the *not* operator
+
+<div style="margin-bottom: 30%;"></div>
+
+```{r not-op-example}
+TRUE & !FALSE
+```
+
+---
+
+# Logical operators schematic
+
+.vhalign-slide[
+```{r r4ds-logical-operators, out.width = "100%", echo = FALSE}
+knitr::include_graphics("../../img/r4ds_logical_operators.png")
+```
+]
+
+.footnote[
+Source: [Digital image of logical operations](http://r4ds.had.co.nz/diagrams/transform-logical.png), Digital image on *r4ds.had.co.nz*, accessed September 20, 2017, r4ds.had.co.nz/transform.html#logical-operators
+]
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]

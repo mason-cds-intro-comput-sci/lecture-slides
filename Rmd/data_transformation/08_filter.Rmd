@@ -1,0 +1,90 @@
+---
+title: CDS 101 Online <br> Data transformation <br> The filter function
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data transformation]
+.title-hline[
+## The .mono[filter] function
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+```
+
+---
+
+# `filter` schematic
+
+.vhalign-slide[
+```{r filter-schematic, out.width = "100%", echo = FALSE}
+knitr::include_graphics("../../img/filter_schematic.png")
+```
+]
+
+---
+
+# Structure of the `filter` function
+
+<div style="margin-bottom: 12%;"></div>
+
+```r
+name_of_dataset %>%
+  filter(rule_to_test)
+```
+
+<div style="margin-bottom: 7%;"></div>
+
+```r
+name_of_dataset %>%
+  filter(rule_to_test1, rule_to_test2) %>%
+  filter(rule_to_test2 & rule_to_test4) %>%
+  filter(rule_to_test3 | rule_to_test6)
+```
+
+<div style="margin-bottom: 5%;"></div>
+
+Replace .mono[rule_to_test] with a test involving boolean operators and comparisons that will evaluate to a .mono[TRUE] or .mono[FALSE] value. .mono[&] is the and boolean operator and .mono[|] is the or boolean operator.
+
+---
+# `filter` demo
+
+.vhalign-slide[
+Follow along in RStudio
+]
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Ideas and examples for the dplyr demos adapted from *Modern Data Science with R* by Benjamin Baumer, Daniel Kaplan, and Nicholas Horton, chapter 4.
+]
