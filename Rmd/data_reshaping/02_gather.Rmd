@@ -1,0 +1,247 @@
+---
+title: CDS 101 Online <br> Data reshaping <br> The gather function
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data reshaping]
+.title-hline[
+## The .mono[gather] function
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(dplyr)
+library(tidyr)
+```
+
+---
+
+# Structure of the `gather` function
+
+.center[.mono[gather] takes columns and turns them into rows.]
+
+<div style="margin-bottom: 3%;"></div>
+
+.pull-left[
+```r
+name_of_dataset %>%
+  gather(
+    column_one,
+    column_two,
+    key = "category",
+    value = "value"
+  )
+```
+]
+
+.pull-right[
+```r
+name_of_dataset %>%
+  gather(
+    column_one:column_three,
+    key = "category",
+    value = "value"
+  )
+```
+]
+
+<div style="margin-bottom: 5%;"></div>
+
+* The first set of inputs are the columns you wish to turn into rows.
+
+* The .mono[key =] input is the name you will give to the new column that will contain the names of the gathered columns.
+
+* The .mono[value =] input is the name you will give to the new column that will contain the values of the gathered columns.
+
+---
+
+# Untidy data example
+
+<div style="margin-bottom: 15%;"></div>
+
+.qa.center[
+**Problem:** Untidy data frame stored in .mono[table4a] and .mono[table4b]
+]
+
+<div style="margin-bottom: 5%;"></div>
+
+.pull-left[
+```{r untidy-table4a, echo = FALSE}
+table4a %>%
+  knitr::kable(format = "html", caption = "<span class='mono'>table4a</span>")
+```
+]
+
+.pull-right[
+```{r untidy-table4b, echo = FALSE}
+table4b %>%
+  knitr::kable(format = "html", caption = "<span class='mono'>table4b</span>")
+```
+]
+
+---
+
+# Untidy data example
+
+<div style="margin-bottom: 10%;"></div>
+
+.answer.center[
+**Goal:** Use .mono[gather] to transform .mono[table4a] and .mono[table4b] back to this:
+]
+
+<div style="margin-bottom: 5%;"></div>
+
+```{r tidy-table1, echo = FALSE}
+table1 %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+# `gather` schematic
+
+.footnote[
+Source: Figure 12.2 in *R for Data Science* by Garrett Grolemund and Hadley Wickham.
+]
+
+.vhalign-slide[
+```{r mutate-schematic, out.width = "100%", echo = FALSE}
+knitr::include_graphics("../../img/gather_schematic.png")
+```
+]
+
+.mono[gather] takes columns and turns them into rows.
+
+---
+
+# `gather` example
+
+<div style="margin-bottom: 7%;"></div>
+
+.pull-left[
+.code80[
+```r
+tidy4a <- table4a %>%
+  gather(
+    `1999`:`2000`,
+    key = "year",
+    value = "cases"
+  )
+```
+]
+]
+
+.pull-right[
+.code80[
+```r
+tidy4b <- table4b %>%
+  gather(
+    `1999`:`2000`,
+    key = "year",
+    value = "population"
+  )
+```
+]
+]
+
+---
+
+count: false
+
+# `gather` example
+
+<div style="margin-bottom: 7%;"></div>
+
+.pull-left[
+.code80[
+```r
+tidy4a <- table4a %>%
+  gather(
+    `1999`:`2000`,
+    key = "year",
+    value = "cases"
+  )
+```
+]
+
+<div style="margin-bottom: 5%;"></div>
+
+```{r tidy-up-table4a, echo = FALSE}
+tidy4a <- table4a %>%
+  gather(`1999`:`2000`, key = "year", value = "cases")
+knitr::kable(tidy4a, format = "html")
+```
+]
+
+.pull-right[
+.code80[
+```r
+tidy4b <- table4b %>%
+  gather(
+    `1999`:`2000`,
+    key = "year",
+    value = "population"
+  )
+```
+]
+
+<div style="margin-bottom: 5%;"></div>
+
+```{r tidy-up-table4b, echo = FALSE}
+tidy4b <- table4b %>%
+  gather(`1999`:`2000`, key = "year", value = "population")
+knitr::kable(tidy4b, format = "html")
+```
+]
+
+---
+
+# `gather` example
+
+<div style="margin-bottom: 7%;"></div>
+
+To fully restore .mono[table1], we use the .mono[left_join] function from the .mono[dplyr] package:
+
+```r
+left_join(tidy4a, tidy4b)
+```
+
+<div style="margin-bottom: 5%;"></div>
+
+```{r tidy-left-join, echo = FALSE}
+left_join(tidy4a, tidy4b) %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from [*R for Data Science*](http://r4ds.had.co.nz) by Garrett Grolemund and Hadley Wickham, [chapter 12](http://r4ds.had.co.nz/tidy-data.html), made available under the [CC BY-NC-ND 3.0 license](http://creativecommons.org/licenses/by-nc-nd/3.0/us/).
+]

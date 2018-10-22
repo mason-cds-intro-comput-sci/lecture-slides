@@ -1,0 +1,198 @@
+---
+title: CDS 101 Online <br> Data reshaping <br> The unite function
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data reshaping]
+.title-hline[
+## The .mono[unite] function
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(dplyr)
+library(tidyr)
+```
+
+---
+
+# Structure of the `unite` function
+
+<div style="margin-bottom: 6%;"></div>
+
+.center[.mono[unite] combines many columns into one column.]
+
+<div style="margin-bottom: 3%;"></div>
+
+```r
+name_of_dataset %>%
+  unite(
+    column_united,
+    column_one,
+    column_two
+    sep = "_"  # The symbol placed between united columns
+  )
+```
+
+* The first input is the name to give the united column
+
+* The subsequent inputs (.mono[column\_one] and .mono[column\_two]) are the columns you wish to unite into a single column
+
+* The .mono[sep =] input specifies the symbol that will be placed between united columns
+
+---
+
+# Untidy data example
+
+<div style="margin-bottom: 8%;"></div>
+
+.qa.center[
+**Problem:** Untidy data frame stored in .mono[table5]
+]
+
+<div style="margin-bottom: 5%;"></div>
+
+```{r untidy-table5, echo = FALSE}
+table5 %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+# Untidy data example
+
+<div style="margin-bottom: 10%;"></div>
+
+.answer.center[
+**Goal:** Use .mono[unite] to transform .mono[table5] back to this:
+]
+
+<div style="margin-bottom: 2%;"></div>
+
+```{r tidy-table3, echo = FALSE}
+table3 %>%
+  knitr::kable(format = "html")
+```
+
+<div style="margin-bottom: 2%;"></div>
+
+Afterwards, you can follow the instructions in .mono[separate] lecture to restore .mono[table1].
+
+---
+
+# `unite` schematic
+
+.footnote[
+Source: Figure 12.5 in *R for Data Science* by Garrett Grolemund and Hadley Wickham.
+]
+
+.vhalign-slide[
+```{r mutate-schematic, out.width = "100%", echo = FALSE}
+knitr::include_graphics("../../img/unite_schematic.png")
+```
+]
+
+.mono[unite] combines many columns into one column.
+
+---
+
+# `unite` example
+
+```r
+table5 %>%
+  unite(
+    new,
+    century,
+    year
+  )
+```
+
+<div style="margin-bottom: 4%;"></div>
+
+```{r tidy-up-table5, echo = FALSE}
+table5 %>%
+  unite(new, century, year) %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+count: false
+
+# `unite` example
+
+```r
+table5 %>%
+  unite(
+    new,
+    century,
+    year,
+*   sep = ""
+  )
+```
+
+<div style="margin-bottom: 4%;"></div>
+
+```{r tidy-up-table5-sep, echo = FALSE}
+table5 %>%
+  unite(new, century, year, sep = "") %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+count: false
+
+# Example: tidyr + dplyr functions
+
+<div style="margin-bottom: 8%;"></div>
+
+```r
+table5 %>%
+  unite(new, century, year, sep = "") %>%
+  mutate(new = as.integer(new)) %>%   #  Change data type to integer
+  rename(year = new)                  #  Rename column to year
+```
+
+<div style="margin-bottom: 4%;"></div>
+
+```{r tidy-up-table5-sep-rename-datatype, echo = FALSE}
+table5 %>%
+  unite(new, century, year, sep = "") %>%
+  mutate(new = as.integer(new)) %>%
+  rename(year = new) %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from [*R for Data Science*](http://r4ds.had.co.nz) by Garrett Grolemund and Hadley Wickham, [chapter 12](http://r4ds.had.co.nz/tidy-data.html), made available under the [CC BY-NC-ND 3.0 license](http://creativecommons.org/licenses/by-nc-nd/3.0/us/).
+]

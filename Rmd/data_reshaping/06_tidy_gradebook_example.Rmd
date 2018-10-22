@@ -1,0 +1,56 @@
+---
+title: CDS 101 Online <br> Data reshaping <br> Tidy gradebook example
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data reshaping]
+.title-hline[
+## Tidy gradebook example
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+```
+
+---
+
+# Tidy gradebook dataset exercise
+
+.vhalign-slide[
+Download the GitHub Classroom repo and complete the following exercises:
+
+1. Make the dataset tidy using either .mono[gather] or .mono[spread]. The tidy gradebook should have one observation per row, which gives all the grades a student has received for the different assignments in the semester.
+
+2. Use the tidy gradebook and create a histogram that answers the question, "What was the grade distribution for the Midterm Exam?"
+
+Remember to commit and push your work!
+]
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]
