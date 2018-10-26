@@ -1,0 +1,144 @@
+---
+title: CDS 101 Online <br> Data reshaping <br> The spread function
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data reshaping]
+.title-hline[
+## The .mono[spread] function
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(dplyr)
+library(tidyr)
+```
+
+---
+
+# Structure of the `spread` function
+
+<div style="margin-bottom: 8%;"></div>
+
+.center[.mono[spread] takes rows and turns them into columns.]
+
+<div style="margin-bottom: 5%;"></div>
+
+```r
+name_of_dataset %>%
+  spread(
+    key = column_one,
+    value = column_three
+  )
+```
+
+<div style="margin-bottom: 7%;"></div>
+
+* The .mono[key =] input is the name of a column of categorical data. The categories will become the names of new columns after running the .mono[spread] function.
+
+* The .mono[value =] input is the name of a column containing values that you want to spread into the new columns you created with the .mono[key =] input.
+
+---
+
+# Untidy data example
+
+.qa.center[
+**Problem:** Untidy data frame stored in .mono[table2]
+]
+
+.font80[
+```{r untidy-table2, echo = FALSE}
+table2 %>%
+  knitr::kable(format = "html")
+```
+]
+
+---
+
+# Untidy data example
+
+<div style="margin-bottom: 10%;"></div>
+
+.answer.center[
+**Goal:** Use .mono[spread] to transform .mono[table2] back to this:
+]
+
+<div style="margin-bottom: 5%;"></div>
+
+```{r tidy-table1, echo = FALSE}
+table1 %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+# `spread` schematic
+
+.footnote[
+Source: Figure 12.3 in *R for Data Science* by Garrett Grolemund and Hadley Wickham.
+]
+
+.vhalign-slide[
+```{r mutate-schematic, out.width = "100%", echo = FALSE}
+knitr::include_graphics("../../img/spread_schematic.png")
+```
+]
+
+.mono[spread] takes rows and turns them into columns.
+
+---
+
+# `spread` example
+
+<div style="margin-bottom: 5%;"></div>
+
+```r
+table2 %>%
+  spread(
+    key = type,
+    value = count
+  )
+```
+
+--
+
+<div style="margin-bottom: 5%;"></div>
+
+```{r tidy-up-table2, echo = FALSE}
+table2 %>%
+  spread(key = type, value = count) %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from [*R for Data Science*](http://r4ds.had.co.nz) by Garrett Grolemund and Hadley Wickham, [chapter 12](http://r4ds.had.co.nz/tidy-data.html), made available under the [CC BY-NC-ND 3.0 license](http://creativecommons.org/licenses/by-nc-nd/3.0/us/).
+]
