@@ -5,7 +5,8 @@ DIRS	=	orientation															\
 			reproducible_toolbox												\
 			data_visualization													\
 			data_transformation													\
-			data_reshaping
+			data_reshaping														\
+			data_distributions
 
 .PHONY : all clean $(DIRS)
 

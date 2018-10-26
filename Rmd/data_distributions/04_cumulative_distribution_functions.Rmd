@@ -1,0 +1,234 @@
+---
+title: CDS 101 Online <br> Data distributions <br> Cumulative distribution functions
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data distributions]
+.title-hline[
+## Cumulative distribution functions
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+# Load required packages
+library(ggplot2)
+library(dplyr)
+library(readr)
+# Load datasets
+county <- read_rds("../../data/county_complete.rds")
+```
+
+---
+
+# Download and load the dataset
+
+<div style="margin-bottom: 20%"></div>
+
+You can follow along by downloading and loading the dataset by placing the following *setup* code block at the top of a R Markdown file.
+
+<pre><code>
+&#96;&#96;&#96;{r setup, include = FALSE}
+# Load required packages
+library(tidyverse)
+# Load datasets
+county <- read_rds(url("http://data.cds101.com/county_complete.rds"))
+&#96;&#96;&#96;
+</code></pre>
+
+---
+
+# Data by percentile rank
+
+* Probability mass functions (PMFs) are handy exploratory tools, but as with histograms, the bin width can strongly influence what your plot looks like
+
+* The density plots offer a reasonable alternative to the PMFs, however, comparing distributions with different widths, multiple outliers, or very skewed data can still be challenging.
+
+* A convenient way to overcome this problem if we convert the data into a sorted list of percentile ranks
+
+* **Advantages**
+
+  * Don't need to select a bin width
+  
+  * Easier to compare similarities and differences of different data distributions
+  
+  * Different classes of data distributions have distinct shapes
+
+* The **cumulative distribution function** (CDF) lets us map between percentile rank and each value in a data column
+
+---
+
+# Creating CDFs in R 
+
+.mono[ggplot2] comes with a handy convenience function .mono[stat_ecdf()], which lets you create and visualize CDFs
+
+```{r county-commute-cdf-all}
+ggplot(county) +
+  stat_ecdf(mapping = aes(x = mean_work_travel)) +
+  labs(y = "CDF")
+```
+
+---
+
+count: false
+
+# Creating CDFs in R 
+
+.mono[ggplot2] comes with a handy convenience function .mono[stat_ecdf()], which lets you create and visualize CDFs
+
+```r
+ggplot(county) +
+  stat_ecdf(mapping = aes(x = mean_work_travel)) +
+  labs(y = "CDF")
+```
+
+```{r county-commute-cdf-all-50th-percentile, echo = FALSE}
+ggplot(county) +
+  stat_ecdf(mapping = aes(x = mean_work_travel)) +
+  geom_hline(
+    yintercept = 0.50,
+    linetype = "dashed",
+    size = 1
+  ) +
+  geom_vline(
+    xintercept = median(pull(county, mean_work_travel)),
+    color = "indianred3",
+    size = 1
+  ) +
+  labs(y = "CDF")
+```
+
+---
+
+count: false
+
+# Creating CDFs in R 
+
+.mono[ggplot2] comes with a handy convenience function .mono[stat_ecdf()], which lets you create and visualize CDFs
+
+```r
+ggplot(county) +
+  stat_ecdf(mapping = aes(x = mean_work_travel)) +
+  labs(y = "CDF")
+```
+
+```{r county-commute-cdf-all-75th-percentile, echo = FALSE}
+ggplot(county) +
+  stat_ecdf(mapping = aes(x = mean_work_travel)) +
+  geom_hline(
+    yintercept = 0.75,
+    linetype = "dashed",
+    size = 1
+  ) +
+  geom_vline(
+    xintercept = quantile(
+      x = pull(county, mean_work_travel),
+      probs = combine(0.75),
+      type = 1
+    ),
+    color = "indianred3",
+    size = 1
+  ) +
+  labs(y = "CDF")
+```
+
+---
+
+# Creating CDFs in R
+
+We can do all the usual operations, such as grouping by state
+
+```r
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  stat_ecdf(mapping = aes(x = mean_work_travel, color = state)) +
+  labs(y = "CDF")
+```
+
+```{r county-commute-cdf-va-md, echo = FALSE}
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  stat_ecdf(mapping = aes(x = mean_work_travel, color = state)) +
+  labs(y = "CDF")
+```
+
+---
+
+count: false
+
+# Creating CDFs in R
+
+We can do all the usual operations, such as grouping by state
+
+```r
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+* stat_ecdf(mapping = aes(x = mean_work_travel, color = state)) +
+  labs(y = "CDF")
+```
+
+```{r county-commute-cdf-va-md, echo = FALSE}
+```
+
+---
+
+# Computing the CDF
+
+<div style="margin-bottom: 18%"></div>
+
+To compute the CDF, we use the .mono[cume_dist()] function along with .mono[filter()], .mono[group_by()], and .mono[mutate()]:
+
+```{r county-extract-cdf-2}
+va_md_cdf_df <- county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  group_by(state) %>%
+  mutate(cdf = cume_dist(mean_work_travel)) %>%
+  select(state, mean_work_travel, cdf)
+```
+
+---
+
+count: false
+
+# Get CDF data out of plot
+
+<div style="margin-bottom: 8%"></div>
+
+```{r country-extract-cdf-table, echo = FALSE}
+va_md_cdf_df %>%
+  ungroup() %>%
+  arrange(desc(state), cdf, mean_work_travel) %>%
+  head(10) %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]

@@ -1,0 +1,514 @@
+---
+title: CDS 101 Online <br> Data distributions <br> Probability mass functions
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data distributions]
+.title-hline[
+## Probability mass functions
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+# Load required packages
+library(ggplot2)
+library(dplyr)
+library(readr)
+# Load datasets
+county <- read_rds("../../data/county_complete.rds")
+```
+
+---
+
+# Download and load the dataset
+
+<div style="margin-bottom: 20%"></div>
+
+You can follow along by downloading and loading the dataset by placing the following *setup* code block at the top of a R Markdown file.
+
+<pre><code>
+&#96;&#96;&#96;{r setup, include = FALSE}
+# Load required packages
+library(tidyverse)
+# Load datasets
+county <- read_rds(url("http://data.cds101.com/county_complete.rds"))
+&#96;&#96;&#96;
+</code></pre>
+
+---
+
+# Data distributions
+
+<div style="margin-bottom: 5%"></div>
+
+We've already learned that histograms (.mono[geom_histogram()]) are a convenient way to represent numerical data in a single column (variable)
+
+<div style="margin-bottom: 5%"></div>
+
+```{r county-mean-driving-table-head, echo = FALSE}
+county %>%
+  select(mean_work_travel) %>%
+  head(7) %>%
+  rbind(combine("...")) %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+count: false
+
+# Data distributions
+
+<div style="margin-bottom: 5%"></div>
+
+We've already learned that histograms (.mono[geom_histogram()]) are a convenient way to represent numerical data in a single column (variable)
+
+```{r county-mean-driving-histogram-binsize-2, echo = FALSE}
+county %>%
+  ggplot() +
+  geom_histogram(mapping = aes(x = mean_work_travel), binwidth = 2,
+                 center = 0, color = "cyan4", fill = "cyan2") +
+  labs(y = "frequency") +
+  annotate("text", x = 40, y = 450, label = "binwidth = 2", hjust = 0.5,
+           vjust = 0.5, size = 5) +
+  coord_cartesian(xlim = combine(2.5, 47.5), ylim = combine(0, 475))
+```
+
+--
+
+A histogram represents the **frequency** that values show up for a given variable
+
+.mono[binwidth] changes the "buckets" for the data, impacting the frequency heights.
+
+---
+
+count: false
+
+# Data distributions
+
+<div style="margin-bottom: 5%"></div>
+
+We've already learned that histograms (.mono[geom_histogram()]) are a convenient way to represent numerical data in a single column (variable).
+
+```{r county-mean-driving-histogram-binsize-1, echo = FALSE}
+county %>%
+  ggplot() +
+  geom_histogram(mapping = aes(x = mean_work_travel), binwidth = 1,
+                 center = 0, color = "cyan4", fill = "cyan2") +
+  labs(y = "frequency") +
+  annotate("text", x = 40, y = 450, label = "binwidth = 1", hjust = 0.5,
+           vjust = 0.5, size = 5) +
+  coord_cartesian(xlim = combine(2.5, 47.5), ylim = combine(0, 475))
+```
+
+A histogram represents the **frequency** that values show up for a given variable
+
+.mono[binwidth] changes the "buckets" for the data, impacting the frequency heights.
+
+---
+
+# .font70[Comparing distributions with unequal observations]
+
+So far, we've largely skipped over the question of how to compare distributions with varying numbers of observations.
+
+In our current example of average times to travel to work, we can group the data by state and compare Virginia to Maryland.
+
+```{r county-va-md-mean-driving-histogram, echo = FALSE, out.width = "55%", fig.width = 4}
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  geom_histogram(
+    mapping = aes(x = mean_work_travel, fill = state, color = state),
+    binwidth = 2, center = 0, position = "identity", alpha = 0.4) +
+  labs(y = "frequency") +
+  coord_fixed() +
+  coord_cartesian(xlim = combine(2.5, 47.5))
+```
+--
+
+.qa.center[
+In which state am I more likely to have a 30 minute commute?
+]
+
+---
+
+count: false
+
+# .font70[Comparing distributions with unequal observations]
+
+So far, we've largely skipped over the question of how to compare distributions with varying numbers of observations.
+
+In our current example of average times to travel to work, we can group the data by state and compare Virginia to Maryland.
+
+```{r county-va-md-mean-driving-histogram, echo = FALSE, out.width = "55%", fig.width = 4}
+```
+
+In the dataset, Virginia has `r nrow(filter(county, state == "Virginia"))` counties compared to Maryland's `r nrow(filter(county, state == "Maryland"))` counties.
+
+We need to **normalize** the frequency counts.
+
+---
+
+# From frequency to probability
+
+Normalization is straightforward, just divide the frequency count in each "bucket" by the total number of observations in the histogram.
+
+If you group by categories, that you should divide by the number of observations in each group.
+
+To normalize the histograms from the prior example, we need to divide the Virginia frequencies by `r nrow(filter(county, state == "Virginia"))` and the Maryland frequencies by `r nrow(filter(county, state == "Maryland"))`.
+
+```{r county-va-md-mean-driving-histogram, echo = FALSE, out.width = "55%", fig.width = 4}
+```
+
+---
+
+count: false
+
+# From frequency to probability
+
+Normalization is straightforward, just divide the frequency count in each "bucket" by the total number of observations in the histogram.
+
+If you group by categories, that you should divide by the number of observations in each group.
+
+To normalize the histograms from the prior example, we need to divide the Virginia frequencies by `r nrow(filter(county, state == "Virginia"))` and the Maryland frequencies by `r nrow(filter(county, state == "Maryland"))`.
+
+```{r county-va-md-mean-driving-pmf, echo = FALSE, out.width = "55%", fig.width = 4}
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  geom_histogram(
+    mapping = aes(x = mean_work_travel, y = ..density.., fill = state, color = state),
+    binwidth = 2, center = 0, position = "identity", alpha = 0.4) +
+  labs(y = "PMF") +
+  coord_cartesian(xlim = combine(2.5, 47.5))
+```
+
+---
+
+# Probability mass function (PMF)
+
+```{r county-va-md-mean-driving-pmf, echo = FALSE, out.width = "55%", fig.width = 4}
+```
+
+Just like a histogram, except that the bar heights reflect **probabilities** instead of **frequency counts**.
+
+Allows for a meaningful comparison of distributions with different numbers of observations.
+
+--
+
+.qa.center[
+In which state am I more likely to have a 30 minute commute?
+]
+--
+.answer.center[Maryland]
+
+---
+
+# Creating PMFs in R
+
+With .mono[ggplot2], it's straightforward to convert a histogram into a PMF.
+
+.code80[
+```r
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  geom_histogram(
+    mapping = aes(x = mean_work_travel, fill = state),
+    position = "identity",
+    alpha = 0.5
+  )
+```
+]
+
+```{r county-freq-to-pmf-1, echo = FALSE, out.width = "60%", fig.width = 4}
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  geom_histogram(
+    mapping = aes(x = mean_work_travel, fill = state, color = state),
+    binwidth = 2,
+    center = 0,
+    position = "identity",
+    alpha = 0.5
+  ) +
+  labs(y = "frequency") +
+  coord_cartesian(xlim = combine(2.5, 47.5))
+```
+
+---
+
+count: false
+
+# Creating PMFs in R
+
+With .mono[ggplot2], it's straightforward to convert a histogram into a PMF.
+
+.code80[
+```r
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  geom_histogram(
+*   mapping = aes(x = mean_work_travel, fill = state),
+    position = "identity",
+    alpha = 0.5
+  )
+```
+]
+
+```{r county-freq-to-pmf-1, echo = FALSE, out.width = "60%", fig.width = 4}
+```
+
+---
+
+count: false
+
+# Creating PMFs in R
+
+With .mono[ggplot2], it's straightforward to convert a histogram into a PMF.
+
+.code80[
+```r
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  geom_histogram(
+*   mapping = aes(x = mean_work_travel, y = ..density.., fill = state),
+    position = "identity",
+    alpha = 0.5
+  )
+```
+]
+
+```{r county-freq-to-pmf-2, echo = FALSE, out.width = "60%", fig.width = 4}
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  geom_histogram(
+    mapping = aes(
+      x = mean_work_travel, y = ..density.., fill = state, color = state
+    ),
+    binwidth = 2,
+    center = 0,
+    position = "identity",
+    alpha = 0.5
+  ) +
+  labs(y = "PMF") +
+  coord_cartesian(xlim = combine(2.5, 47.5))
+```
+
+---
+
+# Obtaining PMF values
+
+--
+
+1. Compute them manually
+
+--
+
+2. Extract them from your .mono[ggplot2] visualization
+
+---
+
+count: false
+
+# Obtaining PMF values
+
+1. .lightgray[Compute them manually]
+
+2. Extract them from your .mono[ggplot2] visualization
+
+--
+
+Assign the figure to a variable
+
+.code80[
+```{r county-extract-pmf-1}
+va_md_pmf_figure <- county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  geom_histogram(
+    mapping = aes(x = mean_work_travel, y = ..density.., fill = state),
+    binwidth = 2,
+    center = 0
+  )
+```
+]
+
+Use .mono[ggplot_build()] with .mono[purrr::pluck()] and .mono[as_data_frame()] as follows:
+
+.code80[
+```{r county-extract-pmf-2}
+va_md_pmf_data <- va_md_pmf_figure %>%
+  ggplot_build() %>%
+  purrr::pluck("data", 1) %>%
+  as_data_frame()
+```
+]
+
+---
+
+# Obtaining PMF values
+
+.code80[
+```{r county-extract-pmf-3}
+va_md_pmf_data %>%
+  glimpse()
+```
+]
+
+---
+
+# Obtaining PMF values
+
+To get the Maryland PMF data:
+
+.code80[
+```{r county-md-pmf-data}
+md_pmf_data <- va_md_pmf_data %>%
+  filter(group == 1) %>%
+  select(x, density)
+```
+]
+
+<div style="margin-bottom: 3%"></div>
+
+```{r county-md-pmf-table, echo = FALSE}
+md_pmf_data %>%
+  head(7) %>%
+  rbind(rep("...", 2)) %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+count: false
+
+# Obtaining PMF values
+
+To get the Maryland PMF data:
+
+.code80[
+```{r county-md-pmf-data}
+```
+]
+
+<div style="margin-bottom: 3%"></div>
+
+```{r county-freq-to-pmf-2, echo = FALSE, fig.width = 4}
+```
+
+---
+
+count: false
+
+# Obtaining PMF values
+
+To get the Maryland PMF data:
+
+.code80[
+```{r county-md-pmf-data}
+```
+]
+
+<div style="margin-bottom: 3%"></div>
+
+```{r county-md-pmf-table, echo = FALSE}
+```
+
+---
+
+# Obtaining PMF values
+
+To get the Virginia PMF data:
+
+.code80[
+```{r county-va-pmf-data}
+va_pmf_data <- va_md_pmf_data %>%
+  filter(group == 2) %>%
+  select(x, density)
+```
+]
+
+<div style="margin-bottom: 3%"></div>
+
+```{r county-va-pmf-table, echo = FALSE}
+va_pmf_data %>%
+  head(7) %>%
+  rbind(rep("...", 2)) %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+# Density plots as an alternative
+
+As an alternative to the probability mass function, we can also use the density plots provided in ggplot2. Unlike the histograms, they are automatically normalized.
+
+.code80[
+```r
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  geom_density(
+    mapping = aes(x = mean_work_travel, fill = state),
+    alpha = 0.5
+  )
+```
+]
+
+.pull-left[
+```{r county-freq-to-pmf-2, echo = FALSE, out.width = "100%", fig.width = 4}
+```
+]
+
+.pull-right[
+```{r county-density-plot, echo = FALSE, out.width = "100%", fig.width = 4}
+county %>%
+  filter(state == "Virginia" | state == "Maryland") %>%
+  ggplot() +
+  geom_density(
+    mapping = aes(
+      x = mean_work_travel,
+      fill = state
+    ),
+    alpha = 0.5
+  ) +
+  labs(y = "density") +
+  coord_cartesian(
+    xlim = combine(2.5, 47.5)
+  )
+```
+]
+
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]
