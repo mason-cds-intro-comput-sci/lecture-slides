@@ -6,7 +6,8 @@ DIRS	=	orientation															\
 			data_visualization													\
 			data_transformation													\
 			data_reshaping														\
-			data_distributions
+			data_distributions													\
+			inference_and_simulation
 
 .PHONY : all clean $(DIRS)
 

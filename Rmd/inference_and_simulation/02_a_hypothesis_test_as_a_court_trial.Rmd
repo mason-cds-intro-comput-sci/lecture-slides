@@ -1,0 +1,112 @@
+---
+title: CDS 101 Online <br> Inference and simulation <br> A hypothesis test as a court trial
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Inference and simulation]
+.title-hline[
+## A hypothesis test as a court trial
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+```
+
+---
+
+# Two competing claims
+
+<div style="margin-bottom: 20%;"></div>
+
+1.  "There is nothing going on."
+
+    Promotion and gender are **independent**, no gender discrimination, observed difference in proportions is simply due to chance. → **Null hypothesis**
+    
+--
+    
+2.  "There is something going on."
+
+    Promotion and gender are **dependent**, there is gender discrimination, observed difference in proportions is not due to chance. → **Alternative hypothesis**
+
+---
+
+# A trial as a hypothesis test
+
+.footnote[
+Image from http://www.nwherald.com/_internal/cimg!0/oo1il4sf8zzaqbboq25oevvbg99wpot
+]
+
+.pull-left[
+* As a process, hypothesis testing is analogous to a court trial
+
+* *H<sub>0</sub>*: Defendant is innocent
+
+  *H<sub>A</sub>*: Defendant is guilty
+
+* We then present the evidence – collect data.
+]
+
+.pull-right[
+```{r trial-image, echo = FALSE, out.width = "80%"}
+knitr::include_graphics("../../img/trial.png")
+```
+]
+
+* Then we judge the evidence – "Could these data plausibly have happened by chance if the null hypothesis were true?"
+
+* If they were very unlikely to have occurred, then the evidence raises more than a reasonable doubt in our minds about the null hypothesis
+
+* Ultimately we must make a decision. How unlikely is unlikely?
+
+---
+
+# A trial as a hypothesis test
+
+* If the evidence is not strong enough to reject the assumption of innocence, the jury returns with a verdict of "not guilty"
+
+* The jury does not say that the defendant is innocent, just that there is not enough evidence to convict
+
+* The defendant may, in fact, be innocent, but the jury has no way of being sure
+
+* Said statistically, we fail to reject the null hypothesis
+
+* We never declare the null hypothesis to be true, because we simply do not know whether it's true or not, therefore we never "accept the null hypothesis"
+
+* In a trial, the burden of proof is on the prosecution.
+
+* In a hypothesis test, the burden of proof is on the unusual claim.
+
+* The null hypothesis is the ordinary state of affairs, so it's the alternative hypothesis that we consider unusual and for which we must gather evidence.
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the Chapter 3 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
+]

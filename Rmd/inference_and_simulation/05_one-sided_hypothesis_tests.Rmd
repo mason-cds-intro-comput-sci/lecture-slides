@@ -1,0 +1,246 @@
+---
+title: CDS 101 Online <br> Inference and simulation <br> One-sided hypothesis tests using infer
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Inference and simulation]
+.title-hline[
+## One-sided hypothesis tests using .mono[infer]
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+# Load required packages
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(infer)
+# Set seed
+set.seed(211387643)
+# Synthetic dataset
+college_apps <- read_rds("../../data/college_applications.rds")
+# Code used to generate synthetic dataset:
+# 
+# college_apps <- data_frame(
+#   number_colleges = rbinom(
+#     n = 206,
+#     prob = (9.7 / 206),
+#     size = 206
+#   ) 
+# )
+```
+
+---
+
+# Download and load the dataset
+
+<div style="margin-bottom: 15%"></div>
+
+You can follow along by downloading and loading the dataset by placing the following *setup* code block at the top of a R Markdown file.
+
+<pre><code>
+&#96;&#96;&#96;{r setup, include = FALSE}
+# Load required packages
+library(tidyverse)
+library(infer)
+# Load dataset
+college_apps <- read_rds(
+  url("http://data.cds101.com/college_applications.rds")
+)
+&#96;&#96;&#96;
+</code></pre>
+
+---
+
+# Number of college applications
+
+.footnote[
+http://www.collegeboard.com/student/apply/the-application/151680.html
+]
+
+<div style="margin-bottom: 20%;"></div>
+
+.qa[
+A survey asked how many colleges students applied to, and 206 students responded to this question.
+This sample yielded an average of 9.7 college applications with a standard deviation of 7.
+College Board website states that counselors recommend students apply to roughly 8 colleges.
+Do these data provide convincing evidence that the average number of colleges all GMU students apply to is *higher* than recommended?
+]
+
+---
+
+# Setting the hypotheses
+
+* The **parameter of interest** is the average number of schools applied to by *all* GMU students.
+
+* There may be two explanations why our sample mean is higher than the recommended 8 schools.
+
+  * The true population mean is different
+  * The true population mean is 8, and the difference between the true population mean and the sample mean is simply due to natural sampling variability
+
+* We start with the assumption the average number of colleges GMU students apply to is 8 (as recommended)
+
+  .center[*H<sub>0</sub>* : *μ* = 8]
+
+* We test the claim that the average number of colleges GMU students apply to is greater than 8
+
+  .center[*H<sub>A</sub>* : *μ* > 8]
+
+---
+
+# Statistical significance
+
+<div style="margin-bottom: 10%;"></div>
+
+Say that we conducted this study by polling an independent and representative sample of GMU students about how many colleges they applied to, and obtained a sample mean of 9.7.
+
+The national average is 8.
+
+.qa.center[
+Is this result statistically significant?
+]
+
+--
+
+In order to evaluate if the observed sample mean is unusual for the hypothesized sampling distribution, we do the following:
+
+* Choose a value for the significance level *⍺* (a common choice is 5%)
+
+* Determine the percentile rank of the observed sample mean relative to the null distribution
+
+---
+
+# p-values
+
+<div style="margin-bottom: 20%;"></div>
+
+* We then use the percentile to calculate the **p-value**, the probability of observing data at least as favorable to the alternative hypothesis as our current data set, if the null hypothesis were true.
+
+* If the p-value is **lower** than the significance level *⍺*, we say that it would be very unlikely to observe the data if the null hypothesis were true, and hence **reject _H<sub>0</sub>_**.
+
+* If the p-value is **higher** than *⍺*, we say that it is likely to observe the data even if the null hypothesis were true, and hence **do not reject _H<sub>0</sub>_**.
+
+---
+
+# .font80[Number of college applications p-value]
+
+.pull-left[
+**p-value**
+
+probability of observing data at least as favorable to *H<sub>A</sub>* as our current data set (a sample mean greater than 9.7), if in fact *H<sub>0</sub>* were true (the true population mean was 8).
+]
+
+.pull-right[
+```{r app-pvalues-result, echo = FALSE, fig.width=6, out.width = "100%"}
+ggplot(data = college_apps) +
+  geom_histogram(
+    mapping = aes(x = number_colleges),
+    binwidth = 1,
+    center = 0
+  ) +
+  labs(
+    title = "Student poll: number of college applications they submitted",
+    subtitle = "Sample size: 206"
+  )
+```
+]
+
+.code80[
+```{r college-apps-null-distribution}
+college_apps_null <- college_apps %>%
+  specify(formula = number_colleges ~ NULL) %>%
+  hypothesize(null = "point", mu = 8) %>%
+  generate(reps = 10000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+college_apps_p_value <- college_apps_null %>%
+  get_p_value(obs_stat = 9.7, direction = "right")
+```
+]
+
+--
+
+```{r college-apps-pvalue-table, echo = FALSE, results = "asis"}
+college_apps_p_value %>%
+  pull(p_value) %>%
+  glue::glue(".answer[", "p-value = ", ., "]")
+```
+
+---
+
+count: false
+
+# Number of applications p-value
+
+.code70[
+```{r college-apps-null-distribution-pvalue}
+college_apps_null %>%
+  visualize(bins = 30) +
+  shade_p_value(obs_stat = 9.7, direction = "right") +
+  geom_vline(xintercept = 8, size = 1) +
+  labs(
+    x = "mean number of applications",
+    title = "College applications null distribution"
+  )
+```
+]
+
+---
+
+# .font70[Number of college applications - Making a decision]
+
+```{r extract-vars-for-slides, echo = FALSE}
+college_apps_p_value_raw <- college_apps_p_value %>%
+  pull(p_value)
+college_apps_p_value_percentage <- round(
+  x = college_apps_p_value_raw * 100,
+  digits = 2
+)
+```
+
+<div style="margin-bottom: 7%;"></div>
+
+* p-value = `r college_apps_p_value_raw`
+
+* If the true average of the number of colleges GMU students applied to is 8, there is a `r college_apps_p_value_percentage`% chance of observing a random sample of 206 GMU students who on average apply to 9.7 or more schools.
+
+* This is a pretty low probability for us to think that a sample mean of 9.7 or more schools is likely to happen simply by chance.
+
+* Since p-value is **low** (lower than 5%) we **reject _H<sub>0</sub>_**.
+
+* The data provide convincing evidence that GMU students apply to more than 8 schools on average.
+
+* The difference between the null value of 8 schools and observed sample mean of 9.7 schools is **not due to chance** or sampling variability.
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the Chapter 3 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
+]

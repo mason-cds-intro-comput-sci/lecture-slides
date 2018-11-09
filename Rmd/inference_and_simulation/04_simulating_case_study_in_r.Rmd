@@ -1,0 +1,287 @@
+---
+title: CDS 101 Online <br> Inference and simulation <br> Simulating the gender discrimination experiment in R
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Inference and simulation]
+.title-hline[
+## Simulating the gender discrimination experiment in R
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+# Load required packages
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(infer)
+# Set seed
+set.seed(211387642)
+```
+
+---
+
+# Download and load the dataset
+
+You can follow along by downloading and loading the dataset by placing the following *setup* code block at the top of a R Markdown file.
+
+<pre><code>
+&#96;&#96;&#96;{r setup, include = FALSE}
+# Load required packages
+library(tidyverse)
+library(infer)
+# Load dataset
+applicants_data <- read_rds(
+  url("http://data.cds101.com/gender_discrimination.rds")
+)
+# Observed result
+experiment_result <- (21/24) - (14/24)
+&#96;&#96;&#96;
+</code></pre>
+
+```{r infer-example-1, echo = FALSE}
+applicants_data <- read_rds("../../data/gender_discrimination.rds")
+experiment_result <- (21/24) - (14/24)
+```
+
+---
+
+# .font90[Recap of gender discrimination dataset]
+
+```{r exp-result-round, echo = FALSE}
+experiment_result_round <- round(experiment_result, 3)
+experiment_result_round_percent <- 100 * experiment_result_round
+```
+
+<div style="margin-bottom: 13%;"></div>
+
+* Experiment involving 48 male bank supervisors that were each given the same personnel file and asked to judge whether the person should be promoted to a branch manager job that was described as "routine"
+
+* The files were identical except that half of the supervisors had files showing the person was male while the other half had files showing the person was female
+
+* It was randomly determined which supervisors got "male" applications and which got "female" applications
+
+* **Result: `r experiment_result_round_percent`% more men than women were recommended for promotion**
+
+.qa.center[
+Is this result statistically significant?
+]
+
+---
+
+# Null and alternative hypothesis
+
+<div style="margin-bottom: 8%;"></div>
+
+**Null hypothesis**
+
+Promotion and gender are **independent**, no gender discrimination, observed difference in proportions is simply due to chance.
+    
+$$\text{H}_0\text{: } \frac{\text{Promoted Men}}{\text{Total Men}}-\frac{\text{Promoted Women}}{\text{Total Women}} = 0$$
+    
+**Alternative hypothesis**
+
+Promotion and gender are **dependent**, men are more likely to be promoted than women due to gender discrimination, observed difference in proportions is not due to chance.
+
+$$\text{H}_{\text{A}}\text{: } \frac{\text{Promoted Men}}{\text{Total Men}}-\frac{\text{Promoted Women}}{\text{Total Women}} > 0$$
+
+---
+
+# Building the null distribution
+
+<div style="margin-bottom: 10%;"></div>
+
+We need to generate a null distribution in order to perform a hypothesis test. In a previous video, we saw how to do this using a deck of playing cards. Now we will do the same thing using R using the .mono[infer] package:
+
+<div style="margin-bottom: 7%;"></div>
+
+```{r gender-discimination-null}
+simulation_results <- applicants_data %>%
+  specify(outcome ~ sex, success = "Promoted") %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 10000, type = "permute") %>%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+---
+
+layout: true
+
+# Building the null distribution
+
+---
+
+```r
+simulation_results <- applicants_data %>%
+* specify(outcome ~ sex, success = "Promoted") %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 10000, type = "permute") %>%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+* In .mono[specify(outcome ~ sex, success = "Promoted")], the first part .mono[outcome ~ sex] is a formula where the lefthand variable .mono[outcome] is the response and the righthand variable .mono[sex] is explanatory.
+
+---
+
+count: false
+
+```r
+simulation_results <- applicants_data %>%
+  specify(outcome ~ sex, success = "Promoted") %>%
+* hypothesize(null = "independence") %>%
+  generate(reps = 10000, type = "permute") %>%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+* In .mono[specify(outcome ~ sex, success = "Promoted")], the first part .mono[outcome ~ sex] is a formula where the lefthand variable .mono[outcome] is the response and the righthand variable .mono[sex] is explanatory.
+
+* In .mono[hypothesize(null = "independence")], we specify that we will simulate what will happen if .mono[outcome] and .mono[sex] were independent.
+
+---
+
+count: false
+
+```r
+simulation_results <- applicants_data %>%
+  specify(outcome ~ sex, success = "Promoted") %>%
+  hypothesize(null = "independence") %>%
+* generate(reps = 10000, type = "permute") %>%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+* In .mono[specify(outcome ~ sex, success = "Promoted")], the first part .mono[outcome ~ sex] is a formula where the lefthand variable .mono[outcome] is the response and the righthand variable .mono[sex] is explanatory.
+
+* In .mono[hypothesize(null = "independence")], we specify that we will simulate what will happen if .mono[outcome] and .mono[sex] were independent.
+
+* In .mono[generate(reps = 10000, type = "permute")], we specify that we will run 10,000 simulations by permuting the .mono[outcome] and .mono[sex] columns
+
+* To permute, we randomly shuffle the data in the .mono[outcome] column, and then randomly shuffle the data in the .mono[sex] column 
+
+---
+
+```r
+simulation_results <- applicants_data %>%
+  specify(outcome ~ sex, success = "Promoted") %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 10000, type = "permute") %>%
+* calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+*   Using .mono[calculate(stat = "diff in props", order = combine("Male", "Female"))] means, after each simulation, compute:
+
+    $$\frac{\text{Promoted Men}}{\text{Total Men}}-\frac{\text{Promoted Women}}{\text{Total Women}}$$
+    
+    Note that this expression is exactly how <span class="mono">experiment\_result</span> was calculated.
+
+---
+
+layout: false
+
+# Visualizing the null distribution
+
+.code70[
+```{r infer-example-3, out.width = "70%"}
+simulation_results %>%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = experiment_result, direction = "right") +
+  labs(
+    title = "Gender discrimination null distribution",
+    x = "difference in fraction of male and female promotions"
+  )
+```
+]
+
+---
+
+# .font90[Probability of randomly getting result]
+
+One way we can quantify the probability that the experiment's result is due to statistical variance is to compute how much of the null distribution represents outcomes that are the same or more extreme than the actual experiment:
+
+```r
+simulation_results %>%
+  filter(stat >= experiment_result) %>%
+  summarize(random_result_probability = n() / 10000)
+```
+
+```{r infer-example-4, echo = FALSE}
+simulation_results %>%
+  filter(stat >= experiment_result) %>%
+  summarize(random_result_probability = n() / 10000) %>%
+  knitr::kable(format = "html")
+```
+
+This value is called the *p*-value, and can be obtained directly using .mono[infer]:
+
+```r
+simulation_results %>%
+  get_p_value(obs_stat = experiment_result, direction = "right")
+```
+
+```{r infer-example-4b, echo = FALSE}
+simulation_results %>%
+  get_p_value(obs_stat = experiment_result, direction = "right") %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+# Conclusions from our simulation
+
+<div style="margin-bottom: 10%;"></div>
+
+.qa[
+Do the results of the simulation provide convincing evidence of gender discrimination against women, i.e. dependence between gender and promotion decisions?
+]
+
+1. No, the data do not provide convincing evidence for the alternative hypothesis, therefore we can't reject the null hypothesis of independence between gender and promotion decisions. The observed difference between the two proportions was due to chance.
+
+2. Yes, the data provide convincing evidence for us to reject the null hypothesis in favor of the alternative hypothesis of gender discrimination against women in promotion decisions. The observed difference between the two proportions was due to a real effect of gender.
+
+---
+
+count: false
+
+# Conclusions from our simulation
+
+<div style="margin-bottom: 10%;"></div>
+
+.qa[
+Do the results of the simulation provide convincing evidence of gender discrimination against women, i.e. dependence between gender and promotion decisions?
+]
+
+1. No, the data do not provide convincing evidence for the alternative hypothesis, therefore we can't reject the null hypothesis of independence between gender and promotion decisions. The observed difference between the two proportions was due to chance.
+
+2. .red[Yes, the data provide convincing evidence for us to reject the null hypothesis in favor of the alternative hypothesis of gender discrimination against women in promotion decisions. The observed difference between the two proportions was due to a real effect of gender.]
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the Chapter 3 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
+]

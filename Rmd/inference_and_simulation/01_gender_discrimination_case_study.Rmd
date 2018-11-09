@@ -1,0 +1,136 @@
+---
+title: CDS 101 Online <br> Inference and simulation <br> Gender discrimination case study
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Inference and simulation]
+.title-hline[
+## Gender discrimation case study
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+```
+
+---
+
+# Study description and data
+
+<div style="margin-bottom: 7%;"></div>
+
+.footnote[B.Rosen and T. Jerdee (1974), "Influence of sex role stereotypes on personnel decisions", J.Applied Psychology, 59:9-14.]
+
+*   In 1972, as a part of a study on gender discrimination, 48 male bank supervisors were each given the same personnel file and asked to judge whether the person should be promoted to a branch manager job that was described as "routine". 
+
+*   The files were identical except that half of the supervisors had files showing the person was male while the other half had files showing the person was female.
+
+*   It was randomly determined which supervisors got "male" applications and which got "female" applications.  
+
+*   Of the 48 files reviewed, 35 were promoted. 
+
+*   The study is testing whether females are unfairly discriminated against.  
+
+--
+
+.answer.center[
+This is an example of an **experiment**
+]
+
+---
+
+# Data
+
+<div style="margin-bottom: 7%;"></div>
+
+.qa[
+At a first glance, does there appear to be a relatonship between promotion and gender?
+]
+
+<div style="margin-bottom: 7%;"></div>
+
+|        | Promoted | Not Promoted | Total |
+| ---    | ---      | ---          | ---   |
+| Male   | 21       | 3            | 24    |
+| Female | 14       | 10           | 24    |
+| Total  | 35       | 13           | 48    |
+
+--
+
+<div style="margin-bottom: 7%;"></div>
+
+**% of males promoted:** 21 / 24 = 0.875
+
+**% of females promoted:** 14 / 24 = 0.583
+  
+---
+
+# Practice
+
+<div style="margin-bottom: 7%;"></div>
+
+.qa[
+We saw a difference of almost 30% (29.2% to be exact) between the proportion of male and female files that are promoted.
+Based on this information, which of the below is true?
+]
+
+1.  If we were to repeat the experiment we will definitely see that more female files get promoted. This was a fluke.
+
+2.  Promotion is dependent on gender, males are more likely to be promoted, and hence there is gender discrimination against women in promotion decisions. <span style="opacity: 0;">Maybe</span>
+
+3.  The difference in the proportions of promoted male and female files is due to chance, this is not evidence of gender discrimination against women in promotion decisions. <span style="opacity: 0;">Maybe</span>
+
+4.  Women are less qualified than men, and this is why fewer females get promoted.
+
+---
+
+count: false
+
+# Practice
+
+<div style="margin-bottom: 7%;"></div>
+
+.qa[
+We saw a difference of almost 30% (29.2% to be exact) between the proportion of male and female files that are promoted.
+Based on this information, which of the below is true?
+]
+
+1.  If we were to repeat the experiment we will definitely see that more female files get promoted. This was a fluke.
+
+2.  Promotion is dependent on gender, males are more likely to be promoted, and hence there is gender discrimination against women in promotion decisions. .red[Maybe]
+
+3.  The difference in the proportions of promoted male and female files is due to chance, this is not evidence of gender discrimination against women in promotion decisions. .red[Maybe]
+
+4.  Women are less qualified than men, and this is why fewer females get promoted.
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the Chapter 3 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
+]
