@@ -1,0 +1,260 @@
+---
+title: CDS 101 Online <br> Inference and simulation <br> Two-sided hypothesis tests using infer
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Inference and simulation]
+.title-hline[
+## Two-sided hypothesis tests using .mono[infer]
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+# Load required packages
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(infer)
+# Set seed
+set.seed(211387645)
+# Synthetic dataset
+college_apps <- read_rds("../../data/college_applications.rds")
+college_apps_null <- college_apps %>%
+  specify(formula = number_colleges ~ NULL) %>%
+  hypothesize(null = "point", mu = 8) %>%
+  generate(reps = 10000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+# Gender discrimination dataset
+applicants_data <- read_rds("../../data/gender_discrimination.rds")
+experiment_result <- (21/24) - (14/24)
+experiment_result_round <- round(experiment_result, 3)
+simulation_results <- applicants_data %>%
+  specify(outcome ~ sex, success = "Promoted") %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 10000, type = "permute") %>%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+---
+
+# Download and load the dataset
+
+<div style="margin-bottom: 10%"></div>
+
+You can follow along by downloading and loading the dataset by placing the following *setup* code block at the top of a R Markdown file.
+
+<div style="margin-bottom: -3%"></div>
+
+<pre><code>
+&#96;&#96;&#96;{r setup, include = FALSE}
+# Load required packages
+library(tidyverse)
+library(infer)
+# Load datasets
+college_apps <- read_rds(
+  url("http://data.cds101.com/college_applications.rds")
+)
+applicants_data <- read_rds(
+  url("http://data.cds101.com/gender_discrimination.rds")
+)
+&#96;&#96;&#96;
+</code></pre>
+
+---
+
+# Simulations recap
+
+<div style="margin-bottom: 7%"></div>
+
+In the previous lecture, we ran the following simulations:
+
+```r
+# College applications null distribution
+college_apps_null <- college_apps %>%
+  specify(formula = number_colleges ~ NULL) %>%
+  hypothesize(null = "point", mu = 8) %>%
+  generate(reps = 10000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+# Gender discrimation null distribution
+simulation_results <- applicants_data %>%
+  specify(outcome ~ sex, success = "Promoted") %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 10000, type = "permute") %>%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+---
+
+layout: true
+
+# .font80[Two-sided hypothesis testing with p-values]
+
+.font90[
+If the research question was "Do the data provide convincing evidence that the average amount of schools that GMU students apply to is **different** than the national average?", the alternative hypothesis would be different.
+
+  .center[*H<sub>0</sub>* : *μ* = 8]
+  .center[*H<sub>A</sub>* : *μ* ≠ 8]
+
+The above is an example of a two-sided hypothesis test. In principle, the *p*-value of a two-sided test can be different from a one-sided test.
+
+Computing the *p*-value of a two-sided hypothesis test is simple to do with .mono[infer], just change the .mono[direction] keyword in .mono[get_p_value()] from .mono["right"] to .mono["both"].
+]
+
+---
+
+---
+
+count: false
+
+```{r college-apps-pvalue-two-sided-calculate}
+college_apps_p_value_two_sided <- college_apps_null %>%
+  get_p_value(obs_stat = 9.7, direction = "both")
+```
+  
+---
+
+count: false
+
+<div style="margin-bottom: -2%;"></div>
+
+.pull-left[
+```{r app-pvalues-two-sided-results, echo = FALSE, out.width = "100%"}
+college_apps_null %>%
+  visualize(bins = 30) +
+  shade_p_value(obs_stat = 9.7, direction = "both") +
+  geom_vline(xintercept = 8, size = 1) +
+  labs(
+    x = "mean number of applications",
+    title = "College applications null distribution (two-sided test)"
+  )
+```
+]
+
+.pull-right[
+<div style="margin-bottom: 20%;"></div>
+
+```{r college-apps-two-sided-tasks, echo = FALSE, results = "asis"}
+college_apps_p_value_two_sided %>%
+  pull(p_value) %>%
+  glue::glue(".answer[", "p-value = ", ., "]")
+```
+]
+
+---
+
+count: false
+
+<div style="margin-bottom: -2%;"></div>
+
+.pull-left[
+```{r app-pvalues-two-sided-results, echo = FALSE, out.width = "100%"}
+```
+]
+
+.pull-right[
+<div style="margin-bottom: 20%;"></div>
+
+```{r college-apps-two-sided-tasks, echo = FALSE, results = "asis"}
+```
+
+.font90[
+In this example, the *p*-value does not change.
+]
+]
+
+---
+
+layout: false
+
+# .font70[Gender discrimination dataset: two-sided hypothesis test]
+
+<div style="margin-bottom: 12%;"></div>
+
+We can use the same null distribution that we generated earlier to compute the two-sided *p*-value for the gender discrimination experiment.
+
+--
+
+Conducting a two-sided hypothesis test means we are counting when the difference in the men and women hiring fractions is **larger** than `r experiment_result_round` and also when it is in the opposite extreme, which would be when the bias is towards hiring more women than men.
+
+--
+
+```r
+sim_p_value_two_sided <- simulation_results %>%
+  get_p_value(obs_stat = experiment_result, direction = "both")
+```
+
+<div style="margin-bottom: 2%;"></div>
+
+```{r two-sided-p-value, echo = FALSE}
+sim_p_value_two_sided <- simulation_results %>%
+  get_p_value(obs_stat = experiment_result, direction = "both")
+
+sim_p_value_two_sided %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+# .font90[Visualization of null distribution (two-sided)]
+
+.valign-slide[
+```r
+simulation_results %>%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = experiment_result, direction = "both") +
+  labs(
+    x = "difference in fraction of male and female promotions",
+    title = "Gender discrimination null distribution"
+  )
+```
+]
+
+---
+
+# .font90[Visualization of null distribution (two-sided)]
+
+<div style="margin-bottom: 7%;"></div>
+
+```{r gender-discrimination-pvalues-two-sided, echo = FALSE, out.width = "100%"}
+simulation_results %>%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = experiment_result, direction = "both") +
+  labs(
+    x = "difference in fraction of male and female promotions",
+    title = "Gender discrimination null distribution"
+  )
+```
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the Chapter 3 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
+]
