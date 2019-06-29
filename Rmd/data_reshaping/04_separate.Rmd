@@ -50,11 +50,11 @@ name_of_dataset %>%
   )
 ```
 
-* The first input is the name of the column that needs to be separated into multiple columns
+* The .mono[col =] input is the name of the column that needs to be separated into multiple columns
 
-* The .mono[into =] input contains a vector, built using the .mono[combine] function, that names the columns you end up with after everything is separated.
+* The .mono[into =] input contains a vector, built using the .mono[combine] function, that names the columns you end up with after everything is separated
 
-* The .mono[sep =] input is used to specify the symbols that separate the data within the column.
+* The .mono[sep =] input is used to specify the symbols that separate the data within the column
 
 ---
 
@@ -104,7 +104,7 @@ knitr::include_graphics("../../img/separate_schematic.png")
 ```
 ]
 
-.mono[separate] takes one column and turns it into two or more columns.
+.mono[separate] takes one column and turns it into two or more columns
 
 ---
 
