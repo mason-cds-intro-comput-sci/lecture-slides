@@ -44,7 +44,7 @@ library(tidyr)
 ```r
 name_of_dataset %>%
   separate(
-    column_two,
+    col = column_two,
     into = combine("category", "values"),
     sep = "/"  # sep must be changed for data at hand!
   )
