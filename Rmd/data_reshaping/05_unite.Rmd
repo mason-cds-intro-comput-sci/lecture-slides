@@ -46,7 +46,7 @@ name_of_dataset %>%
   unite(
     column_united,
     column_one,
-    column_two
+    column_two,
     sep = "_"  # The symbol placed between united columns
   )
 ```
