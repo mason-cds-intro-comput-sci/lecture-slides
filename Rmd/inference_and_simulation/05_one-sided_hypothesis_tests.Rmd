@@ -185,8 +185,6 @@ college_apps_p_value %>%
 
 ---
 
-count: false
-
 # Number of applications p-value
 
 .code70[

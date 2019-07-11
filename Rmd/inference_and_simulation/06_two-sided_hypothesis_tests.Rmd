@@ -131,8 +131,6 @@ college_apps_p_value_two_sided <- college_apps_null %>%
   
 ---
 
-count: false
-
 <div style="margin-bottom: -2%;"></div>
 
 .pull-left[

@@ -84,8 +84,6 @@ count: false
 
 ---
 
-count: false
-
 1. Copy over code used to generate the null distribution.
 
 2. Change the assigned variable name.
@@ -104,8 +102,6 @@ simulation_bootstrap <- applicants_data %>%
 
 ---
 
-count: false
-
 1. Copy over code used to generate the null distribution.
 
 2. Change the assigned variable name.
@@ -122,8 +118,6 @@ simulation_bootstrap <- applicants_data %>%
 ```
 
 ---
-
-count: false
 
 1. Copy over code used to generate the null distribution.
 
