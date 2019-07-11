@@ -43,7 +43,9 @@ college_apps_null <- college_apps %>%
   calculate(stat = "mean")
 # Gender discrimination dataset
 applicants_data <- read_rds("../../data/gender_discrimination.rds")
-experiment_result <- (21/24) - (14/24)
+experiment_result <- applicants_data %>%
+  specify(outcome ~ sex, success = "Promoted") %>%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
 experiment_result_round <- round(experiment_result, 3)
 simulation_results <- applicants_data %>%
   specify(outcome ~ sex, success = "Promoted") %>%
@@ -83,7 +85,7 @@ applicants_data <- read_rds(
 
 <div style="margin-bottom: 7%"></div>
 
-In the previous lecture, we ran the following simulations:
+In the previous lectures, we ran the following simulations:
 
 ```r
 # College applications null distribution

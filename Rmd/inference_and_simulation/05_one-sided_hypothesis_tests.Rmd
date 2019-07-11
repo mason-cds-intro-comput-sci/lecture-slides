@@ -194,9 +194,8 @@ college_apps_p_value %>%
 .code70[
 ```{r college-apps-null-distribution-pvalue}
 college_apps_null %>%
-  visualize(bins = 30) +
+  visualize() +
   shade_p_value(obs_stat = college_apps_obs_stat, direction = "right") +
-  geom_vline(xintercept = 8, size = 1) +
   labs(
     x = "mean number of applications",
     title = "College applications null distribution"
