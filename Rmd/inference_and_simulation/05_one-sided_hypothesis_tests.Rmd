@@ -162,7 +162,7 @@ ggplot(data = college_apps) +
 ```
 ]
 
-.code80[
+.code60[
 ```{r college-apps-null-distribution}
 college_apps_null <- college_apps %>%
   specify(formula = number_colleges ~ NULL) %>%
@@ -170,8 +170,12 @@ college_apps_null <- college_apps %>%
   generate(reps = 10000, type = "bootstrap") %>%
   calculate(stat = "mean")
 
+college_apps_obs_stat <- college_apps %>%
+  specify(formula = number_colleges ~ NULL) %>%
+  calculate(stat = "mean")
+
 college_apps_p_value <- college_apps_null %>%
-  get_p_value(obs_stat = 9.7, direction = "right")
+  get_p_value(obs_stat = college_apps_obs_stat, direction = "right")
 ```
 ]
 
@@ -191,7 +195,7 @@ college_apps_p_value %>%
 ```{r college-apps-null-distribution-pvalue}
 college_apps_null %>%
   visualize(bins = 30) +
-  shade_p_value(obs_stat = 9.7, direction = "right") +
+  shade_p_value(obs_stat = college_apps_obs_stat, direction = "right") +
   geom_vline(xintercept = 8, size = 1) +
   labs(
     x = "mean number of applications",
