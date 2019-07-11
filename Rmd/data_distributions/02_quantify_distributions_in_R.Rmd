@@ -96,7 +96,7 @@ The following R functions will be useful for computing basic statistical measure
 
 * .mono[IQR()]: Computes the interquartile range
 
-* .mono[percent_rank()]: Computes percentiles
+* .mono[ntile()]: Sorts values into approximately equal-size buckets
 
 ---
 
@@ -104,7 +104,7 @@ The following R functions will be useful for computing basic statistical measure
 
 <div style="margin-bottom: 7%"></div>
 
-Every function except .mono[percent_rank()] will always return a single quantity
+Every function except .mono[ntile()] will always return a single quantity
 
 The .mono[summarize()] function is appropriate here:
 
@@ -136,21 +136,17 @@ county %>%
 
 # Using the statistical functions
 
-.mono[percent_rank()] operates on the full column of values, so it needs to be paired with .mono[mutate()]
+<div style="margin-bottom: 10%"></div>
 
-Once we have the percentiles, we can find the cutoff value for each percentile
+.mono[ntile()] operates on the full column of values, so it needs to be paired with .mono[mutate()]
 
-.code70[
+We can use .mono[ntile()] to group the values into quartiles, which we can use to find the cutoff value for each quartile
+
+.code80[
 ```r
 county %>%
   mutate(
-    percentile = percent_rank(mean_work_travel),
-    quartile = case_when(                      # case_when() similar to if_else()
-      percentile < 0.25 ~ "Q1",                # label between 0 and 0.25 as Q1,
-      between(percentile, 0.25, 0.50) ~ "Q2",  # between 0.25 and 0.50 as Q2,
-      between(percentile, 0.50, 0.75) ~ "Q3",  # between 0.50 and 0.75 as Q3,
-      percentile >= 0.75 ~ "Q4"                # and 0.75 to 1.00 as Q4
-    )
+    quartile = ntile(mean_work_travel, 4)
   ) %>%
   group_by(quartile) %>%
   summarize(cutoff = max(mean_work_travel))    # cutoff is maximum in quartile
@@ -162,13 +158,7 @@ county %>%
 ```{r county-quantiles, echo = FALSE}
 county %>%
   mutate(
-    percentile = percent_rank(mean_work_travel),
-    quartile = case_when(
-      percentile < 0.25 ~ "Q1",
-      between(percentile, 0.25, 0.50) ~ "Q2",
-      between(percentile, 0.50, 0.75) ~ "Q3",
-      percentile >= 0.75 ~ "Q4"
-    )
+    quartile = ntile(mean_work_travel, 4)
   ) %>%
   group_by(quartile) %>%
   summarize(cutoff = max(mean_work_travel)) %>%
@@ -182,21 +172,17 @@ count: false
 
 # Using the statistical functions
 
-.mono[percent_rank()] operates on the full column of values, so it needs to be paired with .mono[mutate()]
+<div style="margin-bottom: 10%"></div>
 
-Once we have the percentiles, we can find the cutoff value for each percentile
+.mono[ntile()] operates on the full column of values, so it needs to be paired with .mono[mutate()]
 
-.code70[
+We can use .mono[ntile()] to group the values into quartiles, which we can use to find the cutoff value for each quartile
+
+.code80[
 ```r
 *county %>%
   mutate(
-*   percentile = percent_rank(mean_work_travel),
-    quartile = case_when(                      # case_when() similar to if_else()
-      percentile < 0.25 ~ "Q1",                # label between 0 and 0.25 as Q1,
-      between(percentile, 0.25, 0.50) ~ "Q2",  # between 0.25 and 0.50 as Q2,
-      between(percentile, 0.50, 0.75) ~ "Q3",  # between 0.50 and 0.75 as Q3,
-      percentile >= 0.75 ~ "Q4"                # and 0.75 to 1.00 as Q4
-    )
+*   quartile = ntile(mean_work_travel, 4)
   ) %>%
   group_by(quartile) %>%
 * summarize(cutoff = max(mean_work_travel))    # cutoff is maximum in quartile
