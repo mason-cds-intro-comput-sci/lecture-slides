@@ -78,9 +78,9 @@ http://www.collegeboard.com/student/apply/the-application/151680.html
 <div style="margin-bottom: 20%;"></div>
 
 .qa[
-A survey asked how many colleges students applied to, and 206 students responded to this question.
+A survey asked how many colleges that GMU students applied to, and 206 students responded to this question.
 This sample yielded an average of 9.7 college applications with a standard deviation of 7.
-College Board website states that counselors recommend students apply to roughly 8 colleges.
+The College Board website states that counselors recommend students apply to roughly 8 colleges.
 Do these data provide convincing evidence that the average number of colleges all GMU students apply to is *higher* than recommended?
 ]
 
