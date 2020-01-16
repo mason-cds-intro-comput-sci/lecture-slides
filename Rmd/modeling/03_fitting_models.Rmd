@@ -1,0 +1,133 @@
+---
+title: CDS 101 Online <br> Modeling <br> Fitting models
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Modeling]
+.title-hline[
+## Fitting models
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(tidyverse)
+library(modelr)
+```
+
+---
+
+# How is a linear model fitted?
+
+```{r, echo=FALSE}
+new_sim <- sim1
+new_sim$x <- new_sim$x + (0.5-runif(30))
+```
+
+```{r, echo=FALSE}
+new_sim$zero_predicts <- 15
+model2 <- lm(y ~ x, new_sim)
+new_sim$model_preds = model2$coefficients[2] * new_sim$x + model2$coefficients[1]
+```
+
+```{r, echo=FALSE, fig.height=4}
+ggplot(new_sim, aes(x, y)) +
+  geom_point()
+```
+
+---
+
+# Pick a random model
+
+```{r, echo=FALSE, fig.height=4}
+ggplot(new_sim) +
+  geom_point(aes(x, y)) +
+  geom_line(aes(x,zero_predicts))
+```
+
+* Let's look at a random linear model rather than the best one. For example, we could choose a slope of 0, and an intercept of 15.
+
+---
+
+# Residuals
+
+```{r, echo=FALSE, fig.height=4}
+ggplot(new_sim) +
+  geom_point(aes(x, y=y)) +
+  geom_segment(aes(x, y, xend=x, yend=zero_predicts), color="blue") +
+  geom_line(aes(x, zero_predicts))
+```
+
+* For any proposed model we can calculate the predicted values. The differences between the actual $y$ values and the predicted $\hat{y}$ values are called the **residuals**.
+
+* For a random model like this one, there will be some pretty large residuals.
+
+---
+
+# Residuals continued
+
+```{r, echo=FALSE, fig.height=4}
+ggplot(new_sim, aes(x, y=y)) +
+  geom_point() +
+  geom_segment(aes(xend=x, yend=model_preds), color="blue") +
+  geom_line(aes(y=model_preds))
+```
+
+* The optimal model (i.e. the one found by the `lm` function) is the one with the smallest residuals.
+
+* The size of the residuals is calculated by summing (adding up) all the squared residuals.
+
+---
+
+# Least squares
+
+* Mathematically, we can write this sum of the *n* squared residuals as: $$\sum_{i}^{n} (y_i - \hat{y}_i)^2$$
+
+* Because our optimal model is the one where the total sum is as small as possible, this method is called *least squares*.
+
+.pull-left[
+```{r, echo=FALSE, fig.height=4}
+ggplot(new_sim) +
+  geom_point(aes(x, y=y)) +
+  geom_segment(aes(x, y, xend=x, yend=zero_predicts), color="blue") +
+  geom_line(aes(x, zero_predicts))
+```
+]
+
+.pull-right[
+```{r, echo=FALSE, fig.height=4}
+ggplot(new_sim, aes(x, y=y)) +
+  geom_point() +
+  geom_segment(aes(xend=x, yend=model_preds), color="blue") +
+  geom_line(aes(y=model_preds))
+```
+]
+
+---
+  
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+]

@@ -1,0 +1,267 @@
+---
+title: CDS 101 Online <br> Reproducible toolbox <br> Reproducibility in science
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Reproducible toolbox]
+.title-hline[
+## Reproducibility in science
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(ggplot2)
+```
+
+---
+
+<h1 style="margin-bottom: 7%">Science and reproducibility</h1>
+
+<div style="margin-bottom: 5%">Recall the key point from our review of the scientific method:</div>
+
+--
+
+.answer.center[
+**Key point:** create a hypothesis and collect evidence to test it out
+]
+
+<div style="margin-bottom: 5%"></div>
+
+--
+
+* Empirical observations constitute evidence.
+
+* A hypothesis is compared with the outcomes of the natural world ("Nature"), not voted on by an individual or a committee
+
+* A hypothesis should be testable by anyone, regardless of time, place, culture, etc. Anyone can double check an experiment!
+
+--
+
+<div style="margin-bottom: 6%"></div>
+
+.qa.center[
+How often do scientists actually do this?
+]
+
+---
+
+# Survey says...
+
+.footnote[
+Source: M. Baker, "1,500 scientists lift the lid on reproducibility," Nature **533**, 452 (2016)
+]
+
+.valign-slide[
+```{r reproducibility-graphic-6, echo = FALSE}
+knitr::include_graphics("../../img/reproducibility-graphic-online6.jpg")
+```
+]
+
+---
+
+<h1 style="margin-bottom: 12%">Reproducibility in practice</h1>
+
+The scientific ideal of reproducibility is sometimes easier said than done, and there many reasons why this is the case:
+
+--
+
+* Lack of funding sources
+
+--
+
+* Lack of data sharing
+
+--
+
+* Lack of interest
+
+--
+
+* "Top-tier" journals won't publish
+
+--
+
+* Vague methods
+
+--
+
+* And more...
+
+---
+
+# Reproducibility in practice
+
+.pull-left[
+```{r reproducibility-graphic-4, echo = FALSE, out.width = "90%"}
+knitr::include_graphics("../../img/reproducibility-graphic-online4.jpg")
+```
+]
+
+.pull-right[
+```{r reproducibility-graphic-5, echo = FALSE, out.width = "100%", out.extra = "style='margin-top: 4%'"}
+knitr::include_graphics("../../img/reproducibility-graphic-online5.jpg")
+```
+]
+
+---
+
+# Reproducibility in practice
+
+.vhalign-slide[
+It's important that we think about ways to encourage reproducible research, because...
+]
+
+---
+
+<h1 style="margin-bottom: 7%">Replicating results: the reality</h1>
+
+.pull-left[
+```{r reproducibility-graphic-3a, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("../../img/reproducibility-graphic-online3a.jpg")
+```
+]
+
+.pull-right[
+```{r reproducibility-graphic-3b, echo = FALSE, out.width = "100%", out.extra = "style='margin-top: 8%'"}
+knitr::include_graphics("../../img/reproducibility-graphic-online3b.jpg")
+```
+]
+
+.footnote[
+Source: M. Baker, "1,500 scientists lift the lid on reproducibility," Nature **533**, 452 (2016)
+]
+
+---
+
+# Why is reproducibility hard?
+
+A few reasons:
+
+* Lack of funding sources
+* Lack of data sharing
+* Lack of interest
+* "Top-tier" journals won't publish
+* Vague methods
+
+---
+
+# Replicating results: the reality
+
+```{r bargraph1, echo = FALSE, out.width="50%", out.extra='style="display:float;position:fixed;top:15%;left:3%"'}
+knitr::include_graphics("../../img/reproducibility-graphic-online3a.jpg")
+```
+
+```{r bargraph2, echo = FALSE, out.width="50%", out.extra='style="display:float;position:fixed;top:15%;right:3%"'}
+knitr::include_graphics("../../img/reproducibility-graphic-online3b.jpg")
+```
+
+---
+
+# The Reproducibility Project
+
+```{r reproducibility-project-paper, echo = FALSE, out.width = "80%"}
+knitr::include_graphics("../../img/reproducibility_project_paper.png")
+```
+
+.quote-container[
+> Brian Nosek of University of Virginia and colleagues sought out to replicate 100 different studies that all were published in 2008. The project pulled these studies from three different [psychology] journals... to see if they could get the same results as the initial findings. [...] Only 36.1% of the studies [were] replicated.
+.cite[[Reproducibility Project](https://en.wikipedia.org/wiki/Reproducibility_Project) Wikipedia entry]
+]
+
+---
+
+layout: true
+
+# .font60[Is the evidence for austerity based on an Excel spreadsheet error?]
+
+.footnote[
+Sources: https://www.washingtonpost.com/news/wonk/wp/2013/04/16/is-the-best-evidence-for-austerity-based-on-an-excel-spreadsheet-error/, http://www.bbc.com/news/magazine-22223190, https://www.peri.umass.edu/publication/item/526-does-high-public-debt-consistently-stifle-economic-growth-a-critique-of-reinhart-and-rogo-ff
+]
+
+---
+
+<div style="margin-top: 15%;"></div>
+
+* C. Reinhart and K. Rogoff, "Growth in a Time of Debt", Amer. Econ. Rev. **100**, 573-578 (2010)
+
+* Influential economics paper that found that when a country's GDP to debt ratio reaches 90%, GDP growth is cut almost in half.
+
+* Cited as evidence for implementing austerity measures post-2008 financial crisis
+
+* Dataset and analysis were not made public at time of publication
+
+---
+
+<div style="margin-top: 8%;"></div>
+
+A graduate student at U. Mass. Amherst, Thomas Herndon, tried to replicate the study's results using publicly available country spreadsheet data as homework for one of his classes...
+--
+...and could not.
+
+--
+
+In 2013, Herndon wrote to Reinhart and Rogoff asking for their dataset, and they obliged.
+
+--
+
+After receiving the data and analysis, Herndon, working with two of his professors, published a critique based on the following:
+
+--
+
+1. The accidental exclusion of available data and data gaps
+
+2. A spreadsheet coding error
+
+3. Unconventional weighting of summary statistics
+
+---
+
+<div style="margin-top: 5%;"></div>
+
+.pull-left[
+```{r reinhart-rogoff-coding-error, out.width = "100%", echo = FALSE}
+knitr::include_graphics("../../img/reinhart_rogoff_coding_error.png")
+```
+]
+
+.pull-right[
+```{r rr_har_correction, out.width = "100%", echo = FALSE, out.extra = "style='margin-top: 20%;'"}
+knitr::include_graphics("../../img/rr_har_correction.png")
+```
+.font80.center[<span style="color: gray;">Chart: Jared Bernstein</span>]
+]
+
+---
+
+layout: false
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Slides originally developed by James Glasbrenner.
+]

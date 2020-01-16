@@ -7,7 +7,9 @@ DIRS	=	orientation															\
 			data_transformation													\
 			data_reshaping														\
 			data_distributions													\
-			inference_and_simulation
+			inference_and_simulation                      \
+			modeling                     \
+			final_project
 
 .PHONY : all clean $(DIRS)
 

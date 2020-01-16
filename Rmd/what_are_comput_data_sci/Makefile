@@ -2,7 +2,9 @@ include ../../make.inc
 
 MODULE_NAME	=	$(notdir $(patsubst %/,%,$(CURDIR)))
 
-XARINGAN	=	$(OUTPUT_DIR)/01_science.html									\
+XARINGAN	=	$(OUTPUT_DIR)/00_welcome.html									\
+				$(OUTPUT_DIR)/01_science.html									    \
+				$(OUTPUT_DIR)/02_reproducible_research.html				\
 				$(OUTPUT_DIR)/02_data_overview.html								\
 				$(OUTPUT_DIR)/03_data_sampling.html								\
 				$(OUTPUT_DIR)/04_computation.html

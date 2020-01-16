@@ -1,6 +1,6 @@
 ---
 title: CDS 101 Online <br> What are the computational and data sciences? <br> Science
-author: James K. Glasbrenner
+author: Dominic White
 ---
 
 class: center, middle, title-slide
@@ -21,7 +21,7 @@ These slides are licensed under a [Creative Commons Attribution-ShareAlike 4.0 I
 
 # .font90[What are the computational and data sciences?]
 .title-hline[
-## Science
+## Science and CDS
 ]
 
 ```{r setup, include = FALSE}
@@ -35,209 +35,90 @@ source("../../R/xaringan_setup.R")
 
 --
 
-<div style="display:float;position:fixed;top:23%;left:10%">
-(1) A set of facts
-</div>
-
-```{r pile-of-documents, echo = FALSE, out.width="20%", out.extra='style="display:float;position:fixed;top:15%;right:10%"'}
-knitr::include_graphics("../../img/pile_of_documents.svg")
-```
+.pull-left[![Albert Einstein](../../img/einstein.png)]
 
 --
 
-<div style="display:float;position:fixed;top:45%;left:10%">
-(2) Something that professional scientists do
-</div>
-
-```{r scientist-icon, echo = FALSE, out.width="15%", out.extra='style="display:float;position:fixed;top:35%;right:12%"'}
-knitr::include_graphics("../../img/scientist.svg")
-```
-
---
-
-<div style="display:float;position:fixed;top:72%;left:10%">
-(3) The underlying Truth about the Universe
-</div>
-
-```{r nasa-universe-timeline, echo = FALSE, out.width="30%", out.extra='style="display:float;position:fixed;top:60%;right:5%"'}
-knitr::include_graphics("../../img/nasa_universe_timeline.jpg")
-```
-
-.footnote[Credit: NASA / WMAP Science Team]
+.pull-right[![Archimedes shouting eureka](../../img/eureka.png)]
 
 ---
 
 # What is science?
 
-<h2 style="margin-top:12%;">A set of facts</h2>
+Science is a way of looking at the world.
 
-```{r pile-of-documents, echo = FALSE, out.width="20%", out.extra='style="display:float;position:fixed;top:15%;right:5%"'}
+The scientific method:
+
+* Review evidence
+* Hypothesis
+* Test hypothesis with experiment
+* Validate or revise hypothesis
+
+---
+
+# What is computational science?
+
+Computational science vs. computer science
+
+```{r venn-diagram-comp-sci, echo = FALSE, out.width = "55%"}
+knitr::include_graphics("../../img/venn_diagram_computational_science.svg")
 ```
 
---
-
-* We are constantly making new discoveries and collecting new data
+Computational science is also known as scientific computing.
 
 --
 
-* Technology and experiments are changing
-
---
-
-* Old Theories are replaced by new Theories
-
---
-
-* Scientific "Facts"
+Covered in more depth in **CDS 130:** *Computing for Scientists*
 
 ---
 
-# What is science?
+# What is data science?
 
-<h2 style="margin-top:12%;font-size:32px;">Something that professional scientists do</h2>
-
-```{r scientist-icon, echo = FALSE, out.width="15%", out.extra='style="display:float;position:fixed;top:15%;right:5%"'}
+```{r venn-diagram-data-sci, echo = FALSE, out.width = "65%"}
+knitr::include_graphics("../../img/venn_diagram_data_science.svg")
 ```
 
---
-
-* What is a scientist?
-
---
-
-* Do you need a PhD?
-
---
-
-* There are countless examples of amateur scientists playing a role in discovery
-
---
-
-* Being scientific **does not** require becoming a member of a professional society
-
 ---
 
-# What is science?
+# .font80[What are the computational and data sciences?]
 
-```{r nasa-spaceballs-discovery, echo = FALSE, out.width = "88%"}
-knitr::include_graphics("../../img/nasa_amateur_space_balls_discovery.png")
+The use of computers and data to explore problems and test hypotheses within the sciences.
+
+```{r cs-ds-flow, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("../../img/science_theory_experiment_compsci_data_sci_diagram.svg")
 ```
 
-.footnote[
-Molina, Rachel. "15 Citizen Scientists Discover Yellow 'Space Balls.'" *NASA Science*, 9 Apr. 2015, https://science.nasa.gov/science-news/science-at-nasa/2015/09apr_yellowballs.
-]
+---
+
+# Why should you care about this course?
+
+--
+
+The average scientific researcher spends:
+
+* 30% of their time developing scientific software
+* 40% of their time using scientific software 
+
+...yet many undergraduate natural science programs do not integrate computational skills into the curriculum.
+
+*Source: Hannay et. al., in SECSE Conference (2009), pp. 1-8*
 
 ---
 
-# What is science?
+# Data is everywhere
 
-```{r hawk-count-data, echo = FALSE, out.width = "88%"}
-knitr::include_graphics("../../img/hawkcount_site.png")
+```{r pile-of-documents, echo = FALSE, out.width="50%", out.extra='style="display:float;position:fixed;top:15%;left:3%"'}
+knitr::include_graphics("../../img/large-hadron-collider.png")
 ```
 
-.footnote[Source: http://hawkcount.org]
 
----
-
-# What is science?
-
-<h2 style="margin-top:12%;font-size:30px;">The underlying Truth about the Universe</h2>
-
-```{r nasa-universe-timeline, echo = FALSE, out.width="27%", out.extra='style="display:float;position:fixed;top:15%;right:3%"'}
+```{r nasa-universe-timeline, echo = FALSE, out.width="40%", out.extra='style="display:float;position:fixed;top:15%;right:5%"'}
+knitr::include_graphics("../../img/shakespeare.png")
 ```
 
-.footnote[Credit: NASA / WMAP Science Team]
-
---
-
-* Science is a process, not dogma
-
---
-
-* Science experiments are able to falsify hypotheses, but they cannot prove that a claim is the *Truth*
-
---
-
-* The predictive tools of science, models and simulations, are used to *represent* the world to the best of our current knowledge
-
----
-
-<h1 style="margin-bottom:15%;">What is science?</h1>
-
---
-
-* **Science**
-
-  a study that uses the scientific method
-
---
-
-* **Natural science**
-  
-  .quote-container[
-  > The branch of science concerned with the description, prediction, and understanding of natural phenomena, based on empirical evidence from observation and experimentation. Mechanisms such as peer review and repeatability of findings are used to try to ensure the validity of scientific advances.
-  > .cite[Wikipedia]
-  ]
-
----
-
-<h1 style="margin-bottom:1.125em;">The scientific method</h1>
-
---
-
-1. Review evidence
-
---
-
-2. Hypothesis
-
---
-
-3. Formulate predictive test
-
---
-
-4. Design/run experiment
-
---
-
-5. Validate or revise hypothesis
-
----
-
-# The scientific method
-
-.pull-left[
-1. Review evidence
-
-2. Hypothesis
-
-3. Formulate predictive test
-
-4. Design/run experiment
-
-5. Validate or revise hypothesis
-]
-
-.pull-right[
-In practice, research programs don't strictly adhere to this step order. It's a list of principles, not a recipe.
-]
-
---
-
-.answer.center[**Key point:** create a hypothesis and collect evidence to test it out]
-
---
-
-* Empirical observations constitute evidence.
-
---
-
-* A hypothesis is compared with the outcomes of the natural world ("Nature"), not voted on by an individual or a committee
-
---
-
-* A hypothesis should be testable by anyone, regardless of time, place, culture, etc. Anyone can double check an experiment!
+```{r scientist-icon, echo = FALSE, out.width="35%", out.extra='style="display:float;position:fixed;top:60%;right:50%"'}
+knitr::include_graphics("../../img/pills.png")
+```
 
 ---
 

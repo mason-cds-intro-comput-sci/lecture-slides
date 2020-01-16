@@ -1,0 +1,109 @@
+---
+title: CDS 101 <br> Final Project <br> Guidance
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Modeling]
+.title-hline[
+## Final project guidance
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(tidyverse)
+```
+
+---
+
+
+# How to answer your question
+
+* Data visualization
+
+* Summary statistics
+
+* Modeling or/and(!) hypothesis test
+
+---
+
+# Data visualization
+
+* Explore the variation in your data
+  * Scatter plots
+  * PDFs (histogram/density plot) and CDFs (eCDF)
+
+* See how the variables are affected by other variables
+  * Facet over other variables
+  
+* Look for problems in your data
+  * How is it distributed? Normally or otherwise?
+  * Are there outliers? (Try using boxplots)
+
+Don't forget to describe:
+
+1. Why you are creating each plot.
+2. What your visualizations show.
+
+---
+
+# Summary statistics
+
+    reduced_dataset %>%
+      group_by(any_groups_you_are_investigating) %>%
+      summarize(
+         mean = mean(column_of_interest),
+         median = ...,
+         ...,
+         standard_deviation = ...,
+         ...
+      )
+
+Consider each column as a whole, as well as looking at the effect of any groups.
+
+---
+
+# Models and inference
+
+If your question is in the form:
+
+.qa[is there a relationship between *continuous_response_variable_1* and *continuous_explanatory_variable_2* (and *continuous_explanatory_variable_3*, etc.)?]
+  
+then you should create a model (Module 8).
+
+If your question is in the form:
+
+.qa[is there a significant difference in *variable_1* between two categories of *categorical_variable_2*?]
+
+then you should use a hypothesis test (Module 7).
+
+(For a hypothesis test, we compare the difference in mean if *variable_1* is continuous, or the difference in proportions if *variable_1* is categorical).
+
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]

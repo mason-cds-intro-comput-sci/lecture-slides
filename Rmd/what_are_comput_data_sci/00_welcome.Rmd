@@ -1,0 +1,198 @@
+---
+title: CDS 101 <br> What are the computational and data sciences? <br> Welcome to the course
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/).
+]
+
+# .font90[What are the computational and data sciences?]
+.title-hline[
+## Welcome to the course
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+```
+
+---
+
+# What is CDS 101?
+
+.answer.center[
+  "Introduction to the use of computers in scientific discovery through simulations and data analysis. Covers historical development and current trends in the field."
+  ]
+
+* Use of computers
+
+* Scientific discovery
+
+* Simulation and data analysis
+
+---
+
+# Mason Core
+
+.answer.center[
+  "The Mason Core is a set of required courses that create the foundation of your undergraduate degree. All undergraduates seeking a baccalaureate degree must complete Mason Core requirements."
+  ]
+
+CDS 101 + CDS 102 can be used to satisfy the 4 credit Natural Sciences + Lab requirement.
+
+---
+
+# CDS 101 vs. CDS 102
+
+CDS 101: Main lecture class.
+
+CDS 102: Associated lab class.
+
+* Each section of CDS 102 has its own instructor.
+* Register separately.
+
+---
+
+# About us
+
+*Instructor*
+
+Dr. Dominic White
+
+Assistant Professor in the Department of Computational and Data Sciences
+
+*CDS STARS*
+
+---
+
+# CDS 101 course structure
+
+Each week we will cover a separate topic.
+
+List of topics is available at the course website: https://www.cds101.com
+
+Each topic/week will have:
+
+* Video lectures (do before class)
+* Readings
+* A quiz on the video lectures & readings (due before the first class of the week)
+* Class work, either:
+  * Individual assignment
+  * Group project
+
+In addition:
+
+* Midterm
+
+* Final group project
+
+---
+
+# How to do well
+
+Do the work:
+
+* Do all the assignments.
+
+* Make your own notes or cheat sheet.
+
+Use your instructors:
+
+* Ask questions.
+
+* Come to office hours (for myself and the STARS).
+
+---
+
+# Getting help
+
+*Talk to us:* Office hours are on Blackboard under the **Syllabus** section.
+
+*Talk to others:*
+
+* Math Tutoring Center
+
+* Mason’s Writing Center
+
+* Counseling and Psychological Services
+
+
+---
+
+# Textbooks
+
+Free!
+
+---
+
+# Programming: RStudio Server
+
+https://rstudio.cos.gmu.edu
+
+---
+
+# Communication: Slack
+
+* Web interface
+
+* Desktop app (Windows, Mac, Linux)
+
+* Mobile app (iPhone, Android)
+
+---
+
+# FERPA
+
+Family Educational Rights and Privacy Act
+
+We require your explicit permission to use 3rd party services (such as Slack) as part of this class.
+
+You will need to sign this waiver before you can be added to Slack (and other 3rd party tools that we use in the course).
+
+
+<!-- --- -->
+
+<!-- # Academic Accomodations -->
+
+<!-- Arrange through the Office of Disability Services. -->
+
+---
+
+# Warning
+
+Plagiarism will not be tolerated.
+
+All work must be your own, except...
+
+* In group projects, you may collaborate with other members of your group.
+
+* You may use code snippets from GitHub, Stack Overflow, with proper citation.
+
+Violations will be reported, and will go on your official academic record.
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]

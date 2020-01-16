@@ -1,0 +1,183 @@
+---
+title: CDS 101 Online <br> Modeling <br> Creating models in R
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Modeling]
+.title-hline[
+## Creating models in R
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(tidyverse)
+library(modelr)
+library(broom)
+```
+
+---
+
+# The data
+
+We are going to use learn how to create models in R using simulated data included in the `modelr` package. The dataset is called `sim1`.
+
+.center[
+
+The first 7 rows of the dataset:
+
+```{r, echo=FALSE}
+knitr::kable(sim1[1:7,1:2], format="html")
+```
+]
+
+---
+
+# Linear models
+
+* In a linear model, we assume that the response variable is *linearly* related to the explanatory variables.
+
+* The simplest formula for a linear model is $y=mx+c$
+
+* This linear model converts lots of data points into just two numbers: $m$ (the slope) and $c$ (the intercept)
+
+```{r, echo=FALSE, fig.height=4}
+ggplot(sim1, aes(x, y)) +
+  # geom_hline(yintercept = 0, color = "black", size = 1) +
+  # geom_vline(xintercept = 0, color = "black", size = 1) +
+  labs(x="x", y="y") +
+  scale_x_continuous(expand=c(0,0), limits=c(0,10)) +
+  scale_y_continuous(expand=c(0,0), limits=c(0,25)) +
+  coord_cartesian(xlim=c(0,10), ylim=c(0,25), expand = FALSE) + 
+  # geom_text(aes(0.5,5,label = 'c', vjust = -1)) +
+  annotate(geom="text", x=0.2, y=4, label="c",
+              color="red")+
+  geom_smooth(method="lm", se=FALSE, fullrange=TRUE)+
+  annotate(geom="text", x=5, y=15.5, label="m",
+              color="red", angle=23)
+```
+
+
+---
+
+# Creating a linear model in R
+
+* The `lm` function creates a linear model.
+
+* Run `?lm` in the RStudio console to bring up the help page. In the help page, you will see that the function signature starts like this:
+
+    > `lm(formula, data, ...)`
+    
+
+* Our dataset is `sim1` and we want to know how the `y` variable depends on the `x` variable:
+
+    ````r
+    lm(y ~ x, sim1)
+    ```
+
+---
+
+# Examining the model parameters
+
+* When you run the `lm` function, R calculates the optimal slope and intercept to fit your data.
+
+* We can examine the parameters of a fitted model using the `tidy` function:
+
+    ```r
+    model1 < - lm(y ~ x, sim1)
+    
+    model1 %>% 
+      tidy()
+    ```
+
+```{r, echo=FALSE}
+knitr::kable(lm(y ~ x, sim1) %>% tidy(), format="html")
+```
+
+* Note that the row *x* refers to the slope $m$ of the `x` variable.
+
+---
+
+# Examining the model overall
+
+* We can examine how well the model fits the data overall using the `glance` function:
+
+    ```r
+    model1 %>% 
+      glance()
+    ```
+
+.contain[
+```{r, echo=FALSE}
+knitr::kable(lm(y ~ x, sim1) %>% glance() %>% select(r.squared:p.value), format="html") 
+```
+]
+
+* Each value is a different way of estimating how well the model fits the data. We will focus on the $R^{2}$ value. 
+
+
+---
+
+# $R^{2}$
+
+$R^{2}$ is a measure of how much variance is explained by the model.
+
+* If $R^{2} = 1$, then the model explains all the variance (i.e. the points all fall on a striaght line). 
+
+* If $R^{2}= 0$, then the model explains none of the variance.
+
+.pull-left[
+```{r, echo=FALSE}
+x <- 1:10
+y <-seq(1,10)
+good_r2 <- lm(y ~ x)
+
+ggplot() +
+  geom_point(mapping=aes(x=x, y=y)) +
+  geom_abline(slope=good_r2$coefficients[2],intercept=good_r2$coefficients[1])
+
+knitr::kable(good_r2 %>% glance() %>% select(r.squared), format="html")
+```
+]
+
+.pull-right[
+```{r, echo=FALSE}
+x <- 1:10
+y <-rdunif(10, 10, 1)
+poor_r2 <- lm(y ~ x)
+
+ggplot() +
+  geom_point(mapping=aes(x=x, y=y)) +
+  geom_abline(slope=poor_r2$coefficients[2],intercept=poor_r2$coefficients[1])
+
+knitr::kable(poor_r2 %>% glance() %>% select(r.squared), format="html")
+```
+]
+
+---
+
+# Credits
+
+.left-column[
+License]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]
+
