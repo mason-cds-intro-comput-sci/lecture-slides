@@ -1,0 +1,78 @@
+---
+title: CDS 101 <br> Git <br> Remotes
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-logo-slides-no-icon.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Git]
+.title-hline[
+## Remotes
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+```
+
+---
+
+# Distributed version control
+
+Git is a *distributed* version control system.
+
+Every programmer working on the project has a copy of the entire repository for the project.
+
+But if one programmer adds new commits, how do they share them with other programmers?
+
+---
+
+# Remotes
+
+Git allows you to name a web server that also has a copy of the respository. Every developer then communicates with the server:
+
+```{r, echo = FALSE, out.width = "700px"}
+knitr::include_graphics("../../img/git-scm-book-centralized_workflow.png")
+```
+
+* Your version of the repository is called the *local* version.
+
+* The server's version of the repository is called the *remote* version. Every remote has a name; by convention the remote is usually called `origin`.
+
+* We **push** our changes from the local repository to the remote.
+
+* We **pull** to get other people's changes from the remote into our local repository.
+
+---
+
+# Credits
+
+.left-column[
+License
+
+<br>
+
+Credits
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+<br>
+
+Images from the [Pro Git](https://git-scm.com/book/en/v2/) book reused under the [Creative Commons Attribution Non Commercial Share Alike 3.0 license](https://creativecommons.org/licenses/by-nc-sa/3.0/)
+]

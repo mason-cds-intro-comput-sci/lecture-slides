@@ -1,0 +1,115 @@
+---
+title: CDS 101 <br> Prediction <br> Modeling for prediction
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-logo-slides-no-icon.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Prediction]
+.title-hline[
+## Modeling for Prediction
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(tidyverse)
+library(modelr)
+library(broom)
+```
+
+---
+
+# Two reasons to model
+
+.pull-left[
+## Understanding
+
+* Aims to explain how explanatory variables cause a change in the response variable.
+
+* We want a model that fits the data well, explaining as much of the varibility in the response variable as possible.
+
+* We want to know how important different explanatory variables are, so we prefer simple models that are easy to interpret.
+
+* We assess the model using inference, such as $R^2$, confidence intervals, and *p*-values.
+
+]
+
+--
+
+.pull-right[
+## Prediction
+
+* Aim is to make accurate predictions about future data.
+
+* Want the most accurate model possible (often more complex), but care less about the relative importance of each explanatory variable.
+
+* Model is assessed in terms of how accurately it predicts "unseen" data that was not used to create the model.
+
+]
+
+???
+
+Understanding. Purpose is to give insights, rather than make accurate predictions about unseen data
+
+---
+
+# Models for prediction
+
+There are many different *algorithms* we can use to create models (an algorithm is a computer program that produces a model):
+
+* Linear regression
+
+--
+
+* Generalized linear regression (GLM)
+
+* k-Nearest Neighbors (kNN)
+
+* Random Forests
+
+* ...and many more
+
+--
+
+They can broadly be classified into *regression* models (when we are trying to predict a continous value) and *classification* models (for categorical predictions).
+
+---
+
+# Machine learning
+
+The discipline of creating predictive models is called **machine learning**.
+
+Because machine learning grew out of computer science rather than statistics, they came up with different names for many existing statistical concepts:
+
+* explanatory variables are called *predictor variables* or *features*.
+
+* the response variable (i.e. the thing we are trying to predict) is called the *target variable* (or sometimes the *labels* if we are predicting categorical values).
+
+* the process of creating a model is referred to as *"learning"* from the data, or *"fitting"* a model.
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]

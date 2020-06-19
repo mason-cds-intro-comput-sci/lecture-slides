@@ -1,0 +1,137 @@
+---
+title: CDS 101 Online <br> Inference and simulation <br> Effect size
+author: James K. Glasbrenner
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Inference and simulation]
+.title-hline[
+## Effect size
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+# Load required packages
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(infer)
+# Set seed
+set.seed(902083)
+# Gender discrimination dataset
+applicants_data <- read_rds("../../data/gender_discrimination.rds")
+```
+
+---
+
+# Effect size
+
+<!-- Phi coefficient interpretation source: http://www.real-statistics.com/chi-square-and-f-distributions/effect-size-chi-square/ -->
+
+* We would like to know how significant a result is, not just whether or not we can reject the null hypothesis.
+
+* The **effect size** is how big of a difference there is between two distributions.
+
+* There are different ways to compute an effect size.
+
+<div style="margin-bottom: -2%;"></div>
+
+.pull-left[
+.font120.center[**[Phi coefficient](https://en.wikipedia.org/wiki/Phi_coefficient)**]
+
+<div style="margin-bottom: -2%;"></div>
+
+.font90[
+* Categorical response variable
+* Categorical explanatory variable
+]
+
+.font70[
+| Effect size | Phi  |
+| ----------- | ---- |
+| Small       | 0.10 |
+| Medium      | 0.30 |
+| Large       | 0.50 |
+]
+]
+
+.pull-right[
+.font120.center[**[Cohen's *d*](https://en.wikipedia.org/wiki/Effect_size#Cohen.27s_d)**]
+
+<div style="margin-bottom: -2%;"></div>
+
+.font90[
+* Numerical response variable
+* Categorical explanatory variable
+]
+    
+.font70[
+| Effect size | d    |
+| ----------- | ---- |
+| Very small  | 0.01 |
+| Small       | 0.20 |
+| Medium      | 0.50 |
+| Large       | 0.80 |
+| Very large  | 1.20 |
+| Huge        | 2.00 |
+]
+]
+
+---
+
+# .font80[Effect size of gender discrimination experiment]
+
+The formula for computing the phi coefficient is as follows,
+
+$$\varphi=\sqrt{\dfrac{\chi^{2}}{N}}$$
+
+$\chi^{2}$ is the Chi-Square statistic and $N$ is the number of observations in the dataset.
+
+--
+
+The Chi-Square statistic can be easily computed using .mono[infer], and the rest of the computation can be handled with .mono[mutate()],
+
+.code80[
+```{r gender-discrimination-phi-coefficent}
+num_samples <- count(applicants_data)
+applicants_data %>%
+  specify(outcome ~ sex, success = "Promoted") %>%
+  calculate(stat = "Chisq", order = combine("Male", "Female")) %>%
+  mutate(effect_size = sqrt(stat / pull(num_samples, n))) %>%
+  pull(effect_size)
+```
+]
+
+--
+
+<div style="margin-bottom: -3%"></div>
+
+The effect size for the observed result is *medium*.
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]

@@ -1,0 +1,218 @@
+---
+title: CDS 101 <br> Advanced Inference <br> Effect sizes
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-logo-slides-no-icon.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Advanced Inference]
+.title-hline[
+## Effect sizes
+]
+
+```{r setup, include = FALSE}
+source("../../R/xaringan_setup.R")
+# Load required packages
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(infer)
+# Gender discrimination dataset
+applicants_data <- read_rds("../../data/gender_discrimination.rds")
+```
+
+---
+
+# Effect size
+
+For example, let's imagine that there is a real difference between the true difference in heights between Mason and GWU students of 0.5 inches.
+
+* If we measured the heights of 10 students from each university, we would be unlikely to get a significant result. 
+* But if we measure 1000s of students, we are very likely to get a significant result, because correctly rejecting null hypotheses (i.e. detecting *true positives*) is easier when we have large sample sizes.
+
+```{r, echo = FALSE, cache = TRUE}
+heights_small <- tibble(
+  height = c(
+    rnorm(10, mean=69.5, sd=5),
+    rnorm(10, mean=69, sd=5)
+  ),
+  school = c(
+    rep("Mason", 10),
+    rep("GWU", 10)
+  )
+  )
+
+small_null <- heights_small %>%
+  specify(height~school) %>%
+  hypothesize(null="independence") %>%
+  generate(reps=10000, type = "permute") %>%
+  calculate("diff in means", order = c("Mason", "GWU"))
+
+heights_large <- tibble(
+  height = c(
+    rnorm(1000, mean=69.5, sd=5),
+    rnorm(1000, mean=69, sd=5)
+  ),
+  school = c(
+    rep("Mason", 1000),
+    rep("GWU", 1000)
+  )
+  )
+
+large_null <- heights_large %>%
+  specify(height~school) %>%
+  hypothesize(null="independence") %>%
+  generate(reps=10000, type = "permute") %>%
+  calculate("diff in means", order = c("Mason", "GWU"))
+```
+
+```{r, echo=FALSE, out.width = 800, fig.asp = 0.4}
+obs_stat <- heights_large %>%
+  specify(height~school) %>%
+  calculate("diff in means", order = c("Mason", "GWU"))
+
+p_labels <- tibble( 
+  p_vals = c(
+    paste0("p-value\n",get_p_value(small_null, 0.5, "both")[[1]]),
+    sprintf("p-value\n%g",
+           get_p_value(large_null, 0.5, "both")[[1]]
+           )
+  ),
+  size = c("10 students", "1000 students")
+)
+
+small_null %>% mutate(size = "10 students") %>%
+  rbind(
+    large_null %>% mutate(size = "1000 students")
+  ) %>%
+  ggplot() +
+  geom_histogram(
+    aes(x = stat), position = "identity", bins = 50
+  ) +
+  geom_vline(xintercept = 0.5, color = "red") +
+  geom_text(
+    data = p_labels,
+    aes(label = p_vals),
+    x = 4,
+    y = 2000
+  ) +
+  annotate(
+    "segment",
+    x = 4,
+    y = 1000,
+    xend = 2,
+    yend = 400,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  ) +
+  facet_wrap(~size) +
+  labs(x = "difference in mean height")
+```
+
+
+---
+
+# Measuring effect size
+
+However, how meaningful is a difference of 0.5 inches? There is a much greater variation height within both schools than between them...
+
+--
+
+Effect size tells us how big the difference is compared to the general variation in heights. How?
+
+We look at the standardized differnce in heights:
+
+$effect\ size = \frac{[mean\ Mason\ height] - [mean\ GWU\ height]}{standard\ deviation}$
+
+This measure of effect size is called **Cohen's d**.
+
+---
+
+# Other measures of effect size
+
+For categorical data, we cannot compare differences in means (because we cannot calculate the mean of a column of categories), so we cannot use Cohen's d.
+
+We can use the Phi coefficient, $\phi$,
+
+$\phi = \sqrt{\frac{\chi^2}{N}}$
+
+* $\chi^2$ is a categorical test statistic (instead of the difference in means).
+
+* N is the number of observations.
+
+<!-- --- -->
+
+<!-- # An example in R -->
+
+<!-- ```{r} -->
+<!-- applicants_data %>% -->
+<!--   specify(outcome ~ sex, success = "Promoted") %>% -->
+<!--   calculate(stat = "Chisq", order = combine("Male", "Female")) %>% -->
+<!--   mutate(Phi = sqrt(stat / nrow(applicants_data))) -->
+<!-- ``` -->
+
+<!-- .font70[ -->
+<!-- | Effect size | Phi  | -->
+<!-- | ----------- | ---- | -->
+<!-- | Small       | 0.10 | -->
+<!-- | Medium      | 0.30 | -->
+<!-- | Large       | 0.50 | -->
+<!-- ] -->
+
+
+---
+
+# Why should we care?
+
+A study of aspirin in 22,000 patients found that it could reduce the risk of heart attacks. The p-value was highly significant: P < .00001
+
+In other words, this effect was incrediably unlikely to have arisen by chance. Aspirin was recommended for prevention, and a huge number of people began taking it.
+
+But...
+
+--
+
+The effect size was extremely small (the decline in risk of heart attack was only 0.77 %).
+
+Even relatively mild drugs like aspirin are not free of side effects. Did the increased risk of side-effects outweigh the tiny heart attack benefits?
+
+
+
+---
+
+# Conclusion
+
+* With a large enough sample, we are virtually guaranteed a significant p-value (unless the true effect is exactly 0).
+
+* p-value alone is therefore not informative
+
+* We need to report the *effect size* to tell us whether a difference is meaningful.
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Aspirin heart attack example adapted from [Sullivan and Fein (2012)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3444174/)
+]

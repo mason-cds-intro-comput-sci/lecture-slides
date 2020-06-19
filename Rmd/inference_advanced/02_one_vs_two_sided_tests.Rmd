@@ -1,0 +1,377 @@
+---
+title: CDS 101 <br> Advanced Inference <br> One vs. two sided tests
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-logo-slides-no-icon.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Advanced Inference]
+.title-hline[
+## One vs. two sided tests
+]
+
+```{r setup, include = FALSE}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(infer))
+source("../../R/xaringan_setup.R")
+set.seed(42)
+```
+
+```{r, echo = FALSE, cache = TRUE}
+applicants_data <- read_rds("../../data/gender_discrimination.rds")
+experiment_result <- (21/24) - (14/24)
+
+simulation_results <- applicants_data %>%
+  specify(outcome ~ sex, success = "Promoted") %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 10000, type = "permute") %>%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+---
+
+# One-sided tests
+
+The p-value is *the probability of a getting a value at least as extreme as the observed statistic from the null distribution*.
+
+What do we mean by extreme?
+
+--
+
+In a one-sided hypothesis test, we care about extreme values on one side of the distribution:
+
+```{r, echo = FALSE}
+simulation_results %>%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = experiment_result, direction = "right") +
+  labs(
+    title = "Gender discrimination null distribution",
+    x = "difference in fraction of male and female promotions"
+  ) +
+  xlim(-0.8, 0.6) +
+  annotate(
+    "text",
+    label = "The\nobserved\nstatistic",
+    x = 0.45,
+    y = 4000
+  ) +
+  annotate(
+    "segment",
+    x = 0.4,
+    y = 3250,
+    xend = 0.29,
+    yend = 2500,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  ) +
+  annotate(
+    "text",
+    label = "The differences\nin proportions of promotions\nfrom 10,000 random permutations\nof the original data",
+    x = -0.44,
+    y = 3000,
+    size = 3.5
+  ) +
+  annotate(
+    "segment",
+    x = -0.14,
+    y = 2500,
+    xend = -0.07,
+    yend = 1700,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  ) +
+  annotate(
+    "text",
+    label = "More\nextreme",
+    x = 0.45,
+    y = 1400
+  ) +
+  annotate(
+    "segment",
+    x = 0.4,
+    y = 900,
+    xend = 0.35,
+    yend = 250,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  )
+```
+
+
+---
+
+# Side matters for one-sided tests
+
+Our test statistic is $\frac{promoted\_men}{all\_men} - \frac{promoted\_women}{all\_women}$.
+
+Because we care about whether more men are promoted than women, extreme values will be on the right.
+
+```{r, echo = FALSE}
+simulation_results %>%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = experiment_result, direction = "right") +
+  labs(
+    title = "Gender discrimination null distribution",
+    x = "difference in fraction of male and female promotions"
+  ) +
+  xlim(-0.8, 0.6) +
+  annotate(
+    "text",
+    label = "The\nobserved\nstatistic",
+    x = 0.45,
+    y = 4000
+  ) +
+  annotate(
+    "segment",
+    x = 0.4,
+    y = 3250,
+    xend = 0.29,
+    yend = 2500,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  ) +
+  annotate(
+    "text",
+    label = "The differences\nin proportions of promotions\nfrom 10,000 random permutations\nof the original data",
+    x = -0.44,
+    y = 3000,
+    size = 3.5
+  ) +
+  annotate(
+    "segment",
+    x = -0.14,
+    y = 2500,
+    xend = -0.07,
+    yend = 1700,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  ) +
+  annotate(
+    "text",
+    label = "More\nextreme",
+    x = 0.45,
+    y = 1400
+  ) +
+  annotate(
+    "segment",
+    x = 0.4,
+    y = 900,
+    xend = 0.35,
+    yend = 250,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  )
+```
+
+---
+
+# Side matters for one-sided tests
+
+Our test statistic is $\frac{promoted\_men}{all\_men} - \frac{promoted\_women}{all\_women}$.
+
+If we accidentally try to calculate the fraction of values on the left, we will get an erroneously high fraction (p-value).
+
+```{r, echo = FALSE}
+simulation_results %>%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = experiment_result, direction = "left") +
+  labs(
+    title = "Gender discrimination null distribution",
+    x = "difference in fraction of male and female promotions"
+  ) +
+  xlim(-0.8, 0.6) +
+  annotate(
+    "text",
+    label = "The\nobserved\nstatistic",
+    x = 0.45,
+    y = 4000
+  ) +
+  annotate(
+    "segment",
+    x = 0.4,
+    y = 3250,
+    xend = 0.29,
+    yend = 2500,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  ) +
+  annotate(
+    "text",
+    label = "Not the \"extreme values\"\nyou are looking for",
+    x = -0.4,
+    y = 3000
+  ) +
+  annotate(
+    "segment",
+    x = -0.14,
+    y = 2500,
+    xend = -0.06,
+    yend = 1700,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  )
+```
+
+---
+
+# Side matters for one-sided tests
+
+But if the test statistic was reversed: $\frac{promoted\_women}{all\_women} - \frac{promoted\_men}{all\_men}$
+
+--
+
+...now "extreme" values of the test statistic will be negative (if more men are promoted than women), so we need to look on the left:
+
+```{r, echo = FALSE}
+simulation_results %>%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = -experiment_result, direction = "left") +
+  labs(
+    title = "Gender discrimination null distribution",
+    x = "difference between fraction of female and male promotions"
+  ) +
+  xlim(-0.8, 0.6) +
+  annotate(
+    "text",
+    label = "The\nobserved\nstatistic",
+    x = -0.45,
+    y = 4000
+  ) +
+  annotate(
+    "segment",
+    x = -0.4,
+    y = 3250,
+    xend = -0.29,
+    yend = 2500,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  ) +
+  annotate(
+    "text",
+    label = "More\nextreme",
+    x = -0.6,
+    y = 1000
+  ) +
+  annotate(
+    "segment",
+    x = -0.6,
+    y = 500,
+    xend = -0.4,
+    yend = 200,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  )
+```
+
+
+---
+
+# Two-sided tests
+
+But in a two-sided test, we care about extreme value on both side of the distribution:
+
+```{r, echo = FALSE}
+simulation_results %>%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = experiment_result, direction = "both") +
+  labs(
+    title = "Gender discrimination null distribution",
+    x = "difference in fraction of male and female promotions"
+  ) +
+  annotate(
+    "text",
+    label = "The observed\nstatistic",
+    x = 0.44,
+    y = 4000
+  ) +
+  annotate(
+    "segment",
+    x = 0.4,
+    y = 3500,
+    xend = 0.3,
+    yend = 3000,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  ) +
+  annotate(
+    "text",
+    label = "More\nextreme",
+    x = 0.4,
+    y = 1400
+  ) +
+  annotate(
+    "segment",
+    x = 0.4,
+    y = 900,
+    xend = 0.35,
+    yend = 250,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  ) +
+  annotate(
+    "text",
+    label = "Also more\nextreme",
+    x = -0.4,
+    y = 1400
+  ) +
+  annotate(
+    "segment",
+    x = -0.4,
+    y = 900,
+    xend = -0.35,
+    yend = 250,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  )
+```
+
+---
+
+# One vs. two sided p-values
+
+.pull-left[
+One-sided p-value: `r simulation_results %>% get_p_value(obs_stat = experiment_result, direction = "right")`
+
+```{r, echo = FALSE, fig.asp=1, out.width=600}
+simulation_results %>%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = experiment_result, direction = "right") +
+  labs(
+    title = "One-sided test",
+    x = "difference in fraction of male and female promotions"
+  ) +
+  xlim(-0.43, 0.43)
+```
+
+]
+
+.pull-right[
+Two-sided p-value: `r simulation_results %>% get_p_value(obs_stat = experiment_result, direction = "both")`
+
+```{r, echo = FALSE, fig.asp=1, out.width=600}
+simulation_results %>%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = experiment_result, direction = "both") +
+  labs(
+    title = "Two-sided test",
+    x = "difference in fraction of male and female promotions"
+  ) +
+  xlim(-0.43, 0.43)
+```
+
+]
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]

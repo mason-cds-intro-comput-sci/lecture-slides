@@ -1,5 +1,5 @@
 ---
-title: CDS 101 Online <br> Reproducible toolbox <br> Reproducibility in science
+title: CDS 101 Online <br> What are the computational and data sciences <br> Reproducibility
 author: Dominic White
 ---
 
@@ -19,9 +19,9 @@ knitr::include_graphics("../../img/cc-by-nc-sa.png")
 These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 ]
 
-# .font90[Reproducible toolbox]
+# .font90[What are the computational and data sciences?]
 .title-hline[
-## Reproducibility in science
+## Reproducibility
 ]
 
 ```{r setup, include = FALSE}
@@ -36,8 +36,6 @@ library(ggplot2)
 
 <div style="margin-bottom: 5%">Recall the key point from our review of the scientific method:</div>
 
---
-
 .answer.center[
 **Key point:** create a hypothesis and collect evidence to test it out
 ]
@@ -47,8 +45,6 @@ library(ggplot2)
 --
 
 * Empirical observations constitute evidence.
-
-* A hypothesis is compared with the outcomes of the natural world ("Nature"), not voted on by an individual or a committee
 
 * A hypothesis should be testable by anyone, regardless of time, place, culture, etc. Anyone can double check an experiment!
 
@@ -80,53 +76,17 @@ knitr::include_graphics("../../img/reproducibility-graphic-online6.jpg")
 
 The scientific ideal of reproducibility is sometimes easier said than done, and there many reasons why this is the case:
 
---
-
 * Lack of funding sources
-
---
 
 * Lack of data sharing
 
---
-
 * Lack of interest
-
---
 
 * "Top-tier" journals won't publish
 
---
-
 * Vague methods
 
---
-
 * And more...
-
----
-
-# Reproducibility in practice
-
-.pull-left[
-```{r reproducibility-graphic-4, echo = FALSE, out.width = "90%"}
-knitr::include_graphics("../../img/reproducibility-graphic-online4.jpg")
-```
-]
-
-.pull-right[
-```{r reproducibility-graphic-5, echo = FALSE, out.width = "100%", out.extra = "style='margin-top: 4%'"}
-knitr::include_graphics("../../img/reproducibility-graphic-online5.jpg")
-```
-]
-
----
-
-# Reproducibility in practice
-
-.vhalign-slide[
-It's important that we think about ways to encourage reproducible research, because...
-]
 
 ---
 
@@ -147,30 +107,6 @@ knitr::include_graphics("../../img/reproducibility-graphic-online3b.jpg")
 .footnote[
 Source: M. Baker, "1,500 scientists lift the lid on reproducibility," Nature **533**, 452 (2016)
 ]
-
----
-
-# Why is reproducibility hard?
-
-A few reasons:
-
-* Lack of funding sources
-* Lack of data sharing
-* Lack of interest
-* "Top-tier" journals won't publish
-* Vague methods
-
----
-
-# Replicating results: the reality
-
-```{r bargraph1, echo = FALSE, out.width="50%", out.extra='style="display:float;position:fixed;top:15%;left:3%"'}
-knitr::include_graphics("../../img/reproducibility-graphic-online3a.jpg")
-```
-
-```{r bargraph2, echo = FALSE, out.width="50%", out.extra='style="display:float;position:fixed;top:15%;right:3%"'}
-knitr::include_graphics("../../img/reproducibility-graphic-online3b.jpg")
-```
 
 ---
 
@@ -223,8 +159,6 @@ In 2013, Herndon wrote to Reinhart and Rogoff asking for their dataset, and they
 
 After receiving the data and analysis, Herndon, working with two of his professors, published a critique based on the following:
 
---
-
 1. The accidental exclusion of available data and data gaps
 
 2. A spreadsheet coding error
@@ -233,19 +167,108 @@ After receiving the data and analysis, Herndon, working with two of his professo
 
 ---
 
-<div style="margin-top: 5%;"></div>
+layout: false
+
+# Meet the toolkit
+
+---
+
+.answer.center[**Primary tool:** R]
+
+```{r r-logo, echo = FALSE, out.width = "20%"}
+knitr::include_graphics("../../img/r-logo.png")
+```
 
 .pull-left[
-```{r reinhart-rogoff-coding-error, out.width = "100%", echo = FALSE}
-knitr::include_graphics("../../img/reinhart_rogoff_coding_error.png")
+.code70[
+```r
+side_one <- 3
+side_two <- 4
+hypotenuse <- sqrt(side_one^2 + side_two^2)
+result <- paste(
+  "A triangle with sides of length",
+  side_one,
+  "and length",
+  side_two,
+  "has a hypotenuse of length",
+  hypotenuse
+)
+
+print(result)
 ```
+]
 ]
 
 .pull-right[
-```{r rr_har_correction, out.width = "100%", echo = FALSE, out.extra = "style='margin-top: 20%;'"}
-knitr::include_graphics("../../img/rr_har_correction.png")
+```{r sample-r-snippet, echo = FALSE, results = "markup"}
+side_one <- 3
+side_two <- 4
+hypotenuse <- sqrt(side_one^2 + side_two^2)
+result <- paste0(
+  "[1] A triangle with sides of",
+  "\n",
+  "length ",
+  side_one,
+  " and length ",
+  side_two,
+  " has a",
+  "\n",
+  "hypotenuse of length ",
+  hypotenuse
+)
+
+cat(result)
 ```
-.font80.center[<span style="color: gray;">Chart: Jared Bernstein</span>]
+]
+
+---
+
+.answer.center[**Utility belt:** tidyverse packages]
+
+```{r tidyverse-logo, echo = FALSE, out.width = "100%", out.extra="style='margin-top: 7%'"}
+knitr::include_graphics("../../img/tidyverse-logo.png")
+```
+
+---
+
+.answer.center[**Workshop:** RStudio Server]
+
+```{r rstudio-logo, echo = FALSE, out.width = "20%"}
+knitr::include_graphics("../../img/rstudio-logo.png")
+```
+
+```{r rstudio-server-screenshot, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("../../img/rstudio-server-screenshot.png")
+```
+
+---
+
+.answer.center[**Storage room:** GitHub]
+
+```{r github-logo, echo = FALSE, out.width = "25%"}
+knitr::include_graphics("../../img/github-logo.svg")
+```
+
+```{r github-screenshot, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("../../img/github-screenshot.jpg")
+```
+
+---
+
+layout: false
+
+# R Markdown
+
+```{r hello-r-markdown, echo = FALSE, out.width = "85%"}
+knitr::include_graphics("../../img/hello-r-markdown.png")
+```
+
+.font80[
+* Fully reproducible reports – each time you knit the analysis is ran from the beginning
+
+* Simple markdown syntax for text
+
+* Code goes in chunks, defined by three back-ticks, narrative goes outside of chunks
 ]
 
 ---

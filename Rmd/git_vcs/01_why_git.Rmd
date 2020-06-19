@@ -1,0 +1,97 @@
+---
+title: CDS 101 Online <br> Git <br> Version Control
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-logo-slides-no-icon.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Git]
+.title-hline[
+## What is version control, and why should you use it?
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+```
+
+---
+
+# What is version control?
+
+> Version control... is the management of changes to documents, computer programs... and other collections of information. - [Wikipedia](https://en.wikipedia.org/wiki/Version_control)
+
+**Git** is an example of a version control system: a program for tracking the changes to a collection of documents (e.g. an RStudio project).
+
+Other examples:
+
+* Wikipedia tracks all the edits made to its articles.
+
+* Word processing programs like Microsoft Word and Google Docs have tools to track edits made to a document by different people.
+
+
+---
+
+# Why use version control?
+
+* See the history of an entire project.
+
+* Undo changes and revert back to an earlier version of the project.
+
+* Experiment with a slightly different version of the same files in parallel to the main version, and switch back and forth between them.
+
+* Compare the differences between versions of the same file.
+
+* It backs up the project files.
+
+* Easily collaborate with others on the same project.
+
+---
+
+# Git overview
+
+* You have to tell Git to start tracking a particular folder. Git will then place this folder (and its contents) under version control.
+
+* Inside this project folder, Git will create a hidden folder called `.git`. This is called the *repository*, and it is where Git stores all information about the project's history. **You should never touch or edit the `.git` folder** (and it is invisible to you in RStudio for this reason).
+
+* Git is a *distributed* version control system. Everyone working on the project has a complete copy of the `.git` repository.
+
+* As you work on the project, you must edit and save files to your hard-drive as you would normally. Using Git is an additional step on top of this, where you take periodic snapshots of the project's files, called *commits*.
+
+---
+
+# Git overview, continued
+
+Git's additional step:
+
+* When you have reached a point where you wish to checkpoint the changes that you have made, you tell Git to *commit* the project.
+
+    * First you must *stage* any files that you wish to commit (e.g. by clicking the checkbox next to them in RStudio). The latest version of unstaged files will not be added to the commit, even if those files have been changed since the last commit (this allows you to pick and choose which files to commit).
+  
+    * Then you tell Git to commit the staged files. Git will create a new commit inside its hidden `.git` folder that is a snapshot of this new version of the project.
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]

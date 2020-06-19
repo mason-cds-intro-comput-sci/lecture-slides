@@ -1,0 +1,315 @@
+---
+title: CDS 101 <br>Prediction <br>Logistic Regression
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-logo-slides-no-icon.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Prediction]
+.title-hline[
+## Logistic Regression
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(tidyverse)
+library(modelr)
+library(broom)
+```
+
+---
+
+# Generalized Linear Models
+
+Linear models can take continuous and categorical explanatory variables, but the response variable must be continuous.
+
+Generalized linear models (GLMs) allow us to extend the linear model to different types of output, e.g. binomial data (TRUE/FALSE)
+
+A GLM takes the output of a linear model and feeds it into a *link function* that transforms it to the desired data type.
+
+---
+
+# Logistic Regression
+
+Logisitic regression allows us to model a binomial response variable (e.g. a categorical variable with two outcomes, such as TRUE/FALSE or 0/1). How?
+
+--
+
+The output of linear regression is fed into the sigmoid function: $y_{log} = \frac{1}{1+e^{-y_{lin}}}$
+
+where $y_{lin}$ is just the linear combination of the explanatory variables that we are already familiar with from linear regression: $y_{lin} = mx + c$
+
+```{r, echo = FALSE}
+x <- (-1000:1000) / 25
+y_lin <- x*0.1
+y_log <- 1 / (1 + exp(-y_lin))
+df <- tibble(x = x, y_lin = y_lin, y_log = y_log)
+
+df %>%
+  ggplot() +
+  geom_line(aes(x, y_lin/4 + 0.3), color = "blue")+
+  geom_line(aes(x, y_log), color = "red") + 
+  geom_hline(yintercept = 0, linetype = "dashed", alpha=0.5) + 
+  geom_hline(yintercept = 1, linetype = "dashed", alpha=0.5) +
+  labs(x = "x", y = "y", title = "Sigmoid function (r), underlying linear function (b)") +
+  xlim(-30, 40)
+```
+
+
+---
+
+# Logistic regression predictions
+
+The output of the sigmoid function will be a number between 0 and 1.
+
+How do we go from a probability between 0 and 1 to a prediction of either 0 or 1?
+
+```{r, echo = FALSE}
+df %>%
+  ggplot() +
+  geom_line(aes(x, y_log), color = "black") + 
+  geom_hline(yintercept = 0, linetype = "dotted", alpha=0.5) + 
+  geom_hline(yintercept = 1, linetype = "dotted", alpha=0.5) +
+  labs(x = "x", y = "output of logistic function", title = "Logistic regression predictions")
+```
+
+---
+
+# Logistic regression predictions
+
+The output of the sigmoid function will be a number between 0 and 1.
+
+How do we go from a probability between 0 and 1 to a prediction of either 0 or 1?
+
+```{r, echo = FALSE}
+  ggplot() +
+  geom_line(aes(x, y_log), data = df %>% filter(y_log >= 0.5), color = "red") +
+  geom_line(aes(x, y_log), data = df %>% filter(y_log < 0.5), color = "blue") + 
+  geom_hline(yintercept = 0, linetype = "dotted", alpha=0.5) + 
+  geom_hline(yintercept = 1, linetype = "dotted", alpha=0.5) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", alpha=0.7) +
+  annotate(
+    "segment",
+    x = 2,
+    y = 0.56,
+    xend = 2,
+    yend = 0.99,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  ) +
+  annotate(
+    "text",
+    label = "   If y > 0.5,\npredict 1",
+    x = 9,
+    y = 0.9
+  ) +
+  annotate(
+    "segment",
+    x = -2,
+    y = 0.44,
+    xend = -2,
+    yend = 0.01,
+    arrow = arrow(length = unit(0.3, "cm"), type="closed")
+  ) +
+  annotate(
+    "text",
+    label = " If y < 0.5,\npredict 0 ",
+    x = -9.5,
+    y = 0.1
+  ) +
+  labs(x = "x", y = "output of logistic function", title = "Logistic regression predictions")
+```
+
+If the logisitc regression is > 0.5, predict 1. Otherwise, predict 0.
+
+---
+
+# Logistic Regression in R
+
+```{r, echo = FALSE}
+x1 <- (1:1000) + rnorm(1000, sd=100)
+x2 <- (1:1000) + rnorm(1000, sd=100)
+y <- c(rep.int(0, 500), rep.int(1, 500))
+df <- tibble(target = y, feature_1 = x1, feature_2 = x2)
+```
+
+In R, we can fit a Generalized Linear Model using the `glm` function:
+
+```{r}
+logistic_model <- glm(
+  target ~ feature_1 + feature_2,
+  family = binomial(), 
+  data = df
+  )
+```
+
+---
+
+# Logistic Regression in R
+
+```{r, echo = FALSE}
+set.seed(64)
+x1 <- (1:1000) + rnorm(1000, sd=100)
+x2 <- (1:1000) + rnorm(1000, sd=100)
+y <- c(rep.int(0, 500), rep.int(1, 500))
+df <- tibble(target = y, feature_1 = x1, feature_2 = x2)
+```
+
+In R, we can fit a Generalized Linear Model using the `glm` function:
+
+```{r}
+logistic_model <- glm(
+  target ~ feature_1 + feature_2, 
+  family = binomial(), #<<
+  data = df
+  )
+```
+
+This is very similar to the `lm` function for linear regression, but we must specify the sigmoid link function using the `family = binomial()` argument.
+
+---
+
+# Add predictions
+
+Use the `add_predictions` function from the `modelr` library.
+
+```{r}
+logistic_predictions <- df %>%
+  add_predictions(
+    logistic_model,
+    type = "response" #<<
+  )
+```
+<br>
+```{r, echo = FALSE}
+set.seed(67)
+knitr::kable(sample_n(logistic_predictions,  2) %>% select(feature_1, feature_2, target, pred), format = "html")
+```
+
+---
+
+# Add predictions
+
+Add categorical predictions with `mutate`:
+
+```{r}
+logistic_predictions <- df %>%
+  add_predictions(
+    logistic_model,
+    type = "response"
+  ) %>%
+  mutate( #<<
+    outcome = if_else( #<<
+      condition = pred > 0.5, #<<
+      true = 1, #<<
+      false = 0 #<<
+    ) #<<
+  ) #<<
+```
+
+```{r, echo = FALSE}
+set.seed(67)
+knitr::kable(sample_n(logistic_predictions,  2) %>% select(feature_1, feature_2, target, pred, outcome), format = "html")
+```
+
+---
+
+# An example
+
+```{r, echo=FALSE}
+df %>%
+  mutate(target = as.factor(target)) %>%
+  ggplot() +
+  geom_point(
+    aes(
+      feature_1, 
+      feature_2, 
+      color = target
+      ),
+    alpha = 0.6
+  )
+```
+
+```{r}
+logistic_model <- glm(
+  target ~ feature_1 + feature_2, 
+  family = binomial(), 
+  data = df
+  )
+```
+
+---
+
+# Model parameters
+
+```r
+logistic_model %>% 
+  tidy()
+```
+
+<br>
+
+```{r, echo = FALSE}
+knitr::kable(
+  logistic_model %>% 
+  tidy() %>% 
+  select(term, estimate), 
+    format = "html")
+```
+
+
+
+---
+
+# Visual interpretation
+
+```{r, echo=FALSE}
+df %>%
+  mutate(target = as.factor(target)) %>%
+  ggplot() +
+  geom_point(
+    aes(
+      feature_1, 
+      feature_2, 
+      color = target
+      ),
+    alpha = 0.6
+  ) +
+  geom_abline(
+    slope = - logistic_model$coefficients[2] / logistic_model$coefficients[3], 
+    intercept = - logistic_model$coefficients[1] / logistic_model$coefficients[3]
+  ) +
+  annotate(
+    "text",
+    label = "Decision boundary",
+    x = 275,
+    y = 1100
+  ) +
+  labs(x = "Feature 1", y = "Feature 2")
+```
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]
