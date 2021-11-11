@@ -1,13 +1,13 @@
 ---
 title: CDS 101 <br> What are the computational and data sciences? <br> Welcome to the course
-author: James K. Glasbrenner
+author: Dominic White
 ---
 
 class: center, middle, title-slide
 
 .upper-right[
 ```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
-knitr::include_graphics("../../img/cds-101-online-logo.png")
+knitr::include_graphics("../../img/cds-101-logo-slides-icon.png")
 ```
 ]
 
@@ -53,10 +53,6 @@ source("../../R/xaringan_setup.R")
 
 CDS 101 + CDS 102 can be used to satisfy the 4 credit Natural Sciences + Lab requirement.
 
----
-
-# CDS 101 vs. CDS 102
-
 CDS 101: Main lecture class.
 
 CDS 102: Associated lab class.
@@ -80,24 +76,20 @@ Assistant Professor in the Department of Computational and Data Sciences
 
 # CDS 101 course structure
 
-Each week we will cover a separate topic.
-
-List of topics is available at the course website: https://www.cds101.com
+Each week we will cover a separate topic. A schedule of topics will be available on Blackboard.
 
 Each topic/week will have:
 
-* Video lectures (do before class)
-* Readings
-* A quiz on the video lectures & readings (due before the first class of the week)
-* Class work, either:
-  * Individual assignment
-  * Group project
+* An interactive tutorial (videos + exercises)
+* Readings (sometimes)
+* A quiz on the preparatory material (due before the first class of the week)
+* An assignment
 
 In addition:
 
-* Midterm
+* Midterm project
 
-* Final group project
+* Final project
 
 ---
 
@@ -119,7 +111,7 @@ Use your instructors:
 
 # Getting help
 
-*Talk to us:* Office hours are on Blackboard under the **Syllabus** section.
+*Talk to us:* Come to office hours!
 
 *Talk to others:*
 
@@ -177,11 +169,9 @@ Plagiarism will not be tolerated.
 
 All work must be your own, except...
 
-* In group projects, you may collaborate with other members of your group.
+* You may use code snippets from GitHub, Stack Overflow, *with proper citation*.
 
-* You may use code snippets from GitHub, Stack Overflow, with proper citation.
-
-Violations will be reported, and will go on your official academic record.
+Violations will be reported to the Honor Code committee: you will fail this course, and an honor code violation will go on your official academic record.
 
 ---
 
