@@ -76,6 +76,32 @@ To view the slideshows, open the HTML files using your web browser.
 I recommend using [Google Chrome][chrome-download] for this as it seems to provide the best rendering of these files.
 Please note that these HTML files should not be moved to another location on your computer, otherwise they will not render correctly in your browser.
 
+Useful Syntax
+-------------
+
+* Highlight lines with the `flair` package: https://cran.r-project.org/web/packages/flair/vignettes/how_to_flair.html
+
+* `.pull-left[]` and `.pull-right[]` for columns
+
+* Add the line `count: false` to a slide before its title to use the same numbering as the previous slide.
+
+* Put presenter notes under a line with three question marks:
+
+    ```
+    Slide contents.
+    
+    ???
+    
+    Presenter notes.
+    ```
+    
+* Presenting shortcuts:
+    * `h` or `?` to pull up help.
+    * `f` to go to fullscreen.
+    * `c` to clone a 2nd synced versions of slides in another window.
+    * `p` to enter presenter mode. Use in conjunction with `c`.
+
+
 License
 -------
 
