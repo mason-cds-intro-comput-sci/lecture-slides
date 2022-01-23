@@ -1,0 +1,198 @@
+---
+title: CDS 101 <br> Data visualization <br> Interpreting scatter plots
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data visualization]
+.title-hline[
+## Interpreting scatter plots
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(tidyverse)
+```
+
+---
+
+# The purpose of a scatter plot
+
+A scatter plot tells us about the relationship between two variables (i.e. how they co-vary).
+
+```{r, echo = FALSE}
+starwars %>%
+  # filter(name != "Jabba Desilijic Tiure") %>%
+  ggplot() +
+  geom_point(aes(x = height, y = mass)) +
+  labs(title = "Mass and height of Star Wars characters")
+```
+
+How can we describe this relationship?
+
+---
+
+# Linearity
+
+A scatter plot can tell us whether two variables have a linear (i.e. straight) relationship or a non-linear relationship (i.e. curved)
+
+.pull-left[
+
+```{r, echo=FALSE, fig.width=3, out.width="100%"}
+set.seed(42)
+x <- runif(100)*20
+y <- x + rnorm(100)
+ggplot(tibble(x,y), aes(x,y)) +
+  geom_point(size=0.5) + geom_smooth(method = "lm", se=FALSE) +
+  labs(title = "Linear")
+```
+
+If you can draw a straight line (i.e. a line with a constant slope) through the data, then it has a linear relationship.
+]
+
+.pull-right[
+
+```{r, echo=FALSE, fig.width=3, out.width="100%"}
+set.seed(42)
+x <- runif(100)*10
+y <- x^2/5 + rnorm(100)
+ggplot(tibble(x,y), aes(x,y)) +
+  geom_point(size = 0.5) + geom_smooth(se=FALSE) +
+  labs(title = "Non-linear")
+```
+
+If a line drawn through the data is curved (variable slope), then the relationship is non-linear.
+]
+
+---
+
+# Describing linear relationships
+
+Positive, negative, no-relationship
+
+---
+
+# Degree of correlation
+
+Two variables can be linearly related, even if they are poorly correlated.
+
+Both of these graphs show a linear relationship:
+
+```{r, echo = FALSE, out.width="90%", fig.width=4}
+set.seed(42)
+x <- runif(100)*20
+y1 <- x + rnorm(100,0,3)
+y2 <- x + rnorm(100,0,20)
+tibble(x,"Highly correlated" = y1, "Poorly correlated" = y2) %>%
+  pivot_longer(cols = c("Highly correlated", "Poorly correlated")) %>%
+  ggplot(aes(x,value)) +
+    geom_point(size=0.3) + geom_smooth(method = "lm", se=FALSE) +
+    facet_wrap(~name, ncol = 2)
+```
+
+---
+
+
+# Don't be fooled
+
+.pull-left[
+```{r, echo=FALSE, fig.width=3, out.width="100%", fig.asp=1}
+set.seed(42)
+x <- runif(100)*20
+y <- x + x*rnorm(100)
+ggplot(tibble(x,y), aes(x,y)) +
+  geom_point(size=0.5) #+ geom_smooth(method = "lm", se=FALSE)
+```
+
+This data might not look linearly related...
+]
+
+--
+
+.pull-right[
+```{r, echo=FALSE, fig.width=3, out.width="100%", fig.asp=1}
+set.seed(42)
+x <- runif(100)*20
+y <- x + x*rnorm(100)
+ggplot(tibble(x,y), aes(x,y)) +
+  geom_point(size=0.5) + geom_smooth(method = "lm", se=FALSE)
+```
+
+...but although the amount of correlation varies, the relationship is still best described with a straight line.
+]
+
+---
+
+# Return of the ~~Jedi~~ Mass vs. height
+
+.qa[
+How would you describe this relationship? What other variables would help us understand data points that don't follow the overall trend?
+]
+
+```{r starwars-height-mass-2, echo = FALSE}
+ggplot(data = starwars) +
+  geom_point(mapping=aes(x = height, y = mass)) +
+  labs(title = "Mass vs. height in Star Wars characters")
+```
+
+
+---
+
+# Spotting outliers
+
+.qa[
+Who is the not so tall but really massive character?
+]
+
+```r
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass))
+```
+
+.pull-left[
+```{r starwars-height-mass-3, fig.width=4, out.width = "100%", echo = FALSE}
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass)) +
+  labs(title = "Mass vs. height in Star Wars characters")
+```
+]
+
+--
+
+.pull-right[
+```{r jabba-the-hut, out.width = "70%", echo = FALSE}
+knitr::include_graphics("../../img/jabba.png")
+```
+]
+
+---
+
+# Credits
+
+.left-column[
+License
+
+
+<!-- Acknowledgments -->
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+]

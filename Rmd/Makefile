@@ -1,9 +1,9 @@
 include ../make.inc
 
 DIRS	=	orientation															\
-			what_are_comput_data_sci									\
-			reproducible_toolbox											\
-			data_visualization												\
+			01_what_are_comput_data_sci									\
+			02_reproducible_toolbox											\
+			03_data_visualization												\
 			data_transformation												\
 			git_vcs 																	\
 			inference_advanced           							\

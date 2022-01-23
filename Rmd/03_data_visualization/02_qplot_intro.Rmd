@@ -1,0 +1,108 @@
+---
+title: CDS 101 <br> Data visualization <br> Basic ggplots with qplot()
+author: Dominic White
+---
+
+class: center, middle, title-slide
+
+.upper-right[
+```{r logo, eval = TRUE, echo = FALSE, out.width = "605px"}
+knitr::include_graphics("../../img/cds-101-online-logo.png")
+```
+]
+
+.lower-right[
+```{r cc-by-sa, eval = TRUE, echo = FALSE, out.width = "88px"}
+knitr::include_graphics("../../img/cc-by-nc-sa.png")
+```
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data visualization]
+.title-hline[
+## Basic ggplot graphs with `qplot()`
+]
+
+```{r setup, include = FALSE}
+# DO NOT ALTER THIS CHUNK
+source("../../R/xaringan_setup.R")
+library(tidyverse)
+```
+
+---
+
+# A refresher on functions
+
+A function is a piece of code that we can reuse. A function takes inputs and returns an output.
+
+We can **call** an existing function within our code.
+
+```r
+some_function(parameter_1 = argument_1, parameter 2 = argument_2)
+```
+
+What might a function for creating graphs look like?
+
+
+---
+
+# The `qplot()` function
+
+We can use the `qplot()` function to create a graph.
+
+```r
+qplot(x = height, y = mass, data = starwars)
+```
+
+--
+
+```{r, echo=FALSE}
+qplot(x = height, y = mass, data = starwars)
+```
+
+
+???
+
+Packages in R are like expansions in video games. They are extensions of the basic system that allow you to do new things. There are a huge number of R packages.
+
+
+---
+
+# How does this work?
+
+```r
+qplot(x = height, y = mass, data = starwars)
+```
+
+`starwars` is a dataset about characters in the Star Wars universe. 
+
+`height` and `mass` are 2 of the columns in this dataset:
+
+```{r, echo=FALSE}
+starwars %>%
+  select(name, height, mass) %>%
+  head() %>%
+  knitr::kable(format = "html")
+```
+
+
+???
+
+It's worth taking a look at the dataset and making sure that you know what each row and column represents.
+
+---
+
+# Credits
+
+.left-column[
+License
+
+
+<!-- Acknowledgments -->
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+]
