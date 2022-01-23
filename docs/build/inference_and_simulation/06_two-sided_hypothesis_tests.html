@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>CDS 101 Online   Inference and simulation   Two-sided hypothesis tests using infer</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="James K. Glasbrenner" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Inference and simulation]
+.title-hline[
+## Two-sided hypothesis tests using .mono[infer]
+]
+
+
+
+---
+
+# Download and load the dataset
+
+&lt;div style="margin-bottom: 10%"&gt;&lt;/div&gt;
+
+You can follow along by downloading and loading the dataset by placing the following *setup* code block at the top of a R Markdown file.
+
+&lt;div style="margin-bottom: -3%"&gt;&lt;/div&gt;
+
+&lt;pre&gt;&lt;code&gt;
+&amp;#96;&amp;#96;&amp;#96;{r setup, include = FALSE}
+# Load required packages
+library(tidyverse)
+library(infer)
+# Load datasets
+college_apps &lt;- read_rds(
+  url("http://data.cds101.com/college_applications.rds")
+)
+applicants_data &lt;- read_rds(
+  url("http://data.cds101.com/gender_discrimination.rds")
+)
+&amp;#96;&amp;#96;&amp;#96;
+&lt;/code&gt;&lt;/pre&gt;
+
+---
+
+# Simulations recap
+
+&lt;div style="margin-bottom: 7%"&gt;&lt;/div&gt;
+
+In the previous lectures, we ran the following simulations:
+
+```r
+# College applications null distribution
+college_apps_null &lt;- college_apps %&gt;%
+  specify(formula = number_colleges ~ NULL) %&gt;%
+  hypothesize(null = "point", mu = 8) %&gt;%
+  generate(reps = 10000, type = "bootstrap") %&gt;%
+  calculate(stat = "mean")
+
+# Gender discrimation null distribution
+simulation_results &lt;- applicants_data %&gt;%
+  specify(outcome ~ sex, success = "Promoted") %&gt;%
+  hypothesize(null = "independence") %&gt;%
+  generate(reps = 10000, type = "permute") %&gt;%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+---
+
+layout: true
+
+# .font80[Two-sided hypothesis testing with p-values]
+
+.font90[
+If the research question was "Do the data provide convincing evidence that the average amount of schools that GMU students apply to is **different** than the national average?", the alternative hypothesis would be different.
+
+  .center[*H&lt;sub&gt;0&lt;/sub&gt;* : *μ* = 8]
+  .center[*H&lt;sub&gt;A&lt;/sub&gt;* : *μ* ≠ 8]
+
+The above is an example of a two-sided hypothesis test. In principle, the *p*-value of a two-sided test can be different from a one-sided test.
+
+Computing the *p*-value of a two-sided hypothesis test is simple to do with .mono[infer], just change the .mono[direction] keyword in .mono[get_p_value()] from .mono["right"] to .mono["both"].
+]
+
+---
+
+---
+
+count: false
+
+
+```r
+college_apps_p_value_two_sided &lt;- college_apps_null %&gt;%
+  get_p_value(obs_stat = 9.7, direction = "both")
+```
+  
+---
+
+&lt;div style="margin-bottom: -2%;"&gt;&lt;/div&gt;
+
+.pull-left[
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/inference_and_simulation/06_two-sided_hypothesis_tests_files/figure-html/app-pvalues-two-sided-results-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;div style="margin-bottom: 20%;"&gt;&lt;/div&gt;
+
+.answer[p-value = 0]
+]
+
+---
+
+count: false
+
+&lt;div style="margin-bottom: -2%;"&gt;&lt;/div&gt;
+
+.pull-left[
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/inference_and_simulation/06_two-sided_hypothesis_tests_files/figure-html/app-pvalues-two-sided-results-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;div style="margin-bottom: 20%;"&gt;&lt;/div&gt;
+
+.answer[p-value = 0]
+
+.font90[
+In this example, the *p*-value does not change.
+]
+]
+
+---
+
+layout: false
+
+# .font70[Gender discrimination dataset: two-sided hypothesis test]
+
+&lt;div style="margin-bottom: 12%;"&gt;&lt;/div&gt;
+
+We can use the same null distribution that we generated earlier to compute the two-sided *p*-value for the gender discrimination experiment.
+
+--
+
+Conducting a two-sided hypothesis test means we are counting when the difference in the men and women hiring fractions is **larger** than 0.292 and also when it is in the opposite extreme, which would be when the bias is towards hiring more women than men.
+
+--
+
+```r
+sim_p_value_two_sided &lt;- simulation_results %&gt;%
+  get_p_value(obs_stat = experiment_result, direction = "both")
+```
+
+&lt;div style="margin-bottom: 2%;"&gt;&lt;/div&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.0486 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# .font90[Visualization of null distribution (two-sided)]
+
+.valign-slide[
+```r
+simulation_results %&gt;%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = experiment_result, direction = "both") +
+  labs(
+    x = "difference in fraction of male and female promotions",
+    title = "Gender discrimination null distribution"
+  )
+```
+]
+
+---
+
+# .font90[Visualization of null distribution (two-sided)]
+
+&lt;div style="margin-bottom: 7%;"&gt;&lt;/div&gt;
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/inference_and_simulation/06_two-sided_hypothesis_tests_files/figure-html/gender-discrimination-pvalues-two-sided-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the Chapter 3 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

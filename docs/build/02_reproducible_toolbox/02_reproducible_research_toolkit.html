@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>CDS 101 Online   Reproducible toolbox   Reproducible research toolkit</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="James K. Glasbrenner" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Reproducible toolbox]
+.title-hline[
+## Reproducible research toolkit
+]
+
+
+
+---
+
+&lt;h1 style="margin-bottom: 7%;"&gt;Reproducibility checklist&lt;/h1&gt;
+
+.qa[
+What does it mean for a data analysis to be "reproducible"?
+]
+
+--
+
+Near-term goals:
+
+* Are the tables and figures reproducible from the code and data?
+
+* Does the code actually do what you think it does?
+
+* In addition to what was done, is it clear **why** it was done? (e.g., how were parameter settings chosen?)
+
+Long-term goals:
+
+* Can the code be used for other data?
+
+* Can you extend the code to do other things?
+
+---
+
+layout: true
+
+# Meet the toolkit
+
+---
+
+.answer.center[**Primary tool:** R]
+
+&lt;img src="../../img/r-logo.png" width="20%" style="display: block; margin: auto;" /&gt;
+
+.pull-left[
+.code70[
+```r
+side_one &lt;- 3
+side_two &lt;- 4
+hypotenuse &lt;- sqrt(side_one^2 + side_two^2)
+result &lt;- paste(
+  "A triangle with sides of length",
+  side_one,
+  "and length",
+  side_two,
+  "has a hypotenuse of length",
+  hypotenuse
+)
+
+print(result)
+```
+]
+]
+
+.pull-right[
+
+```
+## [1] A triangle with sides of
+## length 3 and length 4 has a
+## hypotenuse of length 5
+```
+]
+
+---
+
+.answer.center[**Utility belt:** tidyverse packages]
+
+&lt;img src="../../img/tidyverse-logo.png" width="100%" style='margin-top: 7%' style="display: block; margin: auto;" /&gt;
+
+---
+
+.answer.center[**Workshop:** RStudio Server]
+
+&lt;img src="../../img/rstudio-logo.png" width="20%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="../../img/rstudio-server-screenshot.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+.answer.center[**Storage room:** GitHub]
+
+&lt;img src="../../img/github-logo.svg" width="25%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="../../img/github-screenshot.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+layout: false
+
+# Some R history
+
+.valign-slide[
+* The first stable version of R, v1.0.0, was released on February 29, 2000.
+
+* R itself is an implementation of the [S programming language](https://en.wikipedia.org/wiki/S_(programming_language), which was designed at Bell Laboratories in the mid-1970s.
+
+* *Base R* was built for statisticians and for doing data analysis, but not necessarily for modern Data Science
+
+* It's age and legacy brings along old implementations of data structures and abbreviated function (commands) names
+]
+
+.footnote[
+Source: David Smith, *[Over 16 years of R project history](http://blog.revolutionanalytics.com/2016/03/16-years-of-r-history.html)*, [Revolutions blog](http://blog.revolutionanalytics.com), last updated on March 4, 2016, accessed September 20, 2017, &lt;http://blog.revolutionanalytics.com/2016/03/16-years-of-r-history.html&gt;
+]
+
+---
+
+# Modernizing R with `tidyverse`
+
+.valign-slide[
+Over the last 3 years, chief scientist at RStudio, Hadley Wickham, has brought R into the modern era with the `tidyverse`.
+
+.quote-container[
+&gt; The tidyverse is an opinionated collection of R packages designed for data science.
+&gt; All packages share an underlying philosophy and common APIs.
+.cite[[Front page of the Tidyverse website](https://www.tidyverse.org/)]
+]
+
+In practice, this meant reducing everything to a small, core set of commands that all behave in a similar way.
+]
+
+---
+
+&lt;h1 style="margin-bottom: 9%;"&gt;R essentials&lt;/h1&gt;
+
+A short list (for now):
+
+--
+
+* Functions are (most often) verbs, followed by what they will be applied to in parentheses:
+
+  ```r
+  do_this(to_this)
+  do_that(to_this, to_that, with_those)
+  ```
+
+--
+
+* Packages are installed with the `install.packages` function and loaded with the `library` function, once per session:
+
+  ```r
+  install.packages("package_name")
+  library(package_name)
+  ```
+
+--
+
+* Packages bring in additional functions for us to use!
+
+---
+
+# R Markdown
+
+&lt;img src="../../img/hello-r-markdown.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+.font80[
+* Fully reproducible reports – each time you knit the analysis is ran from the beginning
+
+* Simple markdown syntax for text
+
+* Code goes in chunks, defined by three back-ticks, narrative goes outside of chunks
+]
+
+---
+
+count: false
+
+# R Markdown
+
+&lt;img src="../../img/hello-r-markdown.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+&lt;div style="margin-top: 5%"&gt;&lt;/div&gt;
+
+.answer.center[
+If it works for you, then it works for me!
+]
+
+---
+
+# How will we use R Markdown?
+
+.vhalign-slide[
+* You will submit all your homework assignments and the final group project as an R Markdown document
+
+* You will be shown examples in the form of "real-time" demos inside an R Markdown document. While watching, you should create your own document and follow along!
+
+* For assignments, you'll always have a template R Markdown document to start with
+]
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the [Meet the toolkit slides](https://github.com/Sta112-F18/website/blob/5d19479bc2f3a9ba1f8c5a803cf6dd699376bc00/static/slides/u1_d01-meet-the-toolkit/u1_d01-meet-the-toolkit.Rmd) by Mine Çetinkaya-Rundel and made available under the [CC BY 4.0 license](http://creativecommons.org/licenses/by/4.0/).
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
