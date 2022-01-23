@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>CDS 101   Data visualization   Basic ggplots with qplot()</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dominic White" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data visualization]
+.title-hline[
+## Basic ggplot graphs with `qplot()`
+]
+
+
+
+---
+
+# A refresher on functions
+
+A function is a piece of code that we can reuse. A function takes inputs and returns an output.
+
+We can **call** an existing function within our code.
+
+```r
+some_function(parameter_1 = argument_1, parameter 2 = argument_2)
+```
+
+What might a function for creating graphs look like?
+
+
+---
+
+# The `qplot()` function
+
+The `qplot()` function is part of the `ggplot2` package.
+
+We need to load the `ggplot2` package before we can use any of the functions that it contains.
+
+```r
+library(ggplot2)
+```
+
+--
+
+Then we can use the `qplot()` function to create a graph.
+
+```r
+qplot(x = height, y = mass, data = starwars)
+```
+
+
+???
+
+Packages in R are like expansions in video games. They are extensions of the basic system that allow you to do new things. There are a huge number of R packages.
+
+---
+
+# Why is data visualization important?
+
+.quote-container[
+&gt; Nothing in science has any value to society if it is not communicated, and scientists are beginning to learn their social obligations.
+.cite[Anne Roe, *The Making of a Scientist* (1953)]
+]
+
+--
+
+.quote-container[
+&gt; If you cannot - in the long run - tell everyone what you have been doing, your doing has been worthless.
+.cite[Erwin Schrodinger (Nobel Prize winner in physics)]
+]
+
+--
+
+.quote-container[
+&gt; The greatest value of a picture is when it forces us to notice what we never expected to see.
+.cite[John Tukey (Mathematician, recipient of National Medal of Science)]
+]
+
+--
+
+.quote-container[
+&gt; Numbers have an important story to tell. They rely on you to give them a clear and convincing voice.
+.cite[Stephen Few (Founder of [Perceptual Edge](https://www.perceptualedge.com), author of *Show Me the Numbers*)]
+]
+
+--
+
+.quote-container[
+&gt; Visualizations act as a campfire around which we gather to tell stories.
+.cite[Al Shalloway (Founder and CEO of [Net Objectives](http://www.netobjectives.com))]
+]
+
+---
+
+# .font90[Effective presentations ↔ effective visuals]
+
+&lt;img src="../../img/steve_jobs.jpg" width="80%" style="display: block; margin: auto;" /&gt;
+
+.footnote[
+Source: [Digital Image](https://static6.businessinsider.com/image/52b86ad769bedd9b32759577-1200/steve-jobs-iphone.jpg), *AP* photo used on *Business Insider*, accessed September 10, 2017. www.businessinsider.com/the-first-iphone-2013-12.
+]
+
+---
+
+# .font90[Visualizations can lead to comprehension...]
+
+&lt;div style="margin-bottom: 10%;"&gt;&lt;/div&gt;
+
+&lt;img src="../../img/fallen_of_ww2.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+.footnote[
+Source: The Fallen of World War II, www.fallen.io/ww2/
+]
+
+---
+
+# ...or to confusion
+
+&lt;img src="../../img/2008-02-23_nytimes_movies_gross_earnings.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+.footnote[
+Source: Bloch, Mathew. "The Ebb and Flow of Movies - Box Office Receipts 1986 — 2008." *New York Times*, Lee Bryon, Shan Carter, Amanda Cox, 23 Feb. 2008. www.nytimes.com/interactive/2008/02/23/movies/20080223_REVENUE_GRAPHIC.html.
+]
+
+---
+
+&lt;h1 style="margin-bottom: 15%;"&gt;Poor visualizations may lead to tragedy&lt;/h1&gt;
+
+*   The *Challenger* disaster, January 28th, 1986
+
+--
+
+*   The Space Shuttle Challenger broke apart 73 seconds into flight, all seven crew members died
+
+--
+
+*   The rubber O-rings, which held the rockets together, had failed due to the low temperatures (below 30°F)
+
+--
+
+*   Engineers at Morton Thiokol, who supplied solid rocket motors to NASA, warned about this on January 27th, 1986 in a conference call
+
+--
+
+*   NASA and the managers at Morton Thiokol overruled their concerns, unpersuaded by the engineers
+
+---
+
+# .font90[The engineers presented tables like this one]
+
+&lt;div style="margin-bottom: 7%;"&gt;&lt;/div&gt;
+
+&lt;img src="../../img/morton_thiokol_chart_o-rings.png" width="600px" style="display: block; margin: auto;" /&gt;
+
+.footnote[
+Source: Figure 2.18(a) in *Modern Data Science with R* by Benjamin Baumer, Daniel Kaplan, and Nicholas Horton.
+]
+
+---
+
+# .font80[Edward Tufte's critique of the Challenger disaster]
+
+Mathematician Edward Tufte issued a critique and argued that the data should have been presented this way:
+
+&lt;img src="../../img/tufte_challenger_scatterplot_recreation.png" width="750px" style="display: block; margin: auto;" /&gt;
+
+.footnote[
+Source: Figure 2.17 in *Modern Data Science with R* by Benjamin Baumer, Daniel Kaplan, and Nicholas Horton.
+]
+
+---
+
+# .font80["Chartjunk" in Challenger Congressional Hearings]
+
+This information was presented in Congressional Hearings about the incident in this format:
+
+&lt;img src="../../img/challenger_congressional_evidence.png" width="450px" style="display: block; margin: auto;" /&gt;
+
+.footnote[
+Source: Figure 2.18(b) in *Modern Data Science with R* by Benjamin Baumer, Daniel Kaplan, and Nicholas Horton.
+]
+
+---
+
+# *How to Lie with Statistics*
+
+&lt;div style="margin-bottom: 15%;"&gt;&lt;/div&gt;
+
+Book by Darrell Huff, published in 1954
+
+&lt;div style="margin-bottom: 6%;"&gt;&lt;/div&gt;
+
+--
+
+* The title is tongue-in-cheek and is usually misunderstood. The book is not a guide for or about "fudging the numbers" with statistics.
+
+--
+
+* Illustrates ways that visualizations can be manipulated such that they are misleading, but technically show accurate information
+
+&lt;div style="margin-bottom: 6%;"&gt;&lt;/div&gt;
+
+--
+
+.answer.center[
+**General method:** Violate conventions and expectations
+]
+
+---
+
+# .font90[Example 1: gun deaths in Florida over time]
+
+.pull-left[
+&lt;div style="margin-bottom: 12%;"&gt;&lt;/div&gt;
+
+**Context**&lt;br&gt;
+Florida passed a "Stand Your Ground" law in 2005.
+
+Advocates claimed it would reduce crime, opponents argued it would increase use of lethal force
+
+&lt;div style="margin-bottom: 15%;"&gt;&lt;/div&gt;
+]
+
+---
+
+count: false
+
+# .font90[Example 1: gun deaths in Florida over time]
+
+.footnote[
+Source: Chen, Christine. "Gun deaths in Florida." *Reuters*, 16 Feb. 2014. graphics.thomsonreuters.com/14/02/US-FLORIDA0214.gif.
+]
+
+.pull-left[
+&lt;div style="margin-bottom: 12%;"&gt;&lt;/div&gt;
+
+**Context**&lt;br&gt;
+Florida passed a "Stand Your Ground" law in 2005.
+
+Advocates claimed it would reduce crime, opponents argued it would increase use of lethal force
+
+&lt;div style="margin-bottom: 15%;"&gt;&lt;/div&gt;
+
+.qa[
+If you wanted to use data to answer this question, and you came across this graphic published by the news organization Reuters, what would you conclude?
+]
+]
+
+.pull-left[
+&lt;img src="../../img/reuters_florida_stand_your_ground.gif" width="90%" style="display: block; margin: auto 0 auto auto;" /&gt;
+]
+
+---
+
+# .font90[Example 1: gun deaths in Florida over time]
+
+.pull-left[
+&lt;div style="margin-bottom: 12%;"&gt;&lt;/div&gt;
+
+The image's creator posted on Twitter to explain her design choices for the visualization.
+
+&lt;img src="../../img/cchan_tweets.png" width="95%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="../../img/iraqs-bloody-toll.jpg" width="75%" style="display: block; margin: auto;" /&gt;
+]
+
+.footnote[
+Sources: @ChristineHHChan, *Twitter*, 15 Apr. 2014, 2:30 a.m., twitter.com/ChristineHHChan/status/455971447169511424.; @ChristineHHChan, *Twitter*, 15 Apr. 2014, 2:31 a.m., twitter.com/ChristineHHChan/status/455971685783441408.; Scarr, Simon. "Iraq's bloody toll." *South China Morning Post*, 17 Dec. 2011. scmp.com/infographics/article/1284683/iraqs-bloody-toll.
+]
+
+---
+
+# .font80[Example 2: average global temperature over time]
+
+.footnote[
+Source: "Average Annual Global Temperature in Fahrenheit." *Powerline*, Steven Hayward, Global-2-copy, 21 Oct. 2015. www.powerlineblog.com/archives/2015/10/the-only-global-warming-chart-you-need-from-now-on.php.
+]
+
+The political/editorial magazine National Review [tweeted the following visualization](https://twitter.com/NRO/status/676516015078039556) on December 14, 2015. 
+
+&lt;img src="../../img/nro_powerline_temperatures.jpg" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+count: false
+
+# .font80[Example 2: average global temperature over time]
+
+&lt;div style="margin-bottom: 7%;"&gt;&lt;/div&gt;
+
+Here's a conventional plot of the average global temperature data
+
+&lt;img src="../../img/nasa_goddard_temperatures.svg" width="85%" style="display: block; margin: auto;" /&gt;
+
+.footnote[
+Source: "Global Mean Estimates based on Land and Ocean Data." NASA Goddard Institute for Space Studies, Sep. 2018. data.giss.nasa.gov/gistemp/graphs/.
+]
+
+---
+
+# .font60[Side note: How do we have a record going back to the 1880s?]
+
+.valign-slide[
+Temperatures from the 1800s and onward were recorded using thermometers at various locations around the globe, and by the 1880s thermometers had become precise.
+Systematic measurements began around the mid-1800s at various army posts, and in 1891 the National Weather Service was formed to continue the effort.
+]
+
+.footnote[
+Source: National Oceanic and Atmospheric Administration. "How do we observe today's climate?", www.climate.gov/maps-data/primer/measuring-climate.
+]
+
+---
+
+# .font80[Principles and ethics for scientific visualizations]
+
+&lt;div style="margin-bottom:10%;"&gt;&lt;/div&gt;
+
+1.  Present your results transparently and honestly
+
+--
+
+2.  Show all data, including outliers, that are valid measurements
+
+--
+
+3.  Use graph layouts that show trends and lets readers easily read quantitative values
+
+--
+
+4.  Do not break conventions regarding scaling, axis orientation, the type of plot to use, etc.
+
+--
+
+5.  If you leave something out of a visualization, say so and justify it
+
+--
+
+6.  Strongly consider including your datasets and any scripts used to create figures with your reports or journal articles
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Illustrative examples (*Challenger* disaster, *How to Lie with Statistics*, Gun deaths in Florida, average global temperatures) and **principles and ethics for scientific visualizations** adapted from *Modern Data Science with R* by Benjamin Baumer, Daniel Kaplan, and Nicholas Horton, chapters 2 and 6.
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

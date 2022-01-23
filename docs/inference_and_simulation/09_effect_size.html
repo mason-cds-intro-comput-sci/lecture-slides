@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>CDS 101 Online   Inference and simulation   Effect size</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="James K. Glasbrenner" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Inference and simulation]
+.title-hline[
+## Effect size
+]
+
+
+
+---
+
+# Effect size
+
+&lt;!-- Phi coefficient interpretation source: http://www.real-statistics.com/chi-square-and-f-distributions/effect-size-chi-square/ --&gt;
+
+* We would like to know how significant a result is, not just whether or not we can reject the null hypothesis.
+
+* The **effect size** is how big of a difference there is between two distributions.
+
+* There are different ways to compute an effect size.
+
+&lt;div style="margin-bottom: -2%;"&gt;&lt;/div&gt;
+
+.pull-left[
+.font120.center[**[Phi coefficient](https://en.wikipedia.org/wiki/Phi_coefficient)**]
+
+&lt;div style="margin-bottom: -2%;"&gt;&lt;/div&gt;
+
+.font90[
+* Categorical response variable
+* Categorical explanatory variable
+]
+
+.font70[
+| Effect size | Phi  |
+| ----------- | ---- |
+| Small       | 0.10 |
+| Medium      | 0.30 |
+| Large       | 0.50 |
+]
+]
+
+.pull-right[
+.font120.center[**[Cohen's *d*](https://en.wikipedia.org/wiki/Effect_size#Cohen.27s_d)**]
+
+&lt;div style="margin-bottom: -2%;"&gt;&lt;/div&gt;
+
+.font90[
+* Numerical response variable
+* Categorical explanatory variable
+]
+    
+.font70[
+| Effect size | d    |
+| ----------- | ---- |
+| Very small  | 0.01 |
+| Small       | 0.20 |
+| Medium      | 0.50 |
+| Large       | 0.80 |
+| Very large  | 1.20 |
+| Huge        | 2.00 |
+]
+]
+
+---
+
+# .font80[Effect size of gender discrimination experiment]
+
+The formula for computing the phi coefficient is as follows,
+
+`$$\varphi=\sqrt{\dfrac{\chi^{2}}{N}}$$`
+
+`\(\chi^{2}\)` is the Chi-Square statistic and `\(N\)` is the number of observations in the dataset.
+
+--
+
+The Chi-Square statistic can be easily computed using .mono[infer], and the rest of the computation can be handled with .mono[mutate()],
+
+.code80[
+
+```r
+num_samples &lt;- count(applicants_data)
+applicants_data %&gt;%
+  specify(outcome ~ sex, success = "Promoted") %&gt;%
+  calculate(stat = "Chisq", order = combine("Male", "Female")) %&gt;%
+  mutate(effect_size = sqrt(stat / pull(num_samples, n))) %&gt;%
+  pull(effect_size)
+```
+
+```
+## [1] 0.2812843
+```
+]
+
+--
+
+&lt;div style="margin-bottom: -3%"&gt;&lt;/div&gt;
+
+The effect size for the observed result is *medium*.
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

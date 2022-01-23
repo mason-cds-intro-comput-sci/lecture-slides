@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>CDS 101 Online   Data visualization   Data visualization with ggplot2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="James K. Glasbrenner" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data visualization]
+.title-hline[
+## Data visualization with ggplot2
+]
+
+
+
+---
+
+# Star Wars data
+
+Loading `tidyverse` also loads a dataset called `starwars` into your RStudio environment:
+
+.code70[
+```r
+library(tidyverse)
+starwars
+```
+]
+
+.code70[
+
+```
+## # A tibble: 87 x 13
+##    name  height  mass hair_color skin_color eye_color birth_year gender
+##    &lt;chr&gt;  &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; 
+##  1 Luke…    172    77 blond      fair       blue            19   male  
+##  2 C-3PO    167    75 &lt;NA&gt;       gold       yellow         112   &lt;NA&gt;  
+##  3 R2-D2     96    32 &lt;NA&gt;       white, bl… red             33   &lt;NA&gt;  
+##  4 Dart…    202   136 none       white      yellow          41.9 male  
+##  5 Leia…    150    49 brown      light      brown           19   female
+##  6 Owen…    178   120 brown, gr… light      blue            52   male  
+##  7 Beru…    165    75 brown      light      blue            47   female
+##  8 R5-D4     97    32 &lt;NA&gt;       white, red red             NA   &lt;NA&gt;  
+##  9 Bigg…    183    84 black      light      brown           24   male  
+## 10 Obi-…    182    77 auburn, w… fair       blue-gray       57   male  
+## # … with 77 more rows, and 5 more variables: homeworld &lt;chr&gt;,
+## #   species &lt;chr&gt;, films &lt;list&gt;, vehicles &lt;list&gt;, starships &lt;list&gt;
+```
+]
+
+---
+
+# Dataset terminology
+
+.qa[
+What does each row represent? What does each column represent?
+]
+
+.code70[
+
+```r
+starwars
+```
+
+```
+## # A tibble: 87 x 13
+##    name  height  mass hair_color skin_color eye_color birth_year gender
+##    &lt;chr&gt;  &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; 
+##  1 Luke…    172    77 blond      fair       blue            19   male  
+##  2 C-3PO    167    75 &lt;NA&gt;       gold       yellow         112   &lt;NA&gt;  
+##  3 R2-D2     96    32 &lt;NA&gt;       white, bl… red             33   &lt;NA&gt;  
+##  4 Dart…    202   136 none       white      yellow          41.9 male  
+##  5 Leia…    150    49 brown      light      brown           19   female
+##  6 Owen…    178   120 brown, gr… light      blue            52   male  
+##  7 Beru…    165    75 brown      light      blue            47   female
+##  8 R5-D4     97    32 &lt;NA&gt;       white, red red             NA   &lt;NA&gt;  
+##  9 Bigg…    183    84 black      light      brown           24   male  
+## 10 Obi-…    182    77 auburn, w… fair       blue-gray       57   male  
+## # … with 77 more rows, and 5 more variables: homeworld &lt;chr&gt;,
+## #   species &lt;chr&gt;, films &lt;list&gt;, vehicles &lt;list&gt;, starships &lt;list&gt;
+```
+]
+
+---
+
+# Luke Skywalker
+
+.valign-slide[
+&lt;img src="../../img/luke-skywalker.png" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+class: code80
+
+# What's in the Star Wars data?
+
+Take a `glimpse` at the data:
+
+
+```r
+glimpse(starwars)
+```
+
+```
+## Observations: 87
+## Variables: 13
+## $ name       &lt;chr&gt; "Luke Skywalker", "C-3PO", "R2-D2", "Darth Vader", "L…
+## $ height     &lt;int&gt; 172, 167, 96, 202, 150, 178, 165, 97, 183, 182, 188, …
+## $ mass       &lt;dbl&gt; 77.0, 75.0, 32.0, 136.0, 49.0, 120.0, 75.0, 32.0, 84.…
+## $ hair_color &lt;chr&gt; "blond", NA, NA, "none", "brown", "brown, grey", "bro…
+## $ skin_color &lt;chr&gt; "fair", "gold", "white, blue", "white", "light", "lig…
+## $ eye_color  &lt;chr&gt; "blue", "yellow", "red", "yellow", "brown", "blue", "…
+## $ birth_year &lt;dbl&gt; 19.0, 112.0, 33.0, 41.9, 19.0, 52.0, 47.0, NA, 24.0, …
+## $ gender     &lt;chr&gt; "male", NA, NA, "male", "female", "male", "female", N…
+## $ homeworld  &lt;chr&gt; "Tatooine", "Tatooine", "Naboo", "Tatooine", "Alderaa…
+## $ species    &lt;chr&gt; "Human", "Droid", "Droid", "Human", "Human", "Human",…
+## $ films      &lt;list&gt; [&lt;"Revenge of the Sith", "Return of the Jedi", "The …
+## $ vehicles   &lt;list&gt; [&lt;"Snowspeeder", "Imperial Speeder Bike"&gt;, &lt;&gt;, &lt;&gt;, &lt;…
+## $ starships  &lt;list&gt; [&lt;"X-wing", "Imperial shuttle"&gt;, &lt;&gt;, &lt;&gt;, "TIE Advanc…
+```
+
+---
+
+# What's in the Star Wars data?
+
+.pull-left[
+Run the following **in the Console** to view the help
+
+```r
+?starwars
+```
+]
+
+.pull-right[
+&lt;img src="../../img/starwars-help.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+--
+
+.qa[
+How many rows and columns does this dataset have? 
+
+What does each row represent? What does each column represent?
+]
+
+--
+
+.qa[
+Make a prediction: What relationship do you expect to see between height and mass?
+]
+
+---
+
+# Mass vs. height (`geom_point()`)
+
+Not all characters have height and mass information (hence 28 of them not plotted)
+
+
+```r
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass))
+```
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-height-mass-1-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Mass vs. height
+
+.qa[
+How would you describe this relationship? What other variables would help us understand data points that don't follow the overall trend?
+]
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-height-mass-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Mass vs. height
+
+.qa[
+Who is the not so tall but really massive character?
+]
+
+```r
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass))
+```
+
+.pull-left[
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-height-mass-3-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+--
+
+.pull-right[
+&lt;img src="../../img/jabba.png" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Additional variables
+
+.valign-slide[
+Can display additional variables with
+
+*   aesthetics (like shape, colour, size), or
+
+*   faceting (small multiples displaying different subsets)
+]
+
+---
+
+# Aesthetics
+
+.valign-slide[
+Visual characteristics of plotting characters that can be **mapped to data** are
+
+* `color`
+
+* `size`
+
+* `shape`
+
+* `alpha` (transparency)
+]
+
+---
+
+# Mass vs. height + gender
+
+
+```r
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass, color = gender))
+```
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-mass-height-gender-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Aesthetics summary
+
+* Continuous variable are measured on a continuous scale
+
+* Discrete variables are measured (or often counted) on a discrete scale
+
+| aesthetics    | discrete                 | continuous                              |
+| ------------- | ------------------------ | --------------------------------------- |
+| color         | rainbow of colors        | gradient                                |
+| size          | discrete steps           | linear mapping between radius and value |
+| shape         | different shape for each | shouldn't (and doesn't) work            |
+
+---
+
+# Faceting
+
+.valign-slide[
+* Smaller plots that display different subsets of the data
+
+* Useful for exploring conditional relationships and large data
+]
+
+---
+
+# Mass vs. height by gender
+
+
+```r
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass)) +
+  facet_grid(. ~ gender)
+```
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-mass-height-gender-facet-1-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Many ways to facet
+
+.valign-slide[
+In the next few examples, think about what each plot displays.
+Think about how the code relates to the output.
+]
+
+---
+
+# Many ways to facet
+
+
+```r
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass)) +
+  facet_grid(gender ~ .)
+```
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-mass-height-gender-facet-2-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Many ways to facet
+
+
+```r
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass)) +
+  facet_grid(. ~ gender)
+```
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-mass-height-gender-facet-3-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Many ways to facet
+
+
+```r
+ggplot(data = starwars) +
+  geom_point(mapping = aes(x = height, y = mass)) +
+  facet_wrap(~ eye_color)
+```
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-mass-height-gender-facet-4-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Facet summary
+
+.valign-slide[
+*   `facet_grid()`: 2d grid, rows ~ cols, . for no split
+
+*   `facet_wrap()`: 1d ribbon wrapped into 2d
+]
+
+---
+
+# Other geoms
+
+.qa[
+How are these plots similar? How are they different?
+]
+
+--
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-point-vs-smooth-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# `geom_smooth`
+
+To plot a smooth curve, use `geom_smooth()`
+
+
+```r
+ggplot(data = starwars) +
+  geom_smooth(mapping = aes(x = height, y = mass))
+```
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-height-mass-smooth-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Histograms
+
+For numerical variables
+
+
+```r
+ggplot(starwars) +
+  geom_histogram(mapping = aes(x = height), binwidth = 10)
+```
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-histogram-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Bar plots
+
+For categorical variables
+
+
+```r
+ggplot(starwars) +
+  geom_bar(mapping = aes(x = gender))
+```
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_visualization/04_data_visualization_with_ggplot2_files/figure-html/starwars-bar-plot-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the [Fundamentals of data &amp; data visualization](http://www2.stat.duke.edu/courses/Fall17/sta112.01/slides/03-deck.html) slides developed by Mine Çetinkaya-Rundel and made available under the [CC BY license](http://creativecommons.org/licenses/by-sa/4.0/us/).
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>CDS 101 Online   Data distributions   Probability mass functions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="James K. Glasbrenner" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data distributions]
+.title-hline[
+## Probability mass functions
+]
+
+
+
+---
+
+# Download and load the dataset
+
+&lt;div style="margin-bottom: 20%"&gt;&lt;/div&gt;
+
+You can follow along by downloading and loading the dataset by placing the following *setup* code block at the top of a R Markdown file.
+
+&lt;pre&gt;&lt;code&gt;
+&amp;#96;&amp;#96;&amp;#96;{r setup, include = FALSE}
+# Load required packages
+library(tidyverse)
+# Load datasets
+county &lt;- read_rds(url("http://data.cds101.com/county_complete.rds"))
+&amp;#96;&amp;#96;&amp;#96;
+&lt;/code&gt;&lt;/pre&gt;
+
+---
+
+# Data distributions
+
+&lt;div style="margin-bottom: 5%"&gt;&lt;/div&gt;
+
+We've already learned that histograms (.mono[geom_histogram()]) are a convenient way to represent numerical data in a single column (variable)
+
+&lt;div style="margin-bottom: 5%"&gt;&lt;/div&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; mean_work_travel &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 25.1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 25.8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 23.8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 28.3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 33.2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 28.1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 25.1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ... &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+count: false
+
+# Data distributions
+
+&lt;div style="margin-bottom: 5%"&gt;&lt;/div&gt;
+
+We've already learned that histograms (.mono[geom_histogram()]) are a convenient way to represent numerical data in a single column (variable)
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-mean-driving-histogram-binsize-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+--
+
+A histogram represents the **frequency** that values show up for a given variable
+
+.mono[binwidth] changes the "buckets" for the data, impacting the frequency heights.
+
+---
+
+count: false
+
+# Data distributions
+
+&lt;div style="margin-bottom: 5%"&gt;&lt;/div&gt;
+
+We've already learned that histograms (.mono[geom_histogram()]) are a convenient way to represent numerical data in a single column (variable).
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-mean-driving-histogram-binsize-1-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+A histogram represents the **frequency** that values show up for a given variable
+
+.mono[binwidth] changes the "buckets" for the data, impacting the frequency heights.
+
+---
+
+# .font70[Comparing distributions with unequal observations]
+
+So far, we've largely skipped over the question of how to compare distributions with varying numbers of observations.
+
+In our current example of average times to travel to work, we can group the data by state and compare Virginia to Maryland.
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-histogram-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+--
+
+.qa.center[
+In which state am I more likely to have a 30 minute commute?
+]
+
+---
+
+count: false
+
+# .font70[Comparing distributions with unequal observations]
+
+So far, we've largely skipped over the question of how to compare distributions with varying numbers of observations.
+
+In our current example of average times to travel to work, we can group the data by state and compare Virginia to Maryland.
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-histogram-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+
+In the dataset, Virginia has 134 counties compared to Maryland's 24 counties.
+
+We need to **normalize** the frequency counts.
+
+---
+
+# From frequency to probability
+
+Normalization is straightforward, just divide the frequency count in each "bucket" by the total number of observations in the histogram.
+
+If you group by categories, that you should divide by the number of observations in each group.
+
+To normalize the histograms from the prior example, we need to divide the Virginia frequencies by 134 and the Maryland frequencies by 24.
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-histogram-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+
+---
+
+count: false
+
+# From frequency to probability
+
+Normalization is straightforward, just divide the frequency count in each "bucket" by the total number of observations in the histogram.
+
+If you group by categories, that you should divide by the number of observations in each group.
+
+To normalize the histograms from the prior example, we need to divide the Virginia frequencies by 134 and the Maryland frequencies by 24.
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-pmf-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Probability mass function (PMF)
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-pmf-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+
+Just like a histogram, except that the bar heights reflect **probabilities** instead of **frequency counts**.
+
+Allows for a meaningful comparison of distributions with different numbers of observations.
+
+--
+
+.qa.center[
+In which state am I more likely to have a 30 minute commute?
+]
+--
+.answer.center[Maryland]
+
+---
+
+# Creating PMFs in R
+
+With .mono[ggplot2], it's straightforward to convert a histogram into a PMF.
+
+.code80[
+```r
+county %&gt;%
+  filter(state == "Virginia" | state == "Maryland") %&gt;%
+  ggplot() +
+  geom_histogram(
+    mapping = aes(x = mean_work_travel, fill = state),
+    position = "identity",
+    alpha = 0.5
+  )
+```
+]
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-1-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+count: false
+
+# Creating PMFs in R
+
+With .mono[ggplot2], it's straightforward to convert a histogram into a PMF.
+
+.code80[
+```r
+county %&gt;%
+  filter(state == "Virginia" | state == "Maryland") %&gt;%
+  ggplot() +
+  geom_histogram(
+*   mapping = aes(x = mean_work_travel, fill = state),
+    position = "identity",
+    alpha = 0.5
+  )
+```
+]
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-1-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+count: false
+
+# Creating PMFs in R
+
+With .mono[ggplot2], it's straightforward to convert a histogram into a PMF.
+
+.code80[
+```r
+county %&gt;%
+  filter(state == "Virginia" | state == "Maryland") %&gt;%
+  ggplot() +
+  geom_histogram(
+*   mapping = aes(x = mean_work_travel, y = ..density.., fill = state),
+    position = "identity",
+    alpha = 0.5
+  )
+```
+]
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-2-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Obtaining PMF values
+
+--
+
+1. Compute them manually
+
+--
+
+2. Extract them from your .mono[ggplot2] visualization
+
+---
+
+count: false
+
+# Obtaining PMF values
+
+1. .lightgray[Compute them manually]
+
+2. Extract them from your .mono[ggplot2] visualization
+
+--
+
+Assign the figure to a variable
+
+.code80[
+
+```r
+va_md_pmf_figure &lt;- county %&gt;%
+  filter(state == "Virginia" | state == "Maryland") %&gt;%
+  ggplot() +
+  geom_histogram(
+    mapping = aes(x = mean_work_travel, y = ..density.., fill = state),
+    binwidth = 2,
+    center = 0
+  )
+```
+]
+
+Use .mono[ggplot_build()] with .mono[purrr::pluck()] and .mono[as_data_frame()] as follows:
+
+.code80[
+
+```r
+va_md_pmf_data &lt;- va_md_pmf_figure %&gt;%
+  ggplot_build() %&gt;%
+  purrr::pluck("data", 1) %&gt;%
+  as_data_frame()
+```
+]
+
+---
+
+# Obtaining PMF values
+
+.code80[
+
+```r
+va_md_pmf_data %&gt;%
+  glimpse()
+```
+
+```
+## Observations: 30
+## Variables: 17
+## $ fill     &lt;chr&gt; "#00BFC4", "#F8766D", "#00BFC4", "#F8766D", "#00BFC4", …
+## $ y        &lt;dbl&gt; 0.003731343, 0.003731343, 0.029850746, 0.029850746, 0.0…
+## $ count    &lt;dbl&gt; 1, 0, 8, 0, 7, 0, 7, 0, 26, 5, 11, 2, 16, 1, 11, 4, 11,…
+## $ x        &lt;dbl&gt; 14, 14, 16, 16, 18, 18, 20, 20, 22, 22, 24, 24, 26, 26,…
+## $ xmin     &lt;dbl&gt; 13, 13, 15, 15, 17, 17, 19, 19, 21, 21, 23, 23, 25, 25,…
+## $ xmax     &lt;dbl&gt; 15, 15, 17, 17, 19, 19, 21, 21, 23, 23, 25, 25, 27, 27,…
+## $ density  &lt;dbl&gt; 0.003731343, 0.000000000, 0.029850746, 0.000000000, 0.0…
+## $ ncount   &lt;dbl&gt; 0.03846154, 0.00000000, 0.30769231, 0.00000000, 0.26923…
+## $ ndensity &lt;dbl&gt; 0.03846154, 0.00000000, 0.30769231, 0.00000000, 0.26923…
+## $ PANEL    &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ group    &lt;int&gt; 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2…
+## $ ymin     &lt;dbl&gt; 0.000000000, 0.003731343, 0.000000000, 0.029850746, 0.0…
+## $ ymax     &lt;dbl&gt; 0.003731343, 0.003731343, 0.029850746, 0.029850746, 0.0…
+## $ colour   &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+## $ size     &lt;dbl&gt; 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, …
+## $ linetype &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ alpha    &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+```
+]
+
+---
+
+# Obtaining PMF values
+
+To get the Maryland PMF data:
+
+.code80[
+
+```r
+md_pmf_data &lt;- va_md_pmf_data %&gt;%
+  filter(group == 1) %&gt;%
+  select(x, density)
+```
+]
+
+&lt;div style="margin-bottom: 3%"&gt;&lt;/div&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; x &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; density &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.104166666666667 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0416666666666667 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 26 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0208333333333333 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ... &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+count: false
+
+# Obtaining PMF values
+
+To get the Maryland PMF data:
+
+.code80[
+
+```r
+md_pmf_data &lt;- va_md_pmf_data %&gt;%
+  filter(group == 1) %&gt;%
+  select(x, density)
+```
+]
+
+&lt;div style="margin-bottom: 3%"&gt;&lt;/div&gt;
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+count: false
+
+# Obtaining PMF values
+
+To get the Maryland PMF data:
+
+.code80[
+
+```r
+md_pmf_data &lt;- va_md_pmf_data %&gt;%
+  filter(group == 1) %&gt;%
+  select(x, density)
+```
+]
+
+&lt;div style="margin-bottom: 3%"&gt;&lt;/div&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; x &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; density &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.104166666666667 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0416666666666667 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 26 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0208333333333333 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ... &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Obtaining PMF values
+
+To get the Virginia PMF data:
+
+.code80[
+
+```r
+va_pmf_data &lt;- va_md_pmf_data %&gt;%
+  filter(group == 2) %&gt;%
+  select(x, density)
+```
+]
+
+&lt;div style="margin-bottom: 3%"&gt;&lt;/div&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; x &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; density &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.00373134328358209 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0298507462686567 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0261194029850746 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0261194029850746 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0970149253731343 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.041044776119403 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 26 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0597014925373134 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ... &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Density plots as an alternative
+
+As an alternative to the probability mass function, we can also use the density plots provided in ggplot2. Unlike the histograms, they are automatically normalized.
+
+.code80[
+```r
+county %&gt;%
+  filter(state == "Virginia" | state == "Maryland") %&gt;%
+  ggplot() +
+  geom_density(
+    mapping = aes(x = mean_work_travel, fill = state),
+    alpha = 0.5
+  )
+```
+]
+
+.pull-left[
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-2-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-density-plot-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

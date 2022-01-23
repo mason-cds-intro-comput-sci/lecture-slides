@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>CDS 101 Online   Modeling   Creating models in R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dominic White" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Modeling]
+.title-hline[
+## Creating models in R
+]
+
+
+
+
+
+
+```r
+nonlinear_sim &lt;- tibble(x = new_sim$x, y = (new_sim$x+rnorm(30, sd=0.5)) ** 3)
+ggplot(nonlinear_sim) + geom_point(aes(x,y))
+```
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/modeling/04_assessing_models_files/figure-html/unnamed-chunk-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+# Least squares assumptions
+
+1.  **Linearity:** The relationship between the explanatory variable and the response variable must be linear.
+
+2.  **Nearly normal residuals:** The residuals should be nearly normal (i.e. follow a bell curve shape).
+
+3.  **Constant variability:** The variability of the points around the model line should be roughly constant.
+
+&lt;img src="/home/dominic/Dropbox/GMU/CDS101/master-repos/lecture-slides/build/modeling/04_assessing_models_files/figure-html/unnamed-chunk-3-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Observed vs predicted
+
+
+---
+
+# Residuals vs predicted
+
+
+&lt;!-- --- --&gt;
+
+&lt;!-- ```{r, echo=FALSE, fig.height=4} --&gt;
+&lt;!-- ## breaks: where you want to compute densities --&gt;
+&lt;!-- breaks &lt;- seq(0, 10, len=5) --&gt;
+&lt;!-- new_sim$section &lt;- cut(new_sim$x, breaks) --&gt;
+&lt;!-- new_sim$res = residuals(model2) --&gt;
+
+&lt;!-- dens &lt;- do.call(rbind, lapply(split(new_sim, new_sim$section), function(x) { --&gt;
+&lt;!--     d &lt;- density(x$res, n=50) --&gt;
+&lt;!--     res &lt;- data.frame(x=max(x$x)- d$y*2000, y=d$x+mean(x$y)) --&gt;
+&lt;!--     res &lt;- res[order(res$y), ] --&gt;
+&lt;!--     ## Get some data for normal lines as well --&gt;
+&lt;!--     xs &lt;- seq(min(x$res), max(x$res), len=50) --&gt;
+&lt;!--     res &lt;- rbind(res, data.frame(y=xs + mean(x$y), --&gt;
+&lt;!--                                  x=max(x$x) - 2000*dnorm(xs, 0, sd(x$res)))) --&gt;
+&lt;!--     res$type &lt;- rep(c("empirical", "normal"), each=50) --&gt;
+&lt;!--     res --&gt;
+&lt;!-- })) --&gt;
+&lt;!-- dens$section &lt;- rep(levels(new_sim$section), each=100) --&gt;
+
+&lt;!-- ggplot(new_sim, aes(x, y=y)) + --&gt;
+&lt;!--   geom_point() + --&gt;
+&lt;!--   geom_line(aes(y=model_preds)) + --&gt;
+&lt;!--   geom_path(data=dens[dens$type=="normal",], aes(x, y, group=section), color="salmon", lwd=1.1) + --&gt;
+&lt;!--   theme_bw() + --&gt;
+&lt;!--   geom_vline(xintercept=breaks, lty=2) --&gt;
+&lt;!-- ``` --&gt;
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the Chapter 3 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>CDS 101   Data reshaping   The pivot_wider function</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dominic White" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data reshaping]
+.title-hline[
+## The .mono[pivot_wider()] function
+]
+
+
+
+---
+
+# `pivot_wider()`
+
+.footnote[
+Source: Figure 12.3 in *R for Data Science* by Garrett Grolemund and Hadley Wickham.
+]
+
+.mono[pivot_wider()] takes rows and turns them into columns.
+
+You can think of it as the opposite of the `pivot_longer()` function.
+
+We take a categorical column (each category will become its own column) and a column of values (which will be divided up to become the values of the new columns).
+
+&lt;img src="../../img/pivot_wider_schematic.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+???
+
+We don't often need to make data wider, but it does happen sometimes and so it is useful to know about the pivot_wider() function. This takes a long dataframe with lots of rows and reshapes it into a wider dataframe with lots of columns instead.
+
+Essentially, this is the opposite of the pivot_longer() function.
+
+---
+
+# Structure of `pivot_wide()`
+
+.mono[pivot_wider()] takes rows and turns them into columns.
+
+
+&lt;code class ='r hljs remark-code'&gt;&lt;span style='background-color:Coral'&gt;pivot_wider&lt;/span&gt;(&lt;br&gt;&amp;nbsp;&amp;nbsp;name_of_dataset,&lt;br&gt;&amp;nbsp;&amp;nbsp;names_from = column_one,&lt;br&gt;&amp;nbsp;&amp;nbsp;values_from = column_two&lt;br&gt;)&lt;/code&gt;
+
+
+
+Let's break this down line-by-line...
+
+???
+
+The syntax of the pivot_wider function is similar to pivot_longer, but even simpler.
+
+We are going to take a column of names, and a column of values, and unstack those into a bunch of separate of columns.
+
+---
+
+# Structure of `pivot_wider()`
+
+The first argument we supply to the function is the name of the dataset:
+
+
+&lt;code class ='r hljs remark-code'&gt;pivot_wider(&lt;br&gt;&amp;nbsp;&amp;nbsp;&lt;span style='background-color:#ffff7f'&gt;name_of_dataset&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;names_from = column_one,&lt;br&gt;&amp;nbsp;&amp;nbsp;values_from = column_two&lt;br&gt;)&lt;/code&gt;
+
+
+
+Remember that as the dataset is the first argument, we can instead pipe the dataset to the function:
+
+&lt;code class ='r hljs remark-code'&gt;some_other_function() &lt;span style='background-color:Aquamarine'&gt;%&gt;%&lt;/span&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;pivot_wider(&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;names_from = column_one,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;values_from = column_two&lt;br&gt;&amp;nbsp;&amp;nbsp;)&lt;/code&gt;
+
+
+
+???
+
+First we need to specify the dataset to be reshaped. We can either do this directly, as in the top example, or we can pipe some dataset in from a variable or another function as you see in the bottom example.
+
+When we break a single line of code over many lines, as we have done here, it is often helpful to indent the subsequent lines. This is a good visual cue that makes it much easier to read the code and instantly see that this is all one line of code. RStudio will often indent these line breaks for you, but it doesn't always get it right, so you may need to insert or remove an indent of two spaces as required.
+
+---
+
+# Structure of `pivot_longer()`
+
+
+&lt;code class ='r hljs remark-code'&gt;name_of_dataset %&gt;%&lt;br&gt; &amp;nbsp;pivot_wider(&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt; &amp;nbsp;&amp;nbsp;&amp;nbsp;names_from = column_one,&lt;/span&gt;&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt; &amp;nbsp;&amp;nbsp;&amp;nbsp;values_from = column_two&lt;/span&gt;&lt;br&gt; &amp;nbsp;)&lt;/code&gt;
+
+
+
+The second argument, .mono[names_from], specifies the column which contains the names of the new columns that will create.
+
+The third argument, .mono[values_from], specifies the column which contains the values we will be dividing up into these new columns.
+
+???
+
+The only other information we need to provide are the columns that contain the names of the columns to be unstacked, and the column of values to unstack. The names_from and values_from parameters take these arguments.
+
+Note that these arguments will be existing columns in the dataframe, so we do not put the column names inside quotation marks.
+
+---
+
+# Untidy data example
+
+.qa.center[
+**Problem:** Untidy data frame stored in .mono[table2]
+]
+
+.font80[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; type &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; count &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cases &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 745 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; population &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19987071 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cases &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2666 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; population &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20595360 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cases &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37737 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; population &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 172006362 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cases &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80488 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; population &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 174504898 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cases &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 212258 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; population &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1272915272 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cases &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 213766 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; population &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1280428583 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+???
+
+Let's look at an example of how this works. Why is this dataset not tidy? Pause the video for a moment and see if you can figure out why.
+
+This is an untidy, or messy, dataset because the cases and population variables are mixed up in the same columns.
+
+
+---
+
+# Untidy data example
+
+&lt;div style="margin-bottom: 10%;"&gt;&lt;/div&gt;
+
+.answer.center[
+**Goal:** Use .mono[pivot_wider] to transform .mono[table2] back to this:
+]
+
+&lt;div style="margin-bottom: 5%;"&gt;&lt;/div&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; cases &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; population &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 745 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19987071 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2666 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20595360 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37737 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 172006362 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80488 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 174504898 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 212258 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1272915272 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 213766 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1280428583 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+???
+
+We want to convert the long untidy dataset into a tidy format. We will do this by unstacking the columns that contain the cases and population variables.
+
+Note that we have a column called type, which contains the names of the columns we want to create. We also have a column called count, which contains the values that we want to unstack.
+
+---
+
+# `pivot_wider()` example
+
+&lt;div style="margin-bottom: 5%;"&gt;&lt;/div&gt;
+
+```r
+table2 %&gt;%
+  pivot_wider(
+    names_from = type,
+    values_from = count
+  )
+```
+
+--
+
+&lt;div style="margin-bottom: 5%;"&gt;&lt;/div&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; cases &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; population &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 745 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19987071 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2666 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20595360 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37737 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 172006362 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80488 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 174504898 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 212258 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1272915272 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 213766 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1280428583 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+???
+
+This is the code that we would use to do this. We tell the pivot_wider function that the new column names are coming from the type column, and the new column values are coming from the count column.
+
+One thing to note again here, is that the original dataframe stored in the table2 will not be modified by running this function. Instead, the pivot_wider function will create a completely new reshaped dataframe. We have not stored that reshaped output dataframe here, merely printed it out on the slide for your viewing pleasure. If you need to save the reshaped dataframe for later use, remember to assign this output to a new variable.
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from [*R for Data Science*](http://r4ds.had.co.nz) by Garrett Grolemund and Hadley Wickham, [chapter 12](http://r4ds.had.co.nz/tidy-data.html), made available under the [CC BY-NC-ND 3.0 license](http://creativecommons.org/licenses/by-nc-nd/3.0/us/).
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
