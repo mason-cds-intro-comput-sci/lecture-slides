@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>CDS 101 Online   Data distributions   Cumulative distribution functions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="James K. Glasbrenner" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data distributions]
+.title-hline[
+## Cumulative distribution functions
+]
+
+
+
+---
+
+# Download and load the dataset
+
+&lt;div style="margin-bottom: 20%"&gt;&lt;/div&gt;
+
+You can follow along by downloading and loading the dataset by placing the following *setup* code block at the top of a R Markdown file.
+
+&lt;pre&gt;&lt;code&gt;
+&amp;#96;&amp;#96;&amp;#96;{r setup, include = FALSE}
+# Load required packages
+library(tidyverse)
+# Load datasets
+county &lt;- read_rds(url("http://data.cds101.com/county_complete.rds"))
+&amp;#96;&amp;#96;&amp;#96;
+&lt;/code&gt;&lt;/pre&gt;
+
+---
+
+# Data by percentile rank
+
+* Probability mass functions (PMFs) are handy exploratory tools, but as with histograms, the bin width can strongly influence what your plot looks like
+
+* The density plots offer a reasonable alternative to the PMFs, however, comparing distributions with different widths, multiple outliers, or very skewed data can still be challenging.
+
+* A convenient way to overcome this problem if we convert the data into a sorted list of percentile ranks
+
+* **Advantages**
+
+  * Don't need to select a bin width
+  
+  * Easier to compare similarities and differences of different data distributions
+  
+  * Different classes of data distributions have distinct shapes
+
+* The **cumulative distribution function** (CDF) lets us map between percentile rank and each value in a data column
+
+---
+
+# Creating CDFs in R 
+
+.mono[ggplot2] comes with a handy convenience function .mono[stat_ecdf()], which lets you create and visualize CDFs
+
+
+```r
+ggplot(county) +
+  stat_ecdf(mapping = aes(x = mean_work_travel)) +
+  labs(y = "CDF")
+```
+
+&lt;img src="/build/data_distributions/04_cumulative_distribution_functions_files/figure-html/county-commute-cdf-all-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+count: false
+
+# Creating CDFs in R 
+
+.mono[ggplot2] comes with a handy convenience function .mono[stat_ecdf()], which lets you create and visualize CDFs
+
+```r
+ggplot(county) +
+  stat_ecdf(mapping = aes(x = mean_work_travel)) +
+  labs(y = "CDF")
+```
+
+&lt;img src="/build/data_distributions/04_cumulative_distribution_functions_files/figure-html/county-commute-cdf-all-50th-percentile-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+count: false
+
+# Creating CDFs in R 
+
+.mono[ggplot2] comes with a handy convenience function .mono[stat_ecdf()], which lets you create and visualize CDFs
+
+```r
+ggplot(county) +
+  stat_ecdf(mapping = aes(x = mean_work_travel)) +
+  labs(y = "CDF")
+```
+
+&lt;img src="/build/data_distributions/04_cumulative_distribution_functions_files/figure-html/county-commute-cdf-all-75th-percentile-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Creating CDFs in R
+
+We can do all the usual operations, such as grouping by state
+
+```r
+county %&gt;%
+  filter(state == "Virginia" | state == "Maryland") %&gt;%
+  ggplot() +
+  stat_ecdf(mapping = aes(x = mean_work_travel, color = state)) +
+  labs(y = "CDF")
+```
+
+&lt;img src="/build/data_distributions/04_cumulative_distribution_functions_files/figure-html/county-commute-cdf-va-md-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+count: false
+
+# Creating CDFs in R
+
+We can do all the usual operations, such as grouping by state
+
+```r
+county %&gt;%
+  filter(state == "Virginia" | state == "Maryland") %&gt;%
+  ggplot() +
+* stat_ecdf(mapping = aes(x = mean_work_travel, color = state)) +
+  labs(y = "CDF")
+```
+
+&lt;img src="/build/data_distributions/04_cumulative_distribution_functions_files/figure-html/county-commute-cdf-va-md-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Computing the CDF
+
+&lt;div style="margin-bottom: 18%"&gt;&lt;/div&gt;
+
+To compute the CDF, we use the .mono[cume_dist()] function along with .mono[filter()], .mono[group_by()], and .mono[mutate()]:
+
+
+```r
+va_md_cdf_df &lt;- county %&gt;%
+  filter(state == "Virginia" | state == "Maryland") %&gt;%
+  group_by(state) %&gt;%
+  mutate(cdf = cume_dist(mean_work_travel)) %&gt;%
+  select(state, mean_work_travel, cdf)
+```
+
+---
+
+count: false
+
+# Get CDF data out of plot
+
+&lt;div style="margin-bottom: 8%"&gt;&lt;/div&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; state &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; mean_work_travel &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; cdf &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Virginia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0074627 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Virginia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0223881 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Virginia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0223881 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Virginia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0298507 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Virginia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0373134 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Virginia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0447761 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Virginia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0522388 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Virginia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0597015 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Virginia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0671642 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Virginia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0746269 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Credits
+
+.left-column[
+License
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

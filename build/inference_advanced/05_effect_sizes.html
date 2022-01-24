@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>CDS 101   Advanced Inference   Effect sizes</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dominic White" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-logo-slides-no-icon.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Advanced Inference]
+.title-hline[
+## Effect sizes
+]
+
+
+
+---
+
+# Effect size
+
+For example, let's imagine that there is a real difference between the true difference in heights between Mason and GWU students of 0.5 inches.
+
+* If we measured the heights of 10 students from each university, we would be unlikely to get a significant result. 
+* But if we measure 1000s of students, we are very likely to get a significant result, because correctly rejecting null hypotheses (i.e. detecting *true positives*) is easier when we have large sample sizes.
+
+
+
+&lt;img src="/build/inference_advanced/05_effect_sizes_files/figure-html/unnamed-chunk-2-1.svg" width="800" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Measuring effect size
+
+However, how meaningful is a difference of 0.5 inches? There is a much greater variation height within both schools than between them...
+
+--
+
+Effect size tells us how big the difference is compared to the general variation in heights. How?
+
+We look at the standardized differnce in heights:
+
+`\(effect\ size = \frac{[mean\ Mason\ height] - [mean\ GWU\ height]}{standard\ deviation}\)`
+
+This measure of effect size is called **Cohen's d**.
+
+---
+
+# Other measures of effect size
+
+For categorical data, we cannot compare differences in means (because we cannot calculate the mean of a column of categories), so we cannot use Cohen's d.
+
+We can use the Phi coefficient, `\(\phi\)`,
+
+`\(\phi = \sqrt{\frac{\chi^2}{N}}\)`
+
+* `\(\chi^2\)` is a categorical test statistic (instead of the difference in means).
+
+* N is the number of observations.
+
+&lt;!-- --- --&gt;
+
+&lt;!-- # An example in R --&gt;
+
+&lt;!-- ```{r} --&gt;
+&lt;!-- applicants_data %&gt;% --&gt;
+&lt;!--   specify(outcome ~ sex, success = "Promoted") %&gt;% --&gt;
+&lt;!--   calculate(stat = "Chisq", order = combine("Male", "Female")) %&gt;% --&gt;
+&lt;!--   mutate(Phi = sqrt(stat / nrow(applicants_data))) --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- .font70[ --&gt;
+&lt;!-- | Effect size | Phi  | --&gt;
+&lt;!-- | ----------- | ---- | --&gt;
+&lt;!-- | Small       | 0.10 | --&gt;
+&lt;!-- | Medium      | 0.30 | --&gt;
+&lt;!-- | Large       | 0.50 | --&gt;
+&lt;!-- ] --&gt;
+
+
+---
+
+# Why should we care?
+
+A study of aspirin in 22,000 patients found that it could reduce the risk of heart attacks. The p-value was highly significant: P &lt; .00001
+
+In other words, this effect was incrediably unlikely to have arisen by chance. Aspirin was recommended for prevention, and a huge number of people began taking it.
+
+But...
+
+--
+
+The effect size was extremely small (the decline in risk of heart attack was only 0.77 %).
+
+Even relatively mild drugs like aspirin are not free of side effects. Did the increased risk of side-effects outweigh the tiny heart attack benefits?
+
+
+
+---
+
+# Conclusion
+
+* With a large enough sample, we are virtually guaranteed a significant p-value (unless the true effect is exactly 0).
+
+* p-value alone is therefore not informative
+
+* We need to report the *effect size* to tell us whether a difference is meaningful.
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Aspirin heart attack example adapted from [Sullivan and Fein (2012)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3444174/)
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

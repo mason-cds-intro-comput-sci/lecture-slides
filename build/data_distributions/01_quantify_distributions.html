@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>CDS 101 Online   Data distributions   Quantifying data distributions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="James K. Glasbrenner" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Data distributions]
+.title-hline[
+## Quantifying data distributions
+]
+
+
+
+---
+
+# Variance
+
+&lt;div style="margin-bottom: 7%"&gt;&lt;/div&gt;
+
+**Variance** is roughly the average squared deviation from the mean.
+
+`$$s^{2}=\dfrac{\sum_{i=1}^{n}\left(x_i-\bar{x}\right)^{2}}{n-1}$$`
+
+.pull-left[
+* The sample mean is `\(\bar{x}=6.71\)`, and the sample size is `\(n=217\)`.
+
+* The variance of amount of sleep students get per night can be calculated as:
+]
+
+.pull-right[
+&lt;img src="../../img/sleep_hist.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+&lt;div style="margin-bottom: 5%"&gt;&lt;/div&gt;
+
+`$$s^{2}=\dfrac{(5-6.71)^{2}+(9-6.71)^{2}+\cdots{}+(7-6.71)^{2}}{217-1}=4.11\text{ hours}^{2}$$`
+
+---
+
+# Variance
+
+&lt;div style="margin-bottom: 21%"&gt;&lt;/div&gt;
+
+.qa[
+Why do we use the squared deviation in the calculation of variance?
+]
+
+.answer[
+* To get rid of negatives so that observations equally distant from the mean are weighed equally.
+
+* To weigh larger deviations more heavily.
+]
+
+---
+
+# Standard deviation
+
+&lt;div style="margin-bottom: 10%"&gt;&lt;/div&gt;
+
+The **standard deviation** is the square root of the variance, and has the same units as the data.
+
+`$$s=\sqrt{s^2}$$`
+
+&lt;div style="margin-bottom: 5%"&gt;&lt;/div&gt;
+
+.pull-left[
+* The standard deviation of amount of sleep students get per night can be calculated as:
+
+  `$$s=\sqrt{4.11}=2.03\text{ hours}$$`
+
+* We can see that all of the data are within 3 standard deviations of the mean.
+]
+
+.pull-right[
+&lt;img src="../../img/sleep_hist.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Median
+
+&lt;div style="margin-bottom: 15%"&gt;&lt;/div&gt;
+
+* The **median** is the value that splits the data in half when ordered in ascending order.
+  
+  `$$0,1,\mathbf{2},3,4$$`
+
+* If there are an even number of observations, then the median is the average of the two values in the middle.
+
+  `$$0,1,\underline{2,3},4,5\rightarrow\dfrac{2+3}{2}=\mathbf{2.5}$$`
+
+* Since the median is the midpoint of the data, 50% of the values are below it. Hence, it is also the `\(50^{th}\)` percentile.
+
+---
+
+# Mean vs. median
+
+If the distribution is symmetric, center is often defined as the mean: mean `\(\approx\)` median
+
+&lt;img src="../../img/sym.svg" width="30%" style="display: block; margin: auto;" /&gt;
+
+.pull-left[
+If the distribution is skewed or has extreme outliers, center is often defined as the median
+
+*   Right-skewed: mean `\(&gt;\)` median
+  
+*   Left-skewed: mean `\(&lt;\)` median
+]
+
+.pull-right[
+&lt;img src="../../img/rs.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="../../img/ls.svg" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Q1, Q3, and IQR
+
+&lt;div style="margin-bottom: 15%"&gt;&lt;/div&gt;
+
+* The `\(25^{th}\)` percentile is also called the first quartile, **Q1**.
+
+* The `\(50^{th}\)` percentile is also called the median.
+
+* The `\(75^{th}\)` percentile is also called the third quartile, **Q3**.
+
+* Between Q1 and Q3 is the middle 50% of the data. The range these data span is called the **interquartile** range, or the **IQR**.
+
+&lt;div style="margin-bottom: 8%"&gt;&lt;/div&gt;
+
+`$$IQR=Q3-Q1$$`
+
+---
+
+# Box plot
+
+The box in a **box plot** represents the middle 50% of the data, and the thick line in the box is the median.
+
+&lt;img src="../../img/study_hours_box.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Anatomy of a box plot
+
+&lt;img src="../../img/study_hours_box_layout.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Whiskers and outliers
+
+&lt;div style="margin-bottom: 8%"&gt;&lt;/div&gt;
+
+**Whiskers** of a box plot can extend up to `\(1.5\times{}\text{IQR}\)` away from the quartiles.
+
+&lt;div style="margin-bottom: 8%"&gt;&lt;/div&gt;
+
+`$$\text{max upper whisker reach}=Q3+1.5\times{}\text{IQR}$$`
+
+`$$\text{max lower whisker reach}=Q1-1.5\times{}\text{IQR}$$`
+
+&lt;div style="margin-bottom: 5%"&gt;&lt;/div&gt;
+
+`$$\text{IQR: }20-10=10$$`
+
+&lt;div style="margin-bottom: 5%"&gt;&lt;/div&gt;
+
+`$$\text{max upper whisker reach}=20+1.5\times{}10=35$$`
+
+`$$\text{max lower whisker reach}=10-1.5\times{}10=-5$$`
+
+&lt;div style="margin-bottom: 8%"&gt;&lt;/div&gt;
+
+A potential **outlier** is defined as an observation beyond the maximum reach of the whiskers. It is an observation that appears extreme relative to the rest of the data.
+
+---
+
+# Outliers (cont.)
+
+&lt;div style="margin-bottom: 20%"&gt;&lt;/div&gt;
+
+.qa[
+Why is it important to look for outliers?
+]
+
+.answer[
+* Identify extreme skew in the distribution.
+
+* Identify data collection and entry errors.
+
+* Provide insight into interesting features of the data.
+]
+
+---
+
+# Extreme observations
+
+.qa[
+How would sample statistics such as mean, median, SD, and IQR of household income be affected if the largest value was replaced with $10 million? What if the smallest value was replaced with $10 million?
+]
+
+&lt;img src="/build/data_distributions/01_quantify_distributions_files/figure-html/house-income-dot-stacked-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Robust statistics
+
+&lt;img src="/build/data_distributions/01_quantify_distributions_files/figure-html/house-income-dot-stacked-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+| scenario                      | median | IQR  | `\(\bar{x}\)` | s    |
+| ----------------------------- | ----   | ---- | ----      | ---- |
+| original data                 | 190K   | 200K | 245K      | 226K |
+| move largest to $10 million   | 190K   | 200K | 309K      | 853K |
+| move smallest to $10 million  | 200K   | 200K | 316K      | 854K |
+
+---
+
+# Robust statistics
+
+&lt;div style="margin-bottom: 10%"&gt;&lt;/div&gt;
+
+Median and IQR are more robust to skewness and outliers than mean and SD. Therefore,
+
+* for skewed distributions it is often more helpful to use median and IQR to describe the center and spread
+
+* for symmetric distributions it is often more helpful to use the mean and SD to describe the center and spread
+
+&lt;div style="margin-bottom: 5%"&gt;&lt;/div&gt;
+
+.qa[
+If you would like to estimate the typical household income for a student, would you be more interested in the mean or median income?
+]
+
+.answer[
+Median
+]
+
+---
+
+# Extremely skewed data
+
+&lt;div style="margin-bottom: 10%"&gt;&lt;/div&gt;
+
+When data are extremely skewed, transforming them might make modeling easier. A common transformation is the **log transformation**.
+
+The histogram on the bottom left shows the distribution of number of basketball games attended by students. The histogram on the bottom right shows the distribution of log of number of games attended.
+
+.pull-left[
+&lt;img src="/build/data_distributions/01_quantify_distributions_files/figure-html/basketball-games-distribution-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="/build/data_distributions/01_quantify_distributions_files/figure-html/basketball-games-log-distribution-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+# Pros and cons of transformations
+
+&lt;div style="margin-bottom: 17%"&gt;&lt;/div&gt;
+
+Skewed data are easier to model with when they are transformed because outliers tend to become far less prominent after an appropriate transformation.
+
+```
+# of games             70      50      25    ···
+log10(# of games)    4.25    3.91    3.22    ···
+```
+
+However, results of an analysis might be difficult to interpret because the log of a measured variable is usually meaningless.
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the Chapter 1 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

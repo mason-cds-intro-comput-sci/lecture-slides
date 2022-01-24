@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>CDS 101 Online   Inference and simulation   One-sided hypothesis tests using infer</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="James K. Glasbrenner" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Inference and simulation]
+.title-hline[
+## One-sided hypothesis tests using .mono[infer]
+]
+
+
+
+---
+
+# Download and load the dataset
+
+&lt;div style="margin-bottom: 15%"&gt;&lt;/div&gt;
+
+You can follow along by downloading and loading the dataset by placing the following *setup* code block at the top of a R Markdown file.
+
+&lt;pre&gt;&lt;code&gt;
+&amp;#96;&amp;#96;&amp;#96;{r setup, include = FALSE}
+# Load required packages
+library(tidyverse)
+library(infer)
+# Load dataset
+college_apps &lt;- read_rds(
+  url("http://data.cds101.com/college_applications.rds")
+)
+&amp;#96;&amp;#96;&amp;#96;
+&lt;/code&gt;&lt;/pre&gt;
+
+---
+
+# Number of college applications
+
+.footnote[
+http://www.collegeboard.com/student/apply/the-application/151680.html
+]
+
+&lt;div style="margin-bottom: 20%;"&gt;&lt;/div&gt;
+
+.qa[
+A survey asked how many colleges that GMU students applied to, and 206 students responded to this question.
+This sample yielded an average of 9.7 college applications with a standard deviation of 7.
+The College Board website states that counselors recommend students apply to roughly 8 colleges.
+Do these data provide convincing evidence that the average number of colleges all GMU students apply to is *higher* than recommended?
+]
+
+---
+
+# Setting the hypotheses
+
+* The **parameter of interest** is the average number of schools applied to by *all* GMU students.
+
+* There may be two explanations why our sample mean is higher than the recommended 8 schools.
+
+  * The true population mean is different
+  * The true population mean is 8, and the difference between the true population mean and the sample mean is simply due to natural sampling variability
+
+* We start with the assumption the average number of colleges GMU students apply to is 8 (as recommended)
+
+  .center[*H&lt;sub&gt;0&lt;/sub&gt;* : *μ* = 8]
+
+* We test the claim that the average number of colleges GMU students apply to is greater than 8
+
+  .center[*H&lt;sub&gt;A&lt;/sub&gt;* : *μ* &gt; 8]
+
+---
+
+# Statistical significance
+
+&lt;div style="margin-bottom: 10%;"&gt;&lt;/div&gt;
+
+Say that we conducted this study by polling an independent and representative sample of GMU students about how many colleges they applied to, and obtained a sample mean of 9.7.
+
+The national average is 8.
+
+.qa.center[
+Is this result statistically significant?
+]
+
+--
+
+In order to evaluate if the observed sample mean is unusual for the hypothesized sampling distribution, we do the following:
+
+* Choose a value for the significance level *⍺* (a common choice is 5%)
+
+* Determine the percentile rank of the observed sample mean relative to the null distribution
+
+---
+
+# p-values
+
+&lt;div style="margin-bottom: 20%;"&gt;&lt;/div&gt;
+
+* We then use the percentile to calculate the **p-value**, the probability of observing data at least as favorable to the alternative hypothesis as our current data set, if the null hypothesis were true.
+
+* If the p-value is **lower** than the significance level *⍺*, we say that it would be very unlikely to observe the data if the null hypothesis were true, and hence **reject _H&lt;sub&gt;0&lt;/sub&gt;_**.
+
+* If the p-value is **higher** than *⍺*, we say that it is likely to observe the data even if the null hypothesis were true, and hence **do not reject _H&lt;sub&gt;0&lt;/sub&gt;_**.
+
+---
+
+# .font80[Number of college applications p-value]
+
+.pull-left[
+**p-value**
+
+probability of observing data at least as favorable to *H&lt;sub&gt;A&lt;/sub&gt;* as our current data set (a sample mean greater than 9.7), if in fact *H&lt;sub&gt;0&lt;/sub&gt;* were true (the true population mean was 8).
+]
+
+.pull-right[
+&lt;img src="/build/inference_and_simulation/05_one-sided_hypothesis_tests_files/figure-html/app-pvalues-result-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.code60[
+
+```r
+college_apps_null &lt;- college_apps %&gt;%
+  specify(formula = number_colleges ~ NULL) %&gt;%
+  hypothesize(null = "point", mu = 8) %&gt;%
+  generate(reps = 10000, type = "bootstrap") %&gt;%
+  calculate(stat = "mean")
+
+college_apps_obs_stat &lt;- college_apps %&gt;%
+  specify(formula = number_colleges ~ NULL) %&gt;%
+  calculate(stat = "mean")
+
+college_apps_p_value &lt;- college_apps_null %&gt;%
+  get_p_value(obs_stat = college_apps_obs_stat, direction = "right")
+```
+]
+
+--
+
+.answer[p-value = 0]
+
+---
+
+# Number of applications p-value
+
+.code70[
+
+```r
+college_apps_null %&gt;%
+  visualize() +
+  shade_p_value(obs_stat = college_apps_obs_stat, direction = "right") +
+  labs(
+    x = "mean number of applications",
+    title = "College applications null distribution"
+  )
+```
+
+&lt;img src="/build/inference_and_simulation/05_one-sided_hypothesis_tests_files/figure-html/college-apps-null-distribution-pvalue-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# .font70[Number of college applications - Making a decision]
+
+
+
+&lt;div style="margin-bottom: 7%;"&gt;&lt;/div&gt;
+
+* p-value = 0
+
+* If the true average of the number of colleges GMU students applied to is 8, there is a 0% chance of observing a random sample of 206 GMU students who on average apply to 9.7 or more schools.
+
+* This is a pretty low probability for us to think that a sample mean of 9.7 or more schools is likely to happen simply by chance.
+
+* Since p-value is **low** (lower than 5%) we **reject _H&lt;sub&gt;0&lt;/sub&gt;_**.
+
+* The data provide convincing evidence that GMU students apply to more than 8 schools on average.
+
+* The difference between the null value of 8 schools and observed sample mean of 9.7 schools is **not due to chance** or sampling variability.
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the Chapter 3 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

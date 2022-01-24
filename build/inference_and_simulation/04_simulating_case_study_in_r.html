@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>CDS 101 Online   Inference and simulation   Simulating the gender discrimination experiment in R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="James K. Glasbrenner" />
+    <link rel="stylesheet" href="../../libs/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/css/cds101-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, title-slide
+
+.upper-right[
+&lt;img src="../../img/cds-101-online-logo.png" width="605px" /&gt;
+]
+
+.lower-right[
+&lt;img src="../../img/cc-by-nc-sa.png" width="88px" /&gt;
+
+These slides are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+]
+
+# .font90[Inference and simulation]
+.title-hline[
+## Simulating the gender discrimination experiment in R
+]
+
+
+
+---
+
+# Download and load the dataset
+
+You can follow along by downloading and loading the dataset by placing the following *setup* code block at the top of a R Markdown file.
+
+&lt;pre&gt;&lt;code&gt;
+&amp;#96;&amp;#96;&amp;#96;{r setup, include = FALSE}
+# Load required packages
+library(tidyverse)
+library(infer)
+# Load dataset
+applicants_data &lt;- read_rds(
+  url("http://data.cds101.com/gender_discrimination.rds")
+)
+# Observed result
+experiment_result &lt;- (21/24) - (14/24)
+&amp;#96;&amp;#96;&amp;#96;
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+---
+
+# .font90[Recap of gender discrimination dataset]
+
+
+
+&lt;div style="margin-bottom: 13%;"&gt;&lt;/div&gt;
+
+* Experiment involving 48 male bank supervisors that were each given the same personnel file and asked to judge whether the person should be promoted to a branch manager job that was described as "routine"
+
+* The files were identical except that half of the supervisors had files showing the person was male while the other half had files showing the person was female
+
+* It was randomly determined which supervisors got "male" applications and which got "female" applications
+
+* **Result: 29.2% more men than women were recommended for promotion**
+
+.qa.center[
+Is this result statistically significant?
+]
+
+---
+
+# Null and alternative hypothesis
+
+&lt;div style="margin-bottom: 8%;"&gt;&lt;/div&gt;
+
+**Null hypothesis**
+
+Promotion and gender are **independent**, no gender discrimination, observed difference in proportions is simply due to chance.
+    
+`$$\text{H}_0\text{: } \frac{\text{Promoted Men}}{\text{Total Men}}-\frac{\text{Promoted Women}}{\text{Total Women}} = 0$$`
+    
+**Alternative hypothesis**
+
+Promotion and gender are **dependent**, men are more likely to be promoted than women due to gender discrimination, observed difference in proportions is not due to chance.
+
+`$$\text{H}_{\text{A}}\text{: } \frac{\text{Promoted Men}}{\text{Total Men}}-\frac{\text{Promoted Women}}{\text{Total Women}} &gt; 0$$`
+
+---
+
+# Building the null distribution
+
+&lt;div style="margin-bottom: 10%;"&gt;&lt;/div&gt;
+
+We need to generate a null distribution in order to perform a hypothesis test. In a previous video, we saw how to do this using a deck of playing cards. Now we will do the same thing using R using the .mono[infer] package:
+
+&lt;div style="margin-bottom: 7%;"&gt;&lt;/div&gt;
+
+
+```r
+simulation_results &lt;- applicants_data %&gt;%
+  specify(outcome ~ sex, success = "Promoted") %&gt;%
+  hypothesize(null = "independence") %&gt;%
+  generate(reps = 10000, type = "permute") %&gt;%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+---
+
+layout: true
+
+# Building the null distribution
+
+---
+
+```r
+simulation_results &lt;- applicants_data %&gt;%
+* specify(outcome ~ sex, success = "Promoted") %&gt;%
+  hypothesize(null = "independence") %&gt;%
+  generate(reps = 10000, type = "permute") %&gt;%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+* In .mono[specify(outcome ~ sex, success = "Promoted")], the first part .mono[outcome ~ sex] is a formula where the lefthand variable .mono[outcome] is the response and the righthand variable .mono[sex] is explanatory.
+
+---
+
+count: false
+
+```r
+simulation_results &lt;- applicants_data %&gt;%
+  specify(outcome ~ sex, success = "Promoted") %&gt;%
+* hypothesize(null = "independence") %&gt;%
+  generate(reps = 10000, type = "permute") %&gt;%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+* In .mono[specify(outcome ~ sex, success = "Promoted")], the first part .mono[outcome ~ sex] is a formula where the lefthand variable .mono[outcome] is the response and the righthand variable .mono[sex] is explanatory.
+
+* In .mono[hypothesize(null = "independence")], we specify that we will simulate what will happen if .mono[outcome] and .mono[sex] were independent.
+
+---
+
+count: false
+
+```r
+simulation_results &lt;- applicants_data %&gt;%
+  specify(outcome ~ sex, success = "Promoted") %&gt;%
+  hypothesize(null = "independence") %&gt;%
+* generate(reps = 10000, type = "permute") %&gt;%
+  calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+* In .mono[specify(outcome ~ sex, success = "Promoted")], the first part .mono[outcome ~ sex] is a formula where the lefthand variable .mono[outcome] is the response and the righthand variable .mono[sex] is explanatory.
+
+* In .mono[hypothesize(null = "independence")], we specify that we will simulate what will happen if .mono[outcome] and .mono[sex] were independent.
+
+* In .mono[generate(reps = 10000, type = "permute")], we specify that we will run 10,000 simulations by permuting the .mono[outcome] and .mono[sex] columns
+
+* To permute, we randomly shuffle the data in the .mono[outcome] column, and then randomly shuffle the data in the .mono[sex] column 
+
+---
+
+```r
+simulation_results &lt;- applicants_data %&gt;%
+  specify(outcome ~ sex, success = "Promoted") %&gt;%
+  hypothesize(null = "independence") %&gt;%
+  generate(reps = 10000, type = "permute") %&gt;%
+* calculate(stat = "diff in props", order = combine("Male", "Female"))
+```
+
+*   Using .mono[calculate(stat = "diff in props", order = combine("Male", "Female"))] means, after each simulation, compute:
+
+    `$$\frac{\text{Promoted Men}}{\text{Total Men}}-\frac{\text{Promoted Women}}{\text{Total Women}}$$`
+    
+    Note that this expression is exactly how &lt;span class="mono"&gt;experiment\_result&lt;/span&gt; was calculated.
+
+---
+
+layout: false
+
+# Visualizing the null distribution
+
+.code70[
+
+```r
+simulation_results %&gt;%
+  visualize(bins = 9) +
+  shade_p_value(obs_stat = experiment_result, direction = "right") +
+  labs(
+    title = "Gender discrimination null distribution",
+    x = "difference in fraction of male and female promotions"
+  )
+```
+
+&lt;img src="/build/inference_and_simulation/04_simulating_case_study_in_r_files/figure-html/infer-example-3-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# .font90[Probability of randomly getting result]
+
+One way we can quantify the probability that the experiment's result is due to statistical variance is to compute how much of the null distribution represents outcomes that are the same or more extreme than the actual experiment:
+
+```r
+simulation_results %&gt;%
+  filter(stat &gt;= experiment_result) %&gt;%
+  summarize(random_result_probability = n() / 10000)
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; random_result_probability &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.0227 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+This value is called the *p*-value, and can be obtained directly using .mono[infer]:
+
+```r
+simulation_results %&gt;%
+  get_p_value(obs_stat = experiment_result, direction = "right")
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.0227 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Conclusions from our simulation
+
+&lt;div style="margin-bottom: 10%;"&gt;&lt;/div&gt;
+
+.qa[
+Do the results of the simulation provide convincing evidence of gender discrimination against women, i.e. dependence between gender and promotion decisions?
+]
+
+1. No, the data do not provide convincing evidence for the alternative hypothesis, therefore we can't reject the null hypothesis of independence between gender and promotion decisions. The observed difference between the two proportions was due to chance.
+
+2. Yes, the data provide convincing evidence for us to reject the null hypothesis in favor of the alternative hypothesis of gender discrimination against women in promotion decisions. The observed difference between the two proportions was due to a real effect of gender.
+
+---
+
+count: false
+
+# Conclusions from our simulation
+
+&lt;div style="margin-bottom: 10%;"&gt;&lt;/div&gt;
+
+.qa[
+Do the results of the simulation provide convincing evidence of gender discrimination against women, i.e. dependence between gender and promotion decisions?
+]
+
+1. No, the data do not provide convincing evidence for the alternative hypothesis, therefore we can't reject the null hypothesis of independence between gender and promotion decisions. The observed difference between the two proportions was due to chance.
+
+2. .red[Yes, the data provide convincing evidence for us to reject the null hypothesis in favor of the alternative hypothesis of gender discrimination against women in promotion decisions. The observed difference between the two proportions was due to a real effect of gender.]
+
+---
+
+# Credits
+
+.left-column[
+License
+
+Acknowledgments
+]
+
+.right-column[
+.font80[[Creative Commons Attribution-NonCommerical-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)]
+
+Content adapted from the Chapter 3 [OpenIntro Statistics slides](https://github.com/OpenIntroOrg/openintro-statistics-slides) developed by Mine Çetinkaya-Rundel and made available under the [CC BY-SA 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../../libs/js/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
