@@ -36,7 +36,7 @@ library(tidyverse)
 
 We can plot different types of graph with `qplot()`. If we only pass an argument to the `x` parameter of `qplot()`...
 
-```{r}
+```{r, out.height=5}
 qplot(x = height, data = starwars)
 ```
 
@@ -54,7 +54,7 @@ In a histogram, the x-axis variable is divided up into "bins" (i.e. the bars). T
 
 Each dot here represents an observation (i.e. a row containing a Star Wars character in the dataset).
 
-```{r}
+```{r, echo=FALSE}
 wbins <- 9
 ggplot(starwars, aes(x = height)) +
   geom_histogram(binwidth=wbins, color = "white") +
