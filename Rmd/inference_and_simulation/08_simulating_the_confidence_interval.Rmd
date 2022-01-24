@@ -183,8 +183,8 @@ simulation_bootstrap %>%
 <div style="margin-bottom: 5%;"></div>
 
 ```{r gender-discrimination-ci-visualization, echo = FALSE, out.width = "90%"}
-ci_lower <- pull(simulation_ci, `2.5%`)
-ci_upper <- pull(simulation_ci, `97.5%`)
+ci_lower <- pull(simulation_ci, lower_ci)
+ci_upper <- pull(simulation_ci, upper_ci)
 simulation_bootstrap %>%
   visualize() +
   shade_confidence_interval(simulation_ci) +

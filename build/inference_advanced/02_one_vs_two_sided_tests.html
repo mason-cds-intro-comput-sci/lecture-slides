@@ -45,7 +45,7 @@ What do we mean by extreme?
 
 In a one-sided hypothesis test, we care about extreme values on one side of the distribution:
 
-&lt;img src="/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -56,7 +56,7 @@ Our test statistic is `\(\frac{promoted\_men}{all\_men} - \frac{promoted\_women}
 
 Because we care about whether more men are promoted than women, extreme values will be on the right.
 
-&lt;img src="/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-3-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-3-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -66,7 +66,7 @@ Our test statistic is `\(\frac{promoted\_men}{all\_men} - \frac{promoted\_women}
 
 If we accidentally try to calculate the fraction of values on the left, we will get an erroneously high fraction (p-value).
 
-&lt;img src="/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-4-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-4-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -78,7 +78,7 @@ But if the test statistic was reversed: `\(\frac{promoted\_women}{all\_women} - 
 
 ...now "extreme" values of the test statistic will be negative (if more men are promoted than women), so we need to look on the left:
 
-&lt;img src="/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-5-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-5-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -87,23 +87,23 @@ But if the test statistic was reversed: `\(\frac{promoted\_women}{all\_women} - 
 
 But in a two-sided test, we care about extreme value on both side of the distribution:
 
-&lt;img src="/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-6-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-6-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # One vs. two sided p-values
 
 .pull-left[
-One-sided p-value: 0.0252
+One-sided p-value: 0.026
 
-&lt;img src="/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-7-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-7-1.svg" width="600" style="display: block; margin: auto;" /&gt;
 
 ]
 
 .pull-right[
-Two-sided p-value: 0.0504
+Two-sided p-value: 0.052
 
-&lt;img src="/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-8-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/inference_advanced/02_one_vs_two_sided_tests_files/figure-html/unnamed-chunk-8-1.svg" width="600" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -169,30 +169,20 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
 })();
 (function() {
   "use strict"
-  /* Replace <script> tags in slides area to make them executable
-   *
-   * Runs after post-processing of markdown source into slides and replaces only
-   * <script>s on the last slide of continued slides using the .has-continuation
-   * class added by xaringan. Finally, any <script>s in the slides area that
-   * aren't executed are commented out.
-   */
+  // Replace <script> tags in slides area to make them executable
   var scripts = document.querySelectorAll(
-    '.remark-slides-area .remark-slide-container:not(.has-continuation) script'
+    '.remark-slides-area .remark-slide-container script'
   );
   if (!scripts.length) return;
   for (var i = 0; i < scripts.length; i++) {
     var s = document.createElement('script');
     var code = document.createTextNode(scripts[i].textContent);
     s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
     scripts[i].parentElement.replaceChild(s, scripts[i]);
-  }
-  var scriptsNotExecuted = document.querySelectorAll(
-    '.remark-slides-area .remark-slide-container.has-continuation script'
-  );
-  if (!scriptsNotExecuted.length) return;
-  for (var i = 0; i < scriptsNotExecuted.length; i++) {
-    var comment = document.createComment(scriptsNotExecuted[i].outerHTML)
-    scriptsNotExecuted[i].parentElement.replaceChild(comment, scriptsNotExecuted[i])
   }
 })();
 (function() {

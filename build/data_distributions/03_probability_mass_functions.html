@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>CDS 101 Online   Data distributions   Probability mass functions</title>
     <meta charset="utf-8" />
@@ -102,7 +102,7 @@ count: false
 
 We've already learned that histograms (.mono[geom_histogram()]) are a convenient way to represent numerical data in a single column (variable)
 
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-mean-driving-histogram-binsize-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-mean-driving-histogram-binsize-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 --
 
@@ -120,7 +120,7 @@ count: false
 
 We've already learned that histograms (.mono[geom_histogram()]) are a convenient way to represent numerical data in a single column (variable).
 
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-mean-driving-histogram-binsize-1-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-mean-driving-histogram-binsize-1-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 A histogram represents the **frequency** that values show up for a given variable
 
@@ -134,7 +134,7 @@ So far, we've largely skipped over the question of how to compare distributions 
 
 In our current example of average times to travel to work, we can group the data by state and compare Virginia to Maryland.
 
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-histogram-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-histogram-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
 --
 
 .qa.center[
@@ -151,7 +151,7 @@ So far, we've largely skipped over the question of how to compare distributions 
 
 In our current example of average times to travel to work, we can group the data by state and compare Virginia to Maryland.
 
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-histogram-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-histogram-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
 
 In the dataset, Virginia has 134 counties compared to Maryland's 24 counties.
 
@@ -167,7 +167,7 @@ If you group by categories, that you should divide by the number of observations
 
 To normalize the histograms from the prior example, we need to divide the Virginia frequencies by 134 and the Maryland frequencies by 24.
 
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-histogram-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-histogram-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -181,13 +181,13 @@ If you group by categories, that you should divide by the number of observations
 
 To normalize the histograms from the prior example, we need to divide the Virginia frequencies by 134 and the Maryland frequencies by 24.
 
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-pmf-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-pmf-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Probability mass function (PMF)
 
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-pmf-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-va-md-mean-driving-pmf-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
 
 Just like a histogram, except that the bar heights reflect **probabilities** instead of **frequency counts**.
 
@@ -220,7 +220,7 @@ county %&gt;%
 ```
 ]
 
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-1-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-1-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -243,7 +243,7 @@ county %&gt;%
 ```
 ]
 
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-1-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-1-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -266,7 +266,7 @@ county %&gt;%
 ```
 ]
 
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-2-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-2-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -332,25 +332,26 @@ va_md_pmf_data %&gt;%
 ```
 
 ```
-## Observations: 30
-## Variables: 17
-## $ fill     &lt;chr&gt; "#00BFC4", "#F8766D", "#00BFC4", "#F8766D", "#00BFC4", …
-## $ y        &lt;dbl&gt; 0.003731343, 0.003731343, 0.029850746, 0.029850746, 0.0…
-## $ count    &lt;dbl&gt; 1, 0, 8, 0, 7, 0, 7, 0, 26, 5, 11, 2, 16, 1, 11, 4, 11,…
-## $ x        &lt;dbl&gt; 14, 14, 16, 16, 18, 18, 20, 20, 22, 22, 24, 24, 26, 26,…
-## $ xmin     &lt;dbl&gt; 13, 13, 15, 15, 17, 17, 19, 19, 21, 21, 23, 23, 25, 25,…
-## $ xmax     &lt;dbl&gt; 15, 15, 17, 17, 19, 19, 21, 21, 23, 23, 25, 25, 27, 27,…
-## $ density  &lt;dbl&gt; 0.003731343, 0.000000000, 0.029850746, 0.000000000, 0.0…
-## $ ncount   &lt;dbl&gt; 0.03846154, 0.00000000, 0.30769231, 0.00000000, 0.26923…
-## $ ndensity &lt;dbl&gt; 0.03846154, 0.00000000, 0.30769231, 0.00000000, 0.26923…
-## $ PANEL    &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
-## $ group    &lt;int&gt; 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2…
-## $ ymin     &lt;dbl&gt; 0.000000000, 0.003731343, 0.000000000, 0.029850746, 0.0…
-## $ ymax     &lt;dbl&gt; 0.003731343, 0.003731343, 0.029850746, 0.029850746, 0.0…
-## $ colour   &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-## $ size     &lt;dbl&gt; 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, …
-## $ linetype &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
-## $ alpha    &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+## Rows: 30
+## Columns: 18
+## $ fill        &lt;chr&gt; "#F8766D", "#F8766D", "#F8766D", "#F8766D", "#F8766D", "#…
+## $ y           &lt;dbl&gt; 0.003731343, 0.029850746, 0.026119403, 0.026119403, 0.201…
+## $ count       &lt;dbl&gt; 0, 0, 0, 0, 5, 2, 1, 4, 4, 1, 4, 1, 0, 1, 1, 1, 8, 7, 7, …
+## $ x           &lt;dbl&gt; 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 4…
+## $ xmin        &lt;dbl&gt; 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 4…
+## $ xmax        &lt;dbl&gt; 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 4…
+## $ density     &lt;dbl&gt; 0.000000000, 0.000000000, 0.000000000, 0.000000000, 0.104…
+## $ ncount      &lt;dbl&gt; 0.00000000, 0.00000000, 0.00000000, 0.00000000, 1.0000000…
+## $ ndensity    &lt;dbl&gt; 0.00000000, 0.00000000, 0.00000000, 0.00000000, 1.0000000…
+## $ flipped_aes &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, F…
+## $ PANEL       &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+## $ group       &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, …
+## $ ymin        &lt;dbl&gt; 0.003731343, 0.029850746, 0.026119403, 0.026119403, 0.097…
+## $ ymax        &lt;dbl&gt; 0.003731343, 0.029850746, 0.026119403, 0.026119403, 0.201…
+## $ colour      &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+## $ size        &lt;dbl&gt; 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.…
+## $ linetype    &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+## $ alpha       &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
 ```
 ]
 
@@ -433,7 +434,7 @@ md_pmf_data &lt;- va_md_pmf_data %&gt;%
 
 &lt;div style="margin-bottom: 3%"&gt;&lt;/div&gt;
 
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -576,11 +577,11 @@ county %&gt;%
 ]
 
 .pull-left[
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-2-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-freq-to-pmf-2-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
-&lt;img src="/build/data_distributions/03_probability_mass_functions_files/figure-html/county-density-plot-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/data_distributions/03_probability_mass_functions_files/figure-html/county-density-plot-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -642,6 +643,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -659,17 +686,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

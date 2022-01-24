@@ -42,7 +42,7 @@ We can plot different types of graph with `qplot()`. If we only pass an argument
 qplot(x = height, data = starwars)
 ```
 
-&lt;img src="/build/03_data_visualization/04_plots_of_one_variable_files/figure-html/unnamed-chunk-1-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/03_data_visualization/04_plots_of_one_variable_files/figure-html/unnamed-chunk-1-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 ... we get a type of graph called a histogram.
 
@@ -73,7 +73,7 @@ ggplot(starwars, aes(x = height)) +
     )
 ```
 
-&lt;img src="/build/03_data_visualization/04_plots_of_one_variable_files/figure-html/unnamed-chunk-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/03_data_visualization/04_plots_of_one_variable_files/figure-html/unnamed-chunk-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 It is apparent that the y-axis is the *count* of the observations in each bin.
 
@@ -106,7 +106,7 @@ If we pass a categorical variable to the `x` parameter, then we will get a bar g
 qplot(x = sex, data=starwars)
 ```
 
-&lt;img src="/build/03_data_visualization/04_plots_of_one_variable_files/figure-html/unnamed-chunk-3-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="/lecture-slides/build/03_data_visualization/04_plots_of_one_variable_files/figure-html/unnamed-chunk-3-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 In a bar graph, each bar correponds to the number of rows in each category (in this case, that is the number of Star Wars characters of each sex).
 
