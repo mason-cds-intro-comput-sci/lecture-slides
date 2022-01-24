@@ -84,7 +84,22 @@ If a line drawn through the data is curved (variable slope), then the relationsh
 
 # Describing linear relationships
 
-Positive, negative, no-relationship
+A linear relationship between two variables can be positive or negative, depending on whether the slope of the relationship is a positive or negative number.
+
+If the slope is zero, we say there is no-relationship between the two variables.
+
+```{r, echo = FALSE, out.width="90%", fig.width=4}
+set.seed(42)
+x <- runif(1000)*20
+Positive <- x + rnorm(1000,0,3)
+Negative <- -x + rnorm(1000,0,3) + 20
+`No Relationship` <- 10 + rnorm(1000,0,3)
+tibble(x,Positive, Negative, `No Relationship`) %>%
+  pivot_longer(cols = c("Positive", "Negative", "No Relationship")) %>%
+  ggplot(aes(x,value)) +
+    geom_point(size=0.3) + geom_smooth(method = "lm", se=FALSE) +
+    facet_wrap(~factor(name, levels = c("Positive", "Negative", "No Relationship")), ncol = 3)
+```
 
 ---
 
@@ -139,7 +154,7 @@ ggplot(tibble(x,y), aes(x,y)) +
 
 ---
 
-# Return of the ~~Jedi~~ Mass vs. height
+# Return of the ~~Jedi~~ mass vs. height plot
 
 .qa[
 How would you describe this relationship? What other variables would help us understand data points that don't follow the overall trend?
