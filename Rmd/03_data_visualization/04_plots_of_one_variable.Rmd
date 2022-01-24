@@ -34,17 +34,13 @@ library(tidyverse)
 
 # `qplot()` with a single variable
 
-We can plot different types of graph with `qplot()`. If we only pass an argument to the `x` parameter of `qplot()`...
+We can plot different types of graph with `qplot()`. If we only pass an argument to the `x` parameter of `qplot()` we create a **histogram**.
 
-```{r, out.height=5}
+```{r, out.height="25%"}
 qplot(x = height, data = starwars)
 ```
 
-... we get a type of graph called a histogram.
-
-The `height` variable has been plotted on the `x` axis.
-
-What are the numbers on the `y` axis in a histogram?
+The `height` variable has been plotted on the `x` axis. But what are the numbers on the `y` axis of a histogram?
 
 ---
 
