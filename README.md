@@ -76,6 +76,20 @@ To view the slideshows, open the HTML files using your web browser.
 I recommend using [Google Chrome][chrome-download] for this as it seems to provide the best rendering of these files.
 Please note that these HTML files should not be moved to another location on your computer, otherwise they will not render correctly in your browser.
 
+Publishing slides to GitHub pages
+---------------------------------
+
+Run this in the terminal to replace absolute links (to chunk figure outputs) with relative links:
+
+```
+find build -type f -name "*.html" -print0 | xargs -0 sed -i -e 's./home/dominic/Dropbox/GMU/CDS101/master-repos/./.g'
+```
+
+Then force add the `build` directory (`git add -f build`), commit, and push.
+
+Note that this may break the ability to run the slides locally...
+
+
 Useful Syntax
 -------------
 
